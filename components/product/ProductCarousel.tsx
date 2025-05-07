@@ -24,17 +24,40 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
 
   const showProductInfo = (product: Product) => {
     toast(
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 relative">
+        <button
+          onClick={() => toast.dismiss()}
+          className="absolute top-0 left-0 p-1 rounded-full hover:bg-stone-100"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
         <h3 className="font-medium">{product.name}</h3>
         <p className="text-sm">{product.description}</p>
       </div>,
+      {
+        // カスタム閉じるボタンを使用するため、デフォルトの閉じるボタンは無効化
+        closeButton: false,
+      },
     );
   };
 
   return (
     <div className="mb-10">
       <h2 className="text-lg font-medium text-stone-800 mb-3 font-playfair">
-        ヴィンテージアイテム
+        特徴と見分け方
       </h2>
 
       <Carousel
@@ -61,7 +84,8 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
                       className="object-cover"
                     />
                     <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-medium">
-                      {product.era}
+                      {product.manufacturing_start_year}-
+                      {product.manufacturing_end_year}
                     </span>
                   </div>
                 </CardContent>
@@ -70,9 +94,7 @@ const ProductCarousel = ({ products }: ProductCarouselProps) => {
                     <h3 className="text-sm font-medium text-stone-800">
                       {product.name}
                     </h3>
-                    <p className="text-xs text-stone-500">
-                      ¥{product.price.toLocaleString()}
-                    </p>
+                    <p className="text-xs text-stone-500"></p>
                   </div>
                   <Button
                     size="icon"

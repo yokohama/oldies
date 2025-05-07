@@ -1,11 +1,31 @@
-export interface Product {
-  id: string;
+export interface Brand {
+  id: number;
   name: string;
-  era: string;
-  price: number;
-  color: string;
-  size: string;
-  condition: string;
+  imageUrl: string;
+  description: string;
+}
+
+export interface Product {
+  id: number;
+  brandId: number;
+  name: string;
+  imageUrl: string;
+  description: string;
+}
+
+export interface ProductEra {
+  id: number;
+  productId: number;
+  manufacturing_start_year: number;
+  manufacturing_end_year: number;
+  imageUrl: string;
+  description: string;
+}
+
+export interface ProductEraCheckPoint {
+  id: number;
+  productEraId: number;
+  point: string;
   imageUrl: string;
   description: string;
 }
