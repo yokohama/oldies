@@ -29,5 +29,5 @@ export interface ProductEraCheckPoint {
   point: string;
   imageUrl: string;
   description: string;
-  userId?: string;
+  userId?: string | null;
 }
