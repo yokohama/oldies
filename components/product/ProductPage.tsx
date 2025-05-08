@@ -68,7 +68,7 @@ const ProductPage = () => {
       ) : products.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-lg text-gray-600">
-            このブランドの製品が見つかりませんでした。
+            このブランドの年代情報が見つかりませんでした。
           </p>
           <Link
             href="/brand"
