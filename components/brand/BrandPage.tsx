@@ -70,8 +70,8 @@ const BrandPage = () => {
               </div>
               <div className="p-4">
                 <h2 className="text-xl font-semibold">{brand.name}</h2>
+                <div>{brand.description}</div>
               </div>
-              <div>{brand.description}</div>
             </div>
           ))}
         </div>
