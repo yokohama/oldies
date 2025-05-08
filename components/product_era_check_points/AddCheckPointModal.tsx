@@ -63,7 +63,7 @@ const AddCheckPointModal = ({
         return;
       }
 
-      // チェックポイントの追加
+      // チェックポイントの追加（idフィールドを明示的に除外して自動採番に任せる）
       const { data, error } = await supabase
         .from("product_era_check_points")
         .insert({
@@ -76,6 +76,7 @@ const AddCheckPointModal = ({
         .select();
 
       if (error) {
+        console.error("エラー詳細:", error);
         throw error;
       }
 

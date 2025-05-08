@@ -32,19 +32,12 @@ interface SupabaseProductEraCheckPoint {
 const ProductEraCheckPointPage = () => {
   const searchParams = useSearchParams();
   const productIdParam = searchParams.get("productId");
+  const productNameParam = searchParams.get("productName");
   const productId = productIdParam ? parseInt(productIdParam, 10) : null;
-  const [selectedEra, setSelectedEra] = useState(70);
-  const [rangeValue, setRangeValue] = useState([0, 9]);
+  const [selectedEraIndex, setSelectedEraIndex] = useState(0); // 初期値は最初のアイテム
   const [productEras, setProductEras] = useState<ProductEra[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const [searchStartYear, setSearchStartYear] = useState(
-    selectedEra + rangeValue[0],
-  );
-  const [searchEndYear, setSearchEndYear] = useState(
-    selectedEra + rangeValue[1],
-  );
 
   // productIdを使ってproduct_erasテーブルからデータを取得
   useEffect(() => {
@@ -104,26 +97,15 @@ const ProductEraCheckPointPage = () => {
     fetchProductEras();
   }, [productId]);
 
-  // 製品の製造期間の終了が検索範囲の開始以降 かつ 製品の製造期間の開始が検索範囲の終了以前
-  const filteredProductEras = productEras.filter(
-    (productEra) =>
-      productEra.manufacturing_end_year >= 1900 + searchStartYear &&
-      productEra.manufacturing_start_year <= 1900 + searchEndYear,
-  );
-
-  const handleEraChange = (era: number) => {
-    setSelectedEra(era);
-    setRangeValue([0, 9]);
+  // インデックスが変更されたときの処理
+  const handleEraIndexChange = (index: number) => {
+    setSelectedEraIndex(index);
   };
-
-  useEffect(() => {
-    setSearchStartYear(selectedEra + rangeValue[0]);
-    setSearchEndYear(selectedEra + rangeValue[1]);
-  }, [selectedEra, rangeValue]);
 
   return (
     <div className="max-w-md mx-auto px-4 py-6 sm:px-6">
       <Header />
+      <ProductTitle productName={productNameParam} />
       {isLoading ? (
         <div className="text-center py-10">
           <p>読み込み中...</p>
@@ -139,12 +121,15 @@ const ProductEraCheckPointPage = () => {
       ) : (
         <>
           <EraSelector
-            selectedEra={selectedEra}
-            onEraChange={handleEraChange}
-            rangeValue={rangeValue}
-            setRangeValue={setRangeValue}
+            productEras={productEras}
+            selectedEraIndex={selectedEraIndex}
+            onEraIndexChange={handleEraIndexChange}
           />
-          <ProductEraCarousel productEras={filteredProductEras} />
+          <ProductEraCarousel
+            productEras={productEras}
+            selectedEraIndex={selectedEraIndex}
+            onEraIndexChange={handleEraIndexChange}
+          />
         </>
       )}
     </div>

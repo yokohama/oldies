@@ -81,7 +81,7 @@ const ProductPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <Link
-              href={`/product-era-check-point?productId=${product.id}`}
+              href={`/product-era-check-point?productId=${product.id}&productName=${product.name}`}
               key={product.id}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
             >
