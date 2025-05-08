@@ -7,6 +7,7 @@ import { Brand, Product } from "@/lib/types";
 import Header from "../ui/Header";
 import ProductTitle from "../ui/ProductTitle";
 import Link from "next/link";
+import Image from "next/image";
 
 const ProductPage = () => {
   const searchParams = useSearchParams();
@@ -84,11 +85,13 @@ const ProductPage = () => {
               key={product.id}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="h-48 overflow-hidden">
-                <img
+              <div className="h-48 overflow-hidden relative">
+                <Image
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover"
                 />
               </div>
               <div className="p-4">

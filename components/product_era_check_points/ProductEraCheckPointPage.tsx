@@ -9,6 +9,25 @@ import ProductEraCarousel from "./ProductEraCarousel";
 import { supabase } from "@/lib/supabase";
 import { ProductEra } from "@/lib/types";
 
+// Supabaseから取得するデータの型定義
+interface SupabaseProductEra {
+  id: number;
+  product_id: number;
+  manufacturing_start_year: number;
+  manufacturing_end_year: number;
+  image_url: string;
+  description: string | null;
+  product_era_check_points: SupabaseProductEraCheckPoint[];
+}
+
+interface SupabaseProductEraCheckPoint {
+  id: number;
+  product_era_id: number;
+  point: string;
+  image_url: string;
+  description: string | null;
+}
+
 const ProductEraCheckPointPage = () => {
   const searchParams = useSearchParams();
   const productIdParam = searchParams.get("productId");
@@ -50,22 +69,26 @@ const ProductEraCheckPointPage = () => {
         if (error) throw error;
 
         // データをProductEra型に変換
-        const mappedData: ProductEra[] = (data || []).map((era) => ({
-          id: era.id,
-          productId: era.product_id,
-          manufacturing_start_year: era.manufacturing_start_year,
-          manufacturing_end_year: era.manufacturing_end_year,
-          imageUrl: era.image_url,
-          description: era.description || "",
-          checkPoints:
-            era.product_era_check_points?.map((checkPoint: any) => ({
-              id: checkPoint.id,
-              productEraId: checkPoint.product_era_id,
-              point: checkPoint.point,
-              imageUrl: checkPoint.image_url,
-              description: checkPoint.description || "",
-            })) || [],
-        }));
+        const mappedData: ProductEra[] = (data || []).map(
+          (era: SupabaseProductEra) => ({
+            id: era.id,
+            productId: era.product_id,
+            manufacturing_start_year: era.manufacturing_start_year,
+            manufacturing_end_year: era.manufacturing_end_year,
+            imageUrl: era.image_url,
+            description: era.description || "",
+            checkPoints:
+              era.product_era_check_points?.map(
+                (checkPoint: SupabaseProductEraCheckPoint) => ({
+                  id: checkPoint.id,
+                  productEraId: checkPoint.product_era_id,
+                  point: checkPoint.point,
+                  imageUrl: checkPoint.image_url,
+                  description: checkPoint.description || "",
+                }),
+              ) || [],
+          }),
+        );
 
         setProductEras(mappedData);
         setIsLoading(false);

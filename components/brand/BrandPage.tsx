@@ -5,6 +5,7 @@ import { Brand } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import Header from "../ui/Header";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const BrandPage = () => {
   const router = useRouter();
@@ -58,11 +59,13 @@ const BrandPage = () => {
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
               onClick={() => handleBrandClick(brand.id)}
             >
-              <div className="h-48 overflow-hidden">
-                <img
+              <div className="h-48 overflow-hidden relative">
+                <Image
                   src={brand.imageUrl}
                   alt={brand.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover"
                 />
               </div>
               <div className="p-4">
