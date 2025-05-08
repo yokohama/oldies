@@ -11,7 +11,7 @@ interface EraSelectorProps {
   setRangeValue: Dispatch<SetStateAction<number[]>>;
 }
 
-const eras = [50, 60, 70, 80, 90];
+const eras = [40, 50, 60, 70, 80, 90];
 
 const EraSelector = ({
   selectedEra,
@@ -20,8 +20,8 @@ const EraSelector = ({
   setRangeValue,
 }: EraSelectorProps) => {
   return (
-    <div className="mb-6 border border-stone-200 rounded-lg p-4 bg-white">
-      <div className="grid grid-cols-5 gap-1 mb-5">
+    <div className="mb-6 border border-stone-200 rounded-lg p-2 bg-white">
+      <div className="grid grid-cols-6 gap-1 mb-5">
         {eras.map((era) => (
           <button
             key={era}
@@ -40,8 +40,8 @@ const EraSelector = ({
 
       <div className="px-2 py-4">
         <div className="flex justify-between text-xs text-stone-500 mb-1">
-          <span>0</span>
-          <span>9</span>
+          <span>{1900 + selectedEra}</span>
+          <span>{1900 + selectedEra + 9}</span>
         </div>
         <Slider
           value={rangeValue}

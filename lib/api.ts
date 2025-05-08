@@ -47,11 +47,37 @@ export class API {
     return (data || []).map(mapBrand);
   }
 
+  static async getBrand(id: number): Promise<Brand | null> {
+    const { data, error } = await supabase
+      .from("brands")
+      .select("*")
+      .eq("id", id)
+      .is("deleted_at", null)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") return null; // PGRST116 は "結果が見つからない" エラー
+      throw error;
+    }
+    return data ? mapBrand(data) : null;
+  }
+
   // 製品関連
   static async getProducts(): Promise<Product[]> {
     const { data, error } = await supabase
       .from("products")
       .select("*")
+      .is("deleted_at", null);
+
+    if (error) throw error;
+    return (data || []).map(mapProduct);
+  }
+
+  static async getProductsByBrandId(brandId: number): Promise<Product[]> {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("brand_id", brandId)
       .is("deleted_at", null);
 
     if (error) throw error;

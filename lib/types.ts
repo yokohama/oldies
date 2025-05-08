@@ -20,6 +20,7 @@ export interface ProductEra {
   manufacturing_end_year: number;
   imageUrl: string;
   description: string;
+  checkPoints?: ProductEraCheckPoint[];
 }
 
 export interface ProductEraCheckPoint {
