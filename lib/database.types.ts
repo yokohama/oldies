@@ -132,6 +132,7 @@ export interface Database {
           created_at: string | null;
           updated_at: string | null;
           deleted_at: string | null;
+          user_id: string | null;
         };
         Insert: {
           id?: number;
@@ -142,6 +143,7 @@ export interface Database {
           created_at?: string | null;
           updated_at?: string | null;
           deleted_at?: string | null;
+          user_id?: string | null;
         };
         Update: {
           id?: number;
@@ -152,12 +154,19 @@ export interface Database {
           created_at?: string | null;
           updated_at?: string | null;
           deleted_at?: string | null;
+          user_id?: string | null;
         };
         Relationships: [
           {
             foreignKeyName: "fk_product_era";
             columns: ["product_era_id"];
             referencedRelation: "product_eras";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_user";
+            columns: ["user_id"];
+            referencedRelation: "users";
             referencedColumns: ["id"];
           },
         ];

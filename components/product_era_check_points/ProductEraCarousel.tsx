@@ -7,12 +7,12 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { toast, Toaster } from "sonner";
+import AddCheckPointModal from "./AddCheckPointModal";
 
 interface ProductCarouselProps {
   productEras: ProductEra[];
@@ -24,6 +24,7 @@ const ProductEraCarousel = ({ productEras }: ProductCarouselProps) => {
   const [currentProductEra, setCurrentProductEra] = useState<ProductEra | null>(
     productEras.length > 0 ? productEras[0] : null,
   );
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     if (!api) {
@@ -100,14 +101,91 @@ const ProductEraCarousel = ({ productEras }: ProductCarouselProps) => {
     <div className="mb-10">
       <Toaster position="top-center" />
 
+      {currentProductEra && (
+        <AddCheckPointModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          productEraId={currentProductEra.id}
+          onSuccess={() => {
+            // データを再取得するためのコールバック
+            window.location.reload();
+          }}
+        />
+      )}
+
       <Carousel
         setApi={setApi}
         opts={{
           align: "start",
-          loop: true,
+          loop: false,
+          dragFree: false,
+          containScroll: "trimSnaps",
         }}
-        className="w-full"
+        className="w-full relative"
       >
+        {/* スライド可能であることを示すインジケーター - 左右両方に配置 */}
+        {/* 左側（戻る）インジケーター */}
+        <div
+          className={`absolute top-[104px] left-2 z-10 flex flex-col gap-1.5 items-center animate-pulse ${currentIndex === 0 ? "hidden" : ""} cursor-pointer`}
+          onClick={() => api?.scrollPrev()}
+          role="button"
+          aria-label="前のスライドへ"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-amber-500 transform rotate-180"
+          >
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </div>
+
+        {/* 右側（次へ）インジケーター */}
+        <div
+          className={`absolute top-[104px] right-2 z-10 flex flex-col gap-1.5 items-center animate-pulse ${currentIndex === productEras.length - 1 ? "hidden" : ""} cursor-pointer`}
+          onClick={() => api?.scrollNext()}
+          role="button"
+          aria-label="次のスライドへ"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-amber-500"
+          >
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </div>
+
+        {/* カルーセルのナビゲーションインジケーター */}
+        <div className="flex justify-center mt-4 gap-2">
+          <div className="flex items-center gap-1.5 mx-2">
+            {productEras.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  index === currentIndex
+                    ? "bg-amber-600"
+                    : "bg-stone-300 hover:bg-stone-400"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
         <CarouselContent className="-ml-2 -mr-2">
           {productEras.map((productEra) => (
             <CarouselItem
@@ -132,9 +210,34 @@ const ProductEraCarousel = ({ productEras }: ProductCarouselProps) => {
                     {currentProductEra?.description}
                   </h3>
                   <div className="mt-6">
-                    <h3 className="text-md font-medium text-stone-800 mb-3 px-2">
-                      チェックポイント
-                    </h3>
+                    <div className="flex justify-between items-center mb-3 px-2">
+                      <h3 className="text-md font-medium text-stone-800">
+                        チェックポイント
+                      </h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs border-amber-200 text-amber-700 hover:bg-amber-50"
+                        onClick={() => setIsAddModalOpen(true)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="mr-1"
+                        >
+                          <line x1="12" y1="5" x2="12" y2="19"></line>
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        追加
+                      </Button>
+                    </div>
                     <div className="space-y-4 px-2">
                       {productEra.checkPoints?.map((checkPoint) => (
                         <div
@@ -172,11 +275,6 @@ const ProductEraCarousel = ({ productEras }: ProductCarouselProps) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-
-        <div className="flex justify-center mt-2 gap-2">
-          <CarouselPrevious variant="ghost" size="icon" className="static" />
-          <CarouselNext variant="ghost" size="icon" className="static" />
-        </div>
       </Carousel>
     </div>
   );

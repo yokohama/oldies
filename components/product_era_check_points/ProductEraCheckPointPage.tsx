@@ -26,6 +26,7 @@ interface SupabaseProductEraCheckPoint {
   point: string;
   image_url: string;
   description: string | null;
+  user_id: string | null;
 }
 
 const ProductEraCheckPointPage = () => {
@@ -85,6 +86,7 @@ const ProductEraCheckPointPage = () => {
                   point: checkPoint.point,
                   imageUrl: checkPoint.image_url,
                   description: checkPoint.description || "",
+                  userId: checkPoint.user_id,
                 }),
               ) || [],
           }),
