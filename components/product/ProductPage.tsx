@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { API } from "@/lib/api";
 import { Brand, Product } from "@/lib/types";
 import Header from "../ui/Header";
-import ProductTitle from "../ui/ProductTitle";
+import BrandTitle from "../ui/BrandTitle";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -49,7 +49,7 @@ const ProductPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
       <Header />
-      <ProductTitle brand={brand} loading={loading} />
+      <BrandTitle brandName={brand?.name} />
 
       {loading ? (
         <div className="flex justify-center items-center h-64">

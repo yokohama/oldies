@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import Image from "next/image";
+import { Upload, X } from "lucide-react";
 
 interface AddCheckPointModalProps {
   isOpen: boolean;
@@ -33,8 +35,85 @@ const AddCheckPointModal = ({
   const router = useRouter();
   const [point, setPoint] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // ファイルサイズチェック (5MB以下)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("ファイルサイズは5MB以下にしてください");
+      return;
+    }
+
+    // 画像ファイルのみ許可
+    if (!file.type.startsWith("image/")) {
+      toast.error("画像ファイルのみアップロードできます");
+      return;
+    }
+
+    setSelectedFile(file);
+
+    // プレビュー用のURL生成
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const uploadImageToSupabase = async (
+    file: File,
+    userId: string,
+  ): Promise<string> => {
+    try {
+      // ファイル名の一意性を確保するためにタイムスタンプとランダム文字列を追加
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${userId}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+      const filePath = `product_era_check_points/${fileName}`;
+
+      // アップロード開始時に進捗を0%に設定
+      setUploadProgress(0);
+
+      // Supabaseにアップロード
+      const { data, error } = await supabase.storage
+        .from("images")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      // アップロード完了時に進捗を100%に設定
+      setUploadProgress(100);
+
+      if (error) {
+        console.error("アップロードエラー:", error);
+        throw error;
+      }
+
+      // 公開URLを取得
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("images").getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error) {
+      console.error("画像アップロードエラー:", error);
+      throw error;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,12 +123,13 @@ const AddCheckPointModal = ({
       return;
     }
 
-    if (!imageUrl.trim()) {
-      toast.error("画像URLを入力してください");
+    if (!selectedFile) {
+      toast.error("画像をアップロードしてください");
       return;
     }
 
     setIsSubmitting(true);
+    setUploadProgress(0);
 
     try {
       // ログインユーザーの取得
@@ -63,7 +143,10 @@ const AddCheckPointModal = ({
         return;
       }
 
-      // チェックポイントの追加（idフィールドを明示的に除外して自動採番に任せる）
+      // 画像をアップロードしてURLを取得
+      const imageUrl = await uploadImageToSupabase(selectedFile, user.id);
+
+      // チェックポイントの追加
       const { data, error } = await supabase
         .from("product_era_check_points")
         .insert({
@@ -83,7 +166,9 @@ const AddCheckPointModal = ({
       toast.success("チェックポイントを追加しました");
       setPoint("");
       setDescription("");
-      setImageUrl("");
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      setUploadProgress(0);
       onSuccess();
       onClose();
     } catch (error) {
@@ -117,17 +202,71 @@ const AddCheckPointModal = ({
                 required
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="imageUrl" className="text-right">
-                画像URL
+            <div className="grid grid-cols-4 items-start gap-4">
+              <Label htmlFor="imageUpload" className="text-right pt-2">
+                画像
               </Label>
-              <Input
-                id="imageUrl"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="col-span-3"
-                required
-              />
+              <div className="col-span-3 space-y-3">
+                {!previewUrl ? (
+                  <div className="flex flex-col gap-2">
+                    <div
+                      className="border-2 border-dashed rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                      <p className="text-sm font-medium">
+                        クリックして画像をアップロード
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        JPG, PNG, GIF (最大5MB)
+                      </p>
+                    </div>
+                    <Input
+                      ref={fileInputRef}
+                      id="imageUpload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-md border">
+                      <Image
+                        src={previewUrl}
+                        alt="プレビュー"
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-background"
+                      onClick={handleRemoveFile}
+                    >
+                      <X className="h-4 w-4" />
+                      <span className="sr-only">削除</span>
+                    </Button>
+                    {isSubmitting && (
+                      <div className="mt-2">
+                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-primary transition-all duration-300 ease-in-out"
+                            style={{ width: `${uploadProgress}%` }}
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1 text-right">
+                          {uploadProgress}%
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="description" className="text-right">

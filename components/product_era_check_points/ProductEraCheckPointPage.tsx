@@ -105,7 +105,7 @@ const ProductEraCheckPointPage = () => {
   return (
     <div className="max-w-md mx-auto px-4 py-6 sm:px-6">
       <Header />
-      <ProductTitle productName={productNameParam} />
+      <ProductTitle productName={productNameParam || undefined} />
       {isLoading ? (
         <div className="text-center py-10">
           <p>読み込み中...</p>

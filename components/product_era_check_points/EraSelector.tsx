@@ -51,7 +51,7 @@ const EraSelector = ({
       <div className="px-2 py-4 bg-[url('/vintage-paper-texture.png')] bg-opacity-30 rounded-md">
         <div className="text-center mb-3">
           <h1 className="text-4xl font-medium text-amber-900 font-playfair pb-1 drop-shadow-sm">
-            {startYear} 〜 {endYear}'s
+            {startYear} 〜 {endYear}&apos;s
           </h1>
         </div>
         <div ref={sliderRef} className="py-2">

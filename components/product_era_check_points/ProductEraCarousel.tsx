@@ -73,13 +73,13 @@ const ProductEraCarousel = ({
     };
 
     api.on("select", onSelect);
-    api.on("dragEnd", onDragEnd);
+    api.on("pointerUp", onDragEnd);
     // 初期化時に現在のインデックスを設定
     setCurrentIndex(api.selectedScrollSnap());
 
     return () => {
       api.off("select", onSelect);
-      api.off("dragEnd", onDragEnd);
+      api.off("pointerUp", onDragEnd);
     };
   }, [api, productEras, onEraIndexChange, currentIndex]);
 
@@ -132,6 +132,7 @@ const ProductEraCarousel = ({
               alt={checkPoint.point}
               fill
               className="object-cover"
+              unoptimized
             />
           </div>
         )}
@@ -168,9 +169,8 @@ const ProductEraCarousel = ({
           align: "start",
           loop: false,
           dragFree: false,
-          containScroll: "strictly",
+          containScroll: "trimSnaps",
           skipSnaps: false,
-          rubberband: true,
         }}
         className="w-full relative"
       >
@@ -249,6 +249,7 @@ const ProductEraCarousel = ({
                       alt={`製造年代: ${productEra.manufacturing_start_year}-${productEra.manufacturing_end_year}`}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                     <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-base px-3 py-1.5 rounded-full font-medium">
                       {productEra.manufacturing_start_year}-
@@ -302,6 +303,7 @@ const ProductEraCarousel = ({
                                   alt={checkPoint.point}
                                   fill
                                   className="object-cover"
+                                  unoptimized
                                 />
                               </div>
                             )}

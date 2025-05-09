@@ -1,7 +1,7 @@
 import { Brand } from "@/lib/types";
 
 interface ProductTitleProps {
-  productName: string;
+  productName: string | undefined;
 }
 
 const ProductTitle = ({ productName }: ProductTitleProps) => {
