@@ -57,28 +57,12 @@ const ProductEraCarousel = ({
       }
     };
 
-    // スクロールの境界に達したときの処理
-    const onDragEnd = () => {
-      // 最後のスライドで右にスワイプしようとした場合
-      if (currentIndex === productEras.length - 1) {
-        // 最後のスライドに固定
-        api.scrollTo(productEras.length - 1, true);
-      }
-      // 最初のスライドで左にスワイプしようとした場合
-      else if (currentIndex === 0) {
-        // 最初のスライドに固定
-        api.scrollTo(0, true);
-      }
-    };
-
     api.on("select", onSelect);
-    api.on("pointerUp", onDragEnd);
     // 初期化時に現在のインデックスを設定
     setCurrentIndex(api.selectedScrollSnap());
 
     return () => {
       api.off("select", onSelect);
-      api.off("pointerUp", onDragEnd);
     };
   }, [api, productEras, onEraIndexChange, currentIndex]);
 
@@ -110,7 +94,7 @@ const ProductEraCarousel = ({
         setApi={setApi}
         opts={{
           align: "start",
-          loop: false,
+          loop: true,
           dragFree: false,
           containScroll: "trimSnaps",
           skipSnaps: false,
@@ -119,7 +103,7 @@ const ProductEraCarousel = ({
       >
         {/* 左側（戻る）インジケーター */}
         <div
-          className={`absolute top-[104px] left-2 z-10 flex flex-col gap-1.5 items-center animate-pulse ${currentIndex === 0 ? "hidden" : ""} cursor-pointer`}
+          className="absolute top-[104px] left-2 z-10 flex flex-col gap-1.5 items-center animate-pulse cursor-pointer"
           onClick={() => api?.scrollPrev()}
           role="button"
           aria-label="前のスライドへ"
@@ -142,7 +126,7 @@ const ProductEraCarousel = ({
 
         {/* 右側（次へ）インジケーター */}
         <div
-          className={`absolute top-[104px] right-2 z-10 flex flex-col gap-1.5 items-center animate-pulse ${currentIndex === productEras.length - 1 ? "hidden" : ""} cursor-pointer`}
+          className="absolute top-[104px] right-2 z-10 flex flex-col gap-1.5 items-center animate-pulse cursor-pointer"
           onClick={() => api?.scrollNext()}
           role="button"
           aria-label="次のスライドへ"
