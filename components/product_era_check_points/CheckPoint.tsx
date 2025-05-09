@@ -2,13 +2,21 @@
 
 import Image from "next/image";
 import { ProductEraCheckPoint } from "@/lib/types";
-import { XCircle } from "lucide-react";
+import { Trash2, Heart, Share2 } from "lucide-react";
+import { useState } from "react";
+
+interface UserProfile {
+  id: string;
+  name: string;
+  avatarUrl: string;
+}
 
 interface CheckPointProps {
   checkPoint: ProductEraCheckPoint;
   showProductEraCheckPoint: (checkPoint: ProductEraCheckPoint) => void;
   isOwnCheckPoint?: boolean;
   onDelete?: (checkPoint: ProductEraCheckPoint) => void;
+  userProfile?: UserProfile; // ユーザープロフィール情報
 }
 
 const CheckPoint = ({
@@ -16,13 +24,33 @@ const CheckPoint = ({
   showProductEraCheckPoint,
   isOwnCheckPoint = false,
   onDelete,
+  userProfile,
 }: CheckPointProps) => {
+  const [liked, setLiked] = useState(false);
+
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onDelete) {
       onDelete(checkPoint);
     }
   };
+
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLiked(!liked);
+  };
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // シェア機能の実装（将来的に実装）
+    alert("シェア機能は現在開発中です");
+  };
+
+  // デフォルトのプロフィール情報
+  const defaultAvatar =
+    "https://api.dicebear.com/7.x/initials/svg?seed=" +
+    (checkPoint.userId || "anonymous");
+  const displayName = userProfile?.name || "ユーザー";
 
   return (
     <div
@@ -35,7 +63,7 @@ const CheckPoint = ({
           className="absolute top-2 right-2 text-[#a85751] hover:text-[#8a3c37] transition-colors z-10"
           aria-label="削除"
         >
-          <XCircle size={18} />
+          <Trash2 size={18} />
         </button>
       )}
       <div className="flex items-start p-3">
@@ -57,6 +85,47 @@ const CheckPoint = ({
           <p className="text-xs text-[#7a6b59] font-light italic">
             {checkPoint.description}
           </p>
+        </div>
+      </div>
+
+      {/* フッター部分（SNS領域） */}
+      <div className="border-t border-[#d3c7a7] bg-[#f0ebe0] px-3 py-2">
+        <div className="flex items-center justify-between">
+          {/* 投稿者情報 */}
+          <div className="flex items-center">
+            <div className="relative h-6 w-6 rounded-full overflow-hidden border border-[#d3c7a7] mr-2">
+              <Image
+                src={userProfile?.avatarUrl || defaultAvatar}
+                alt={displayName}
+                width={24}
+                height={24}
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+            <span className="text-xs text-[#5c4d3c] font-medium">
+              {displayName}
+            </span>
+          </div>
+
+          {/* インタラクションボタン */}
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleLike}
+              className={`flex items-center text-xs ${liked ? "text-[#a85751]" : "text-[#7a6b59]"} hover:text-[#a85751] transition-colors`}
+              aria-label="いいね"
+            >
+              <Heart size={14} className={liked ? "fill-[#a85751]" : ""} />
+              <span className="ml-1">0</span>
+            </button>
+            <button
+              onClick={handleShare}
+              className="flex items-center text-xs text-[#7a6b59] hover:text-[#5c4d3c] transition-colors"
+              aria-label="シェア"
+            >
+              <Share2 size={14} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

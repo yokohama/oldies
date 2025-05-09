@@ -18,45 +18,48 @@ const Header = () => {
   };
 
   return (
-    <header className="mb-6">
-      <div className="flex items-center justify-between">
+    <header className="mb-8 pt-4 border-b border-amber-100">
+      <div className="flex items-center justify-between pb-4">
         <Link href="/brand">
-          <h1 className="text-2xl font-medium text-stone-800 font-playfair border-b-2 border-amber-700 pb-1 cursor-pointer hover:text-amber-700 transition-colors">
-            Oldies
+          <h1 className="text-3xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group">
+            <span className="italic tracking-wide">Oldies</span>
+            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
           </h1>
         </Link>
         <div className="flex items-center">
           <DropdownMenu.Root open={open} onOpenChange={setOpen}>
             <DropdownMenu.Trigger asChild>
-              <button className="p-2 focus:outline-none">
+              <button className="p-2 focus:outline-none relative">
                 {user && user.user_metadata?.avatar_url ? (
-                  <div className="w-8 h-8 rounded-full overflow-hidden border border-amber-200">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-200 shadow-sm hover:border-amber-300 transition-all duration-200">
                     <Image
                       src={user.user_metadata.avatar_url}
                       alt="プロフィール写真"
-                      width={32}
-                      height={32}
-                      className="object-cover"
+                      width={80}
+                      height={80}
+                      className="object-cover sepia-[0.15]"
                     />
                   </div>
                 ) : (
-                  <ArrowDownWideNarrow className="h-6 w-6 text-amber-700 cursor-pointer hover:text-amber-800 transition-colors" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-amber-50 border border-amber-200 hover:bg-amber-100 transition-colors">
+                    <ArrowDownWideNarrow className="h-5 w-5 text-amber-700 cursor-pointer" />
+                  </div>
                 )}
               </button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
               <DropdownMenu.Content
-                className="min-w-[250px] w-[90vw] max-w-[320px] bg-white rounded-lg p-3 shadow-lg z-50 border border-stone-200"
+                className="min-w-[250px] w-[90vw] max-w-[320px] bg-[#f9f6f0] rounded-md p-3 shadow-md z-50 border border-amber-200"
                 sideOffset={5}
                 align="end"
               >
                 {!user ? (
-                  <DropdownMenu.Item className="px-3 py-3 text-base text-stone-700 hover:bg-amber-50 rounded cursor-pointer focus:outline-none">
+                  <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none">
                     <LoginButton onSuccess={handleAuthSuccess} />
                   </DropdownMenu.Item>
                 ) : (
                   <>
-                    <DropdownMenu.Item className="px-3 py-3 text-base text-stone-700 hover:bg-amber-50 rounded cursor-pointer focus:outline-none">
+                    <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-medium">
                       <Link
                         href="/profile"
                         className="flex w-full items-center"
@@ -64,16 +67,16 @@ const Header = () => {
                         マイページ
                       </Link>
                     </DropdownMenu.Item>
-                    <DropdownMenu.Item className="px-3 py-3 text-base text-stone-700 hover:bg-amber-50 rounded cursor-pointer focus:outline-none">
+                    <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none">
                       <LogoutButton onSuccess={handleAuthSuccess} />
                     </DropdownMenu.Item>
                   </>
                 )}
-                <DropdownMenu.Separator className="h-px bg-stone-200 my-2" />
-                <DropdownMenu.Item className="px-3 py-2 text-sm text-stone-700 hover:bg-amber-50 rounded cursor-pointer focus:outline-none">
+                <DropdownMenu.Separator className="h-px bg-amber-200 my-2" />
+                <DropdownMenu.Item className="px-4 py-2 text-sm text-stone-600 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-serif italic">
                   プライバシーポリシー
                 </DropdownMenu.Item>
-                <DropdownMenu.Item className="px-3 py-2 text-sm text-stone-700 hover:bg-amber-50 rounded cursor-pointer focus:outline-none">
+                <DropdownMenu.Item className="px-4 py-2 text-sm text-stone-600 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-serif italic">
                   利用規約
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
