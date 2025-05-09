@@ -47,56 +47,64 @@ const ProductPage = () => {
   }, [brandId]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
       <Header />
       <BrandTitle brandName={brand?.name} />
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+          <div className="h-16 w-16 relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#7a6b59]"></div>
+            <div className="absolute inset-0 flex items-center justify-center text-[#5c4d3c] font-serif">
+              読込中
+            </div>
+          </div>
         </div>
       ) : error ? (
-        <div className="text-center py-10">
-          <p className="text-lg text-red-600">{error}</p>
+        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
+          <p className="text-lg text-[#a85751] font-serif italic">{error}</p>
           <Link
             href="/brand"
-            className="mt-4 inline-block text-blue-600 hover:underline"
+            className="mt-4 inline-block text-[#5c4d3c] hover:text-[#7a6b59] border-b border-[#d3c7a7] font-serif"
           >
             ブランド一覧に戻る
           </Link>
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-lg text-gray-600">
+        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
+          <p className="text-lg text-[#7a6b59] font-serif italic">
             このブランドの年代情報が見つかりませんでした。
           </p>
           <Link
             href="/brand"
-            className="mt-4 inline-block text-blue-600 hover:underline"
+            className="mt-4 inline-block text-[#5c4d3c] hover:text-[#7a6b59] border-b border-[#d3c7a7] font-serif"
           >
             ブランド一覧に戻る
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <Link
               href={`/product-era-check-point?productId=${product.id}&productName=${product.name}`}
               key={product.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              className="bg-[#f8f3e6] border-2 border-[#d3c7a7] rounded-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_20px_rgba(122,95,67,0.3)]"
             >
               <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 border-b-2 border-[#d3c7a7] z-10"></div>
                 <Image
                   src={product.imageUrl}
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-cover"
+                  className="object-cover sepia-[0.2] brightness-[0.95]"
                 />
               </div>
-              <div className="p-4">
-                <h2 className="text-xl font-semibold">{product.name}</h2>
-                <p className="text-gray-600 mt-2 line-clamp-3">
+              <div className="p-5">
+                <h2 className="text-xl font-serif text-[#5c4d3c] mb-2 border-b border-[#d3c7a7] pb-2">
+                  {product.name}
+                </h2>
+                <p className="text-[#7a6b59] font-light italic mt-2 line-clamp-3">
                   {product.description}
                 </p>
               </div>

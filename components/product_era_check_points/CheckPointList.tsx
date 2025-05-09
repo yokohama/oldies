@@ -46,15 +46,16 @@ const CheckPointList = ({ checkPoints, productEraId }: CheckPointListProps) => {
         }}
       />
 
-      <div className="mt-6">
+      <div className="mt-6 bg-white rounded-sm p-4 shadow-sm">
         <div className="flex justify-between items-center mb-3 px-2">
-          <h3 className="text-xl font-medium text-stone-800 font-playfair">
+          <h3 className="text-xl font-serif text-[#5c4d3c] relative inline-block pb-1">
             Check point
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d3c7a7]"></div>
           </h3>
           <Button
             variant="outline"
             size="sm"
-            className="text-xs border-amber-200 text-amber-700 hover:bg-amber-50"
+            className="text-xs border-[#d3c7a7] text-[#7a6b59] hover:bg-[#f9f6f0] hover:border-[#b8a88a] transition-colors"
             onClick={() => setIsAddModalOpen(true)}
           >
             <svg
@@ -76,15 +77,23 @@ const CheckPointList = ({ checkPoints, productEraId }: CheckPointListProps) => {
           </Button>
         </div>
         <div className="space-y-4 px-2">
-          {localCheckPoints?.map((checkPoint) => (
-            <CheckPoint
-              key={checkPoint.id}
-              checkPoint={checkPoint}
-              showProductEraCheckPoint={showProductEraCheckPoint}
-              isOwnCheckPoint={user?.id === checkPoint.userId}
-              onDelete={handleDeleteCheckPoint}
-            />
-          ))}
+          {localCheckPoints && localCheckPoints.length > 0 ? (
+            localCheckPoints.map((checkPoint) => (
+              <CheckPoint
+                key={checkPoint.id}
+                checkPoint={checkPoint}
+                showProductEraCheckPoint={showProductEraCheckPoint}
+                isOwnCheckPoint={user?.id === checkPoint.userId}
+                onDelete={handleDeleteCheckPoint}
+              />
+            ))
+          ) : (
+            <div className="text-center py-6 border border-dashed border-[#d3c7a7] rounded-sm bg-[#f9f6f0]">
+              <p className="text-[#7a6b59] font-serif italic">
+                チェックポイントがまだありません。
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </>
