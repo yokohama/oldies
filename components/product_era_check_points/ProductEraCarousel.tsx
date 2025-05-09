@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ProductEra, ProductEraCheckPoint } from "@/lib/types";
+import { ProductEra } from "@/lib/types";
 import {
   Carousel,
   CarouselContent,
@@ -10,9 +10,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { toast, Toaster } from "sonner";
-import AddCheckPointModal from "./AddCheckPointModal";
+import { Toaster } from "sonner";
+import CheckPointList from "./CheckPointList";
 
 interface ProductCarouselProps {
   productEras: ProductEra[];
@@ -35,7 +34,7 @@ const ProductEraCarousel = ({
   const [currentProductEra, setCurrentProductEra] = useState<ProductEra | null>(
     productEras.length > 0 ? productEras[0] : null,
   );
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   useEffect(() => {
     if (!api) {
       return;
@@ -103,65 +102,9 @@ const ProductEraCarousel = ({
     }
   }, [selectedEraIndex, productEras, api, currentIndex]);
 
-  const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
-    const toastId = toast(
-      <div className="relative bg-white p-4 rounded-lg">
-        <button
-          onClick={() => toast.dismiss(toastId)}
-          className="absolute top-0 right-0 p-1 rounded-full hover:bg-stone-100"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        {checkPoint.imageUrl && (
-          <div className="relative h-48 w-full bg-stone-100 rounded-lg overflow-hidden mb-4">
-            <Image
-              src={checkPoint.imageUrl}
-              alt={checkPoint.point}
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          </div>
-        )}
-        <h3 className="text-lg font-medium text-stone-800 mb-2">
-          {checkPoint.point}
-        </h3>
-        <p className="text-sm text-stone-600">{checkPoint.description}</p>
-      </div>,
-      {
-        duration: Infinity,
-      },
-    );
-  };
-
   return (
     <div className="mb-10">
       <Toaster position="top-center" />
-
-      {currentProductEra && (
-        <AddCheckPointModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          productEraId={currentProductEra.id}
-          onSuccess={() => {
-            // データを再取得するためのコールバック
-            window.location.reload();
-          }}
-        />
-      )}
 
       <Carousel
         setApi={setApi}
@@ -259,67 +202,10 @@ const ProductEraCarousel = ({
                   <h3 className="text-sm font-normal text-stone-600 px-2 mt-2">
                     {currentProductEra?.description}
                   </h3>
-                  <div className="mt-6">
-                    <div className="flex justify-between items-center mb-3 px-2">
-                      <h3 className="text-xl font-medium text-stone-800 font-playfair">
-                        Check point
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs border-amber-200 text-amber-700 hover:bg-amber-50"
-                        onClick={() => setIsAddModalOpen(true)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="mr-1"
-                        >
-                          <line x1="12" y1="5" x2="12" y2="19"></line>
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        追加
-                      </Button>
-                    </div>
-                    <div className="space-y-4 px-2">
-                      {productEra.checkPoints?.map((checkPoint) => (
-                        <div
-                          key={checkPoint.id}
-                          className="bg-white border border-stone-200 rounded-lg overflow-hidden"
-                          onClick={() => showProductEraCheckPoint(checkPoint)}
-                        >
-                          <div className="flex items-start p-3">
-                            {checkPoint.imageUrl && (
-                              <div className="relative h-16 w-16 mr-3 flex-shrink-0 bg-stone-100 rounded-md overflow-hidden">
-                                <Image
-                                  src={checkPoint.imageUrl}
-                                  alt={checkPoint.point}
-                                  fill
-                                  className="object-cover"
-                                  unoptimized
-                                />
-                              </div>
-                            )}
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-stone-800 mb-1">
-                                {checkPoint.point}
-                              </h4>
-                              <p className="text-xs text-stone-600">
-                                {checkPoint.description}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <CheckPointList
+                    checkPoints={productEra.checkPoints || []}
+                    productEraId={productEra.id}
+                  />
                 </CardContent>
                 <CardFooter className="p-3 flex justify-between items-center"></CardFooter>
               </Card>
