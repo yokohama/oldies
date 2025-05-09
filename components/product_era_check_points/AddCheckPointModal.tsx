@@ -181,43 +181,40 @@ const AddCheckPointModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-white border-stone-200">
         <DialogHeader>
-          <DialogTitle>チェックポイントを追加</DialogTitle>
-          <DialogDescription>
-            製品の特徴や見分け方のポイントを追加してください。
+          <DialogTitle className="text-stone-800 font-playfair">
+            Check point
+          </DialogTitle>
+          <DialogDescription className="text-stone-600">
+            あなたの製品の特徴や見分け方のポイントを追加してください。
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="point" className="text-right">
-                ポイント
-              </Label>
+            <div className="items-center">
               <Input
                 id="point"
                 value={point}
                 onChange={(e) => setPoint(e.target.value)}
-                className="col-span-3"
+                className="col-span-3 border-stone-200 focus-visible:ring-amber-200 focus-visible:ring-opacity-50"
+                placeholder="ポイント"
                 required
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="imageUpload" className="text-right pt-2">
-                画像
-              </Label>
+            <div className="items-start">
               <div className="col-span-3 space-y-3">
                 {!previewUrl ? (
                   <div className="flex flex-col gap-2">
                     <div
-                      className="border-2 border-dashed rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors"
+                      className="border-2 border-dashed border-stone-200 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-stone-50 transition-colors"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                      <p className="text-sm font-medium">
+                      <Upload className="h-8 w-8 text-amber-500 mb-2" />
+                      <p className="text-sm font-medium text-stone-700">
                         クリックして画像をアップロード
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-stone-500 mt-1">
                         JPG, PNG, GIF (最大5MB)
                       </p>
                     </div>
@@ -232,7 +229,7 @@ const AddCheckPointModal = ({
                   </div>
                 ) : (
                   <div className="relative">
-                    <div className="relative aspect-video w-full overflow-hidden rounded-md border">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-md border border-stone-200">
                       <Image
                         src={previewUrl}
                         alt="プレビュー"
@@ -245,21 +242,21 @@ const AddCheckPointModal = ({
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-background"
+                      className="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-white border-stone-200 hover:bg-stone-50"
                       onClick={handleRemoveFile}
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-4 w-4 text-stone-500" />
                       <span className="sr-only">削除</span>
                     </Button>
                     {isSubmitting && (
                       <div className="mt-2">
-                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-stone-100 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-primary transition-all duration-300 ease-in-out"
+                            className="h-full bg-amber-500 transition-all duration-300 ease-in-out"
                             style={{ width: `${uploadProgress}%` }}
                           />
                         </div>
-                        <p className="text-xs text-muted-foreground mt-1 text-right">
+                        <p className="text-xs text-stone-500 mt-1 text-right">
                           {uploadProgress}%
                         </p>
                       </div>
@@ -268,24 +265,31 @@ const AddCheckPointModal = ({
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
-                説明
-              </Label>
+            <div className="items-center">
               <Textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="col-span-3"
+                className="col-span-3 border-stone-200 focus-visible:ring-amber-200 focus-visible:ring-opacity-50"
                 rows={4}
+                placeholder="説明"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="border-stone-200 text-stone-700 hover:bg-stone-50 hover:text-stone-800"
+            >
               キャンセル
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-amber-500 text-white hover:bg-amber-600"
+            >
               {isSubmitting ? "送信中..." : "追加"}
             </Button>
           </DialogFooter>

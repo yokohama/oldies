@@ -9,13 +9,24 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     const handleAuthCallback = async () => {
-      const { error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("認証エラー:", error);
-      }
+      try {
+        // セッションを取得
+        const { data, error } = await supabase.auth.getSession();
 
-      // ホームページにリダイレクト
-      router.push("/");
+        if (error) {
+          console.error("認証エラー:", error);
+        } else {
+          console.log(
+            "認証成功:",
+            data.session ? "セッションあり" : "セッションなし",
+          );
+        }
+      } catch (err) {
+        console.error("認証コールバック処理エラー:", err);
+      } finally {
+        // 処理が完了したらホームページにリダイレクト
+        router.push("/");
+      }
     };
 
     handleAuthCallback();
