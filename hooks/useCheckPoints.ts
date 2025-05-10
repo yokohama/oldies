@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { API } from "@/lib/api";
 import { ProductEraCheckPoint } from "@/lib/types";

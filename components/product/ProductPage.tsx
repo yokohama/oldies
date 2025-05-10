@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { API } from "@/lib/api";
-import { Brand, Product } from "@/lib/types";
+import { useProduct } from "@/hooks/useProduct";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 import BrandTitle from "../ui/BrandTitle";
@@ -15,37 +13,7 @@ const ProductPage = () => {
   const brandIdParam = searchParams.get("brandId");
   const brandId = brandIdParam ? parseInt(brandIdParam, 10) : null;
 
-  const [brand, setBrand] = useState<Brand | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!brandId) {
-        setError("ブランドIDが指定されていません");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // ブランド情報を取得
-        const brandData = await API.getBrand(brandId);
-        setBrand(brandData);
-
-        // ブランドに関連する製品を取得
-        const productsData = await API.getProductsByBrandId(brandId);
-        setProducts(productsData);
-      } catch (err) {
-        console.error("データの取得に失敗しました:", err);
-        setError("データの取得に失敗しました");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [brandId]);
+  const { brand, products, loading, error } = useProduct(brandId);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">

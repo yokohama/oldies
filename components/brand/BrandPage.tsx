@@ -1,32 +1,14 @@
 "use client";
 
-import { API } from "@/lib/api";
-import { Brand } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useBrands } from "@/hooks/useBrands";
 
 const BrandPage = () => {
   const router = useRouter();
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const brandsData = await API.getBrands();
-        setBrands(brandsData);
-      } catch (error) {
-        console.error("ブランドの取得に失敗しました:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBrands();
-  }, []);
+  const { brands, loading, error } = useBrands();
 
   const handleBrandClick = (brandId: number) => {
     router.push(`/product?brandId=${brandId}`);
@@ -49,6 +31,26 @@ const BrandPage = () => {
               読込中
             </div>
           </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+        <Header />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
+            ブランドコレクション
+          </h1>
+          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+        </div>
+        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
+          <p className="text-lg text-[#7a6b59] italic">
+            エラーが発生しました。再度お試しください。
+          </p>
         </div>
         <Footer />
       </div>

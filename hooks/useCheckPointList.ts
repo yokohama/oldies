@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { ProductEraCheckPoint, User } from "@/lib/types";
 import {
