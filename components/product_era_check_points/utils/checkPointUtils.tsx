@@ -3,6 +3,50 @@ import { ProductEraCheckPoint } from "@/lib/types";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 
+// ユーザープロフィール情報の型定義
+export interface UserProfile {
+  id: string;
+  name: string | null;
+  avatarUrl: string | null;
+  email: string | null;
+}
+
+// ユーザーIDからプロフィール情報を取得する関数
+export const getUserProfile = async (
+  userId: string | null | undefined,
+): Promise<UserProfile | null> => {
+  if (!userId) return null;
+
+  try {
+    // APIエンドポイントからユーザー情報を取得
+    const response = await fetch(`/api/users/${userId}`);
+
+    if (!response.ok) {
+      throw new Error(`APIエラー: ${response.status}`);
+    }
+
+    const userData = await response.json();
+
+    return {
+      id: userData.id,
+      name: userData.name || "ユーザー",
+      email: userData.email,
+      avatarUrl:
+        userData.avatarUrl ||
+        `https://api.dicebear.com/7.x/initials/svg?seed=${userId}`,
+    };
+  } catch (error) {
+    console.error("ユーザー情報取得エラー:", error);
+    // エラー時はデフォルト値を返す
+    return {
+      id: userId,
+      name: "ユーザー",
+      email: null,
+      avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${userId}`,
+    };
+  }
+};
+
 export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
   const toastId = toast(
     <div className="relative bg-white p-4 rounded-lg">

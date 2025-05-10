@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { API } from "@/lib/api";
 import { Brand, Product } from "@/lib/types";
 import Header from "../ui/Header";
+import Footer from "../ui/Footer";
 import BrandTitle from "../ui/BrandTitle";
 import Link from "next/link";
 import Image from "next/image";
@@ -112,6 +113,7 @@ const ProductPage = () => {
           ))}
         </div>
       )}
+      <Footer />
     </div>
   );
 };

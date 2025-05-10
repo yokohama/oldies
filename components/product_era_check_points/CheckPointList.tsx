@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductEraCheckPoint } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
@@ -8,6 +8,8 @@ import CheckPoint from "./CheckPoint";
 import {
   showProductEraCheckPoint,
   deleteCheckPoint,
+  getUserProfile,
+  UserProfile,
 } from "./utils/checkPointUtils";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -20,7 +22,10 @@ const CheckPointList = ({ checkPoints, productEraId }: CheckPointListProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [localCheckPoints, setLocalCheckPoints] =
     useState<ProductEraCheckPoint[]>(checkPoints);
-  const { user } = useAuth();
+  const [userProfiles, setUserProfiles] = useState<Record<string, UserProfile>>(
+    {},
+  );
+  const { user, signInWithGoogle } = useAuth();
 
   const handleDeleteCheckPoint = async (checkPoint: ProductEraCheckPoint) => {
     if (window.confirm("このチェックポイントを削除してもよろしいですか？")) {
@@ -33,6 +38,38 @@ const CheckPointList = ({ checkPoints, productEraId }: CheckPointListProps) => {
       }
     }
   };
+
+  // チェックポイントの投稿者情報を取得
+  useEffect(() => {
+    const fetchUserProfiles = async () => {
+      const userIds = localCheckPoints
+        .map((cp) => cp.userId)
+        .filter(
+          (userId): userId is string => userId !== null && userId !== undefined,
+        );
+
+      // 重複を排除
+      const uniqueUserIds = [...new Set(userIds)];
+
+      // 各ユーザーのプロフィール情報を取得
+      const profiles: Record<string, UserProfile> = {};
+
+      await Promise.all(
+        uniqueUserIds.map(async (userId) => {
+          const profile = await getUserProfile(userId);
+          if (profile) {
+            profiles[userId] = profile;
+          }
+        }),
+      );
+
+      setUserProfiles(profiles);
+    };
+
+    if (localCheckPoints.length > 0) {
+      fetchUserProfiles();
+    }
+  }, [localCheckPoints]);
 
   return (
     <>
@@ -56,7 +93,15 @@ const CheckPointList = ({ checkPoints, productEraId }: CheckPointListProps) => {
             variant="outline"
             size="sm"
             className="text-xs border-[#d3c7a7] text-[#7a6b59] hover:bg-[#f9f6f0] hover:border-[#b8a88a] transition-colors"
-            onClick={() => setIsAddModalOpen(true)}
+            onClick={() => {
+              if (!user) {
+                // ユーザーがログインしていない場合は、Googleログイン処理を実行
+                signInWithGoogle();
+              } else {
+                // ログイン済みの場合はモーダルを開く
+                setIsAddModalOpen(true);
+              }
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -85,6 +130,11 @@ const CheckPointList = ({ checkPoints, productEraId }: CheckPointListProps) => {
                 showProductEraCheckPoint={showProductEraCheckPoint}
                 isOwnCheckPoint={user?.id === checkPoint.userId}
                 onDelete={handleDeleteCheckPoint}
+                userProfile={
+                  checkPoint.userId
+                    ? userProfiles[checkPoint.userId]
+                    : undefined
+                }
               />
             ))
           ) : (

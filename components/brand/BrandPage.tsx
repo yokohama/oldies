@@ -4,6 +4,7 @@ import { API } from "@/lib/api";
 import { Brand } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import Header from "../ui/Header";
+import Footer from "../ui/Footer";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -49,6 +50,7 @@ const BrandPage = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -98,6 +100,7 @@ const BrandPage = () => {
           ))}
         </div>
       )}
+      <Footer />
     </div>
   );
 };

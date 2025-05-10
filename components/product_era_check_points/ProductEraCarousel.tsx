@@ -87,7 +87,7 @@ const ProductEraCarousel = ({
   }, [selectedEraIndex, productEras, api, currentIndex]);
 
   return (
-    <div className="mb-10">
+    <div>
       <Toaster position="top-center" />
 
       <Carousel
@@ -99,7 +99,7 @@ const ProductEraCarousel = ({
           containScroll: "trimSnaps",
           skipSnaps: false,
         }}
-        className="w-full relative"
+        className="w-full relative mb-0"
       >
         {/* 左側（戻る）インジケーター */}
         <div
@@ -153,10 +153,11 @@ const ProductEraCarousel = ({
             {productEras.map((_, index) => (
               <div
                 key={index}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${index === currentIndex
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  index === currentIndex
                     ? "bg-amber-600"
                     : "bg-stone-300 hover:bg-stone-400"
-                  }`}
+                }`}
               />
             ))}
           </div>
@@ -166,7 +167,7 @@ const ProductEraCarousel = ({
           {productEras.map((productEra) => (
             <CarouselItem
               key={productEra.id}
-              className="basis-full pl-1.5 pr-1.5 pt-3 pb-5"
+              className="basis-full pl-1.5 pr-1.5 pt-3 pb-0"
             >
               <Card className="border-stone-200 overflow-hidden">
                 <CardContent className="p-0">

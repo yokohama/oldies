@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "../ui/Header";
+import Footer from "../ui/Footer";
 import ProductTitle from "../ui/ProductTitle";
 import EraSelector from "./EraSelector";
 import ProductEraCarousel from "./ProductEraCarousel";
@@ -132,6 +133,7 @@ const ProductEraCheckPointPage = () => {
           />
         </>
       )}
+      <Footer />
     </div>
   );
 };
