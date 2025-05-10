@@ -1,5 +1,12 @@
 import { supabase } from "./supabase";
-import { Brand, Product, ProductEra, ProductEraCheckPoint } from "./types";
+import {
+  Brand,
+  Product,
+  ProductEra,
+  ProductEraCheckPoint,
+  UserProfile,
+} from "./types";
+import { User } from "@supabase/supabase-js";
 
 // データ変換用のヘルパー関数
 const mapBrand = (brand: any): Brand => ({
@@ -24,6 +31,9 @@ const mapProductEra = (era: any): ProductEra => ({
   manufacturing_end_year: era.manufacturing_end_year,
   imageUrl: era.image_url,
   description: era.description || "",
+  checkPoints: era.product_era_check_points
+    ? era.product_era_check_points.map(mapProductEraCheckPoint)
+    : [],
 });
 
 const mapProductEraCheckPoint = (checkpoint: any): ProductEraCheckPoint => ({
@@ -32,6 +42,16 @@ const mapProductEraCheckPoint = (checkpoint: any): ProductEraCheckPoint => ({
   point: checkpoint.point,
   imageUrl: checkpoint.image_url,
   description: checkpoint.description || "",
+  userId: checkpoint.user_id,
+});
+
+const mapUserProfile = (profile: any): UserProfile => ({
+  id: profile.id,
+  name: profile.full_name || profile.username || "ユーザー",
+  email: profile.email,
+  avatarUrl:
+    profile.avatar_url ||
+    `https://api.dicebear.com/7.x/initials/svg?seed=${profile.id}`,
 });
 
 // APIクラス
@@ -95,6 +115,24 @@ export class API {
     return (data || []).map(mapProductEra);
   }
 
+  static async getProductErasByProductId(
+    productId: number,
+  ): Promise<ProductEra[]> {
+    const { data, error } = await supabase
+      .from("product_eras")
+      .select(
+        `
+        *,
+        product_era_check_points(*)
+      `,
+      )
+      .eq("product_id", productId)
+      .is("deleted_at", null);
+
+    if (error) throw error;
+    return (data || []).map(mapProductEra);
+  }
+
   // 製品時代チェックポイント関連
   static async getProductEraCheckPoints(): Promise<ProductEraCheckPoint[]> {
     const { data, error } = await supabase
@@ -104,5 +142,88 @@ export class API {
 
     if (error) throw error;
     return (data || []).map(mapProductEraCheckPoint);
+  }
+
+  static async addCheckPoint(
+    productEraId: number,
+    point: string,
+    imageUrl: string,
+    description: string | null,
+    userId: string,
+  ): Promise<ProductEraCheckPoint> {
+    const { data, error } = await supabase
+      .from("product_era_check_points")
+      .insert({
+        product_era_id: productEraId,
+        point: point,
+        image_url: imageUrl,
+        description: description || null,
+        user_id: userId,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapProductEraCheckPoint(data);
+  }
+
+  static async deleteCheckPoint(checkPointId: number): Promise<void> {
+    const { error } = await supabase
+      .from("product_era_check_points")
+      .delete()
+      .eq("id", checkPointId);
+
+    if (error) throw error;
+  }
+
+  // ストレージ関連
+  static async uploadImage(
+    file: File,
+    userId: string,
+    folder: string = "product_era_check_points",
+  ): Promise<string> {
+    // ファイル名の一意性を確保するためにタイムスタンプとランダム文字列を追加
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${userId}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+    const filePath = `${folder}/${fileName}`;
+
+    // Supabaseにアップロード
+    const { data, error } = await supabase.storage
+      .from("images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (error) throw error;
+
+    // 公開URLを取得
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("images").getPublicUrl(filePath);
+    return publicUrl;
+  }
+
+  // 認証関連
+  static async getCurrentUser(): Promise<User | null> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  }
+
+  static async getUserProfile(userId: string): Promise<UserProfile | null> {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") return null;
+      throw error;
+    }
+
+    return data ? mapUserProfile(data) : null;
   }
 }

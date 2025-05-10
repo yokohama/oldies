@@ -1,17 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ProductEra } from "@/lib/types";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  type CarouselApi,
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Toaster } from "sonner";
 import CheckPointList from "./CheckPointList";
+import { useProductEraCarousel } from "@/hooks/useProductEraCarousel";
 
 interface ProductCarouselProps {
   productEras: ProductEra[];
@@ -20,71 +19,23 @@ interface ProductCarouselProps {
 }
 
 const ProductEraCarousel = ({
-  productEras: unsortedProductEras,
+  productEras,
   selectedEraIndex,
   onEraIndexChange,
 }: ProductCarouselProps) => {
-  // 製造開始年でソートした配列を作成
-  const productEras = [...unsortedProductEras].sort(
-    (a, b) => a.manufacturing_start_year - b.manufacturing_start_year,
-  );
-
-  const [api, setApi] = useState<CarouselApi>();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentProductEra, setCurrentProductEra] = useState<ProductEra | null>(
-    productEras.length > 0 ? productEras[0] : null,
-  );
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    const onSelect = () => {
-      const newIndex = api.selectedScrollSnap();
-      setCurrentIndex(newIndex);
-
-      // カルーセルの選択が変わったらスライダーの値も更新する
-      if (
-        productEras.length > 0 &&
-        newIndex >= 0 &&
-        newIndex < productEras.length
-      ) {
-        // 親コンポーネントに選択したインデックスを通知
-        if (onEraIndexChange) {
-          onEraIndexChange(newIndex);
-        }
-      }
-    };
-
-    api.on("select", onSelect);
-    // 初期化時に現在のインデックスを設定
-    setCurrentIndex(api.selectedScrollSnap());
-
-    return () => {
-      api.off("select", onSelect);
-    };
-  }, [api, productEras, onEraIndexChange, currentIndex]);
-
-  useEffect(() => {
-    if (
-      productEras.length > 0 &&
-      currentIndex >= 0 &&
-      currentIndex < productEras.length
-    ) {
-      setCurrentProductEra(productEras[currentIndex]);
-    }
-  }, [currentIndex, productEras]);
-
-  // 選択したインデックスに基づいて適切なカードにスクロールする
-  useEffect(() => {
-    if (!api || productEras.length === 0) return;
-
-    // 選択されたインデックスが現在のインデックスと異なる場合、スクロールする
-    if (selectedEraIndex !== currentIndex) {
-      api.scrollTo(selectedEraIndex, true);
-    }
-  }, [selectedEraIndex, productEras, api, currentIndex]);
+  const {
+    sortedProductEras,
+    api,
+    setApi,
+    currentIndex,
+    currentProductEra,
+    handlePrevSlide,
+    handleNextSlide,
+  } = useProductEraCarousel({
+    productEras,
+    selectedEraIndex,
+    onEraIndexChange,
+  });
 
   return (
     <div>
@@ -104,7 +55,7 @@ const ProductEraCarousel = ({
         {/* 左側（戻る）インジケーター */}
         <div
           className="absolute top-[104px] left-2 z-10 flex flex-col gap-1.5 items-center animate-pulse cursor-pointer"
-          onClick={() => api?.scrollPrev()}
+          onClick={handlePrevSlide}
           role="button"
           aria-label="前のスライドへ"
         >
@@ -127,7 +78,7 @@ const ProductEraCarousel = ({
         {/* 右側（次へ）インジケーター */}
         <div
           className="absolute top-[104px] right-2 z-10 flex flex-col gap-1.5 items-center animate-pulse cursor-pointer"
-          onClick={() => api?.scrollNext()}
+          onClick={handleNextSlide}
           role="button"
           aria-label="次のスライドへ"
         >
@@ -150,7 +101,7 @@ const ProductEraCarousel = ({
         {/* カルーセルのナビゲーションインジケーター */}
         <div className="flex justify-center mt-4 gap-2">
           <div className="flex items-center gap-1.5 mx-2">
-            {productEras.map((_, index) => (
+            {sortedProductEras.map((_, index) => (
               <div
                 key={index}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${
@@ -164,7 +115,7 @@ const ProductEraCarousel = ({
         </div>
 
         <CarouselContent className="-ml-2 -mr-2">
-          {productEras.map((productEra) => (
+          {sortedProductEras.map((productEra) => (
             <CarouselItem
               key={productEra.id}
               className="basis-full pl-1.5 pr-1.5 pt-3 pb-0"

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { ProductEra } from "@/lib/types";
+import { useEraSelector } from "@/hooks/useEraSelector";
 
 interface EraSelectorProps {
   productEras: ProductEra[];
@@ -11,40 +11,22 @@ interface EraSelectorProps {
 }
 
 const EraSelector = ({
-  productEras: unsortedProductEras,
+  productEras,
   selectedEraIndex,
   onEraIndexChange,
 }: EraSelectorProps) => {
-  // 製造開始年でソートした配列を作成
-  const productEras = [...unsortedProductEras].sort(
-    (a, b) => a.manufacturing_start_year - b.manufacturing_start_year,
-  );
-
-  const sliderRef = useRef<HTMLDivElement>(null);
-
-  // 現在選択されているproduct_eraアイテム
-  const currentEra = productEras[selectedEraIndex];
-
-  // スライダーのドラッグ操作を改善するためのタッチイベント処理
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider) return;
-
-    // タッチイベントのデフォルト動作を防止して、スクロールではなくスライダー操作を優先
-    const preventScroll = (e: TouchEvent) => {
-      e.preventDefault();
-    };
-
-    slider.addEventListener("touchmove", preventScroll, { passive: false });
-
-    return () => {
-      slider.removeEventListener("touchmove", preventScroll);
-    };
-  }, []);
-
-  // 表示する年代範囲（現在選択されているeraの製造期間）
-  const startYear = currentEra?.manufacturing_start_year || 0;
-  const endYear = currentEra?.manufacturing_end_year || 0;
+  // カスタムフックを使用してスライダーのロジックを分離
+  const {
+    sortedProductEras,
+    sliderRef,
+    startYear,
+    endYear,
+    handleValueChange,
+  } = useEraSelector({
+    productEras,
+    selectedEraIndex,
+    onEraIndexChange,
+  });
 
   return (
     <div className="mb-6 border-2 border-[#d3c7a7] rounded-sm p-3 bg-[#f8f3e6] shadow-[0_4px_12px_rgba(122,95,67,0.15)]">
@@ -58,9 +40,9 @@ const EraSelector = ({
         <SliderPrimitive.Root
           value={[selectedEraIndex]}
           min={0}
-          max={productEras.length - 1}
+          max={sortedProductEras.length - 1}
           step={1}
-          onValueChange={(value) => onEraIndexChange(value[0])}
+          onValueChange={handleValueChange}
           className="relative flex w-full touch-none select-none items-center h-12"
           aria-label="年代選択"
           data-draggable="true"
@@ -76,9 +58,10 @@ const EraSelector = ({
           />
         </SliderPrimitive.Root>
         <div className="flex justify-between mt-2 text-[#7a6b59] font-serif text-sm italic">
-          <span>{productEras[0]?.manufacturing_start_year || ""}</span>
+          <span>{sortedProductEras[0]?.manufacturing_start_year || ""}</span>
           <span>
-            {productEras[productEras.length - 1]?.manufacturing_end_year || ""}
+            {sortedProductEras[sortedProductEras.length - 1]
+              ?.manufacturing_end_year || ""}
           </span>
         </div>
       </div>

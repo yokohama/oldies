@@ -31,3 +31,16 @@ export interface ProductEraCheckPoint {
   description: string;
   userId?: string | null;
 }
+
+export interface UserProfile {
+  id: string;
+  name: string | null;
+  email: string | null;
+  avatarUrl: string | null;
+}
+
+export interface ApiError {
+  message: string;
+  code?: string;
+  details?: any;
+}

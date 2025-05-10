@@ -1,15 +1,7 @@
 import Image from "next/image";
-import { ProductEraCheckPoint } from "@/lib/types";
+import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
-
-// ユーザープロフィール情報の型定義
-export interface UserProfile {
-  id: string;
-  name: string | null;
-  avatarUrl: string | null;
-  email: string | null;
-}
+import { API } from "@/lib/api";
 
 // ユーザーIDからプロフィール情報を取得する関数
 export const getUserProfile = async (
@@ -18,23 +10,20 @@ export const getUserProfile = async (
   if (!userId) return null;
 
   try {
-    // APIエンドポイントからユーザー情報を取得
-    const response = await fetch(`/api/users/${userId}`);
+    // APIクラスを使用してユーザー情報を取得
+    const userProfile = await API.getUserProfile(userId);
 
-    if (!response.ok) {
-      throw new Error(`APIエラー: ${response.status}`);
+    if (!userProfile) {
+      // デフォルト値を返す
+      return {
+        id: userId,
+        name: "ユーザー",
+        email: null,
+        avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${userId}`,
+      };
     }
 
-    const userData = await response.json();
-
-    return {
-      id: userData.id,
-      name: userData.name || "ユーザー",
-      email: userData.email,
-      avatarUrl:
-        userData.avatarUrl ||
-        `https://api.dicebear.com/7.x/initials/svg?seed=${userId}`,
-    };
+    return userProfile;
   } catch (error) {
     console.error("ユーザー情報取得エラー:", error);
     // エラー時はデフォルト値を返す
@@ -91,24 +80,4 @@ export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
   );
 
   return toastId;
-};
-
-export const deleteCheckPoint = async (checkPointId: number) => {
-  try {
-    const { error } = await supabase
-      .from("product_era_check_points")
-      .delete()
-      .eq("id", checkPointId);
-
-    if (error) {
-      throw error;
-    }
-
-    toast.success("チェックポイントを削除しました");
-    return true;
-  } catch (error) {
-    console.error("チェックポイント削除エラー:", error);
-    toast.error("チェックポイントの削除に失敗しました");
-    return false;
-  }
 };

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ProductEraCheckPoint } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
-import { useState } from "react";
+import { useCheckPoint } from "@/hooks/useCheckPoint";
 
 interface UserProfile {
   id: string;
@@ -26,36 +26,26 @@ const CheckPoint = ({
   onDelete,
   userProfile,
 }: CheckPointProps) => {
-  const [liked, setLiked] = useState(false);
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onDelete) {
-      onDelete(checkPoint);
-    }
-  };
-
-  const handleLike = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLiked(!liked);
-  };
-
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // シェア機能の実装（将来的に実装）
-    alert("シェア機能は現在開発中です");
-  };
-
-  // デフォルトのプロフィール情報
-  const defaultAvatar =
-    "https://api.dicebear.com/7.x/initials/svg?seed=" +
-    (checkPoint.userId || "anonymous");
-  const displayName = userProfile?.name || "ユーザー";
+  const {
+    liked,
+    displayName,
+    avatarUrl,
+    handleDelete,
+    handleLike,
+    handleShare,
+    handleCheckPointClick,
+  } = useCheckPoint({
+    checkPoint,
+    showProductEraCheckPoint,
+    isOwnCheckPoint,
+    onDelete,
+    userProfile,
+  });
 
   return (
     <div
       className="bg-[#f8f3e6] border border-[#d3c7a7] rounded-sm overflow-hidden relative transition-all duration-200 hover:shadow-[0_2px_8px_rgba(122,95,67,0.15)] cursor-pointer"
-      onClick={() => showProductEraCheckPoint(checkPoint)}
+      onClick={handleCheckPointClick}
     >
       {isOwnCheckPoint && onDelete && (
         <button
@@ -95,7 +85,7 @@ const CheckPoint = ({
           <div className="flex items-center">
             <div className="relative h-6 w-6 rounded-full overflow-hidden border border-[#d3c7a7] mr-2">
               <Image
-                src={userProfile?.avatarUrl || defaultAvatar}
+                src={avatarUrl}
                 alt={displayName}
                 width={24}
                 height={24}
