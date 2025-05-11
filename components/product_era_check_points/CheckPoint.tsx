@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPoint } from "@/hooks/useCheckPoint";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface CheckPointProps {
   checkPoint: ProductEraCheckPoint;
@@ -20,6 +22,7 @@ const CheckPoint = ({
   onDelete,
   userProfile,
 }: CheckPointProps) => {
+  const { user } = useAuth();
   const {
     liked,
     displayName,
@@ -75,9 +78,13 @@ const CheckPoint = ({
       {/* フッター部分（SNS領域） */}
       <div className="border-t border-[#d3c7a7] bg-[#f0ebe0] px-3 py-2">
         <div className="flex items-center justify-between">
-          {/* 投稿者情報 */}
-          <div className="flex items-center">
-            <div className="relative h-6 w-6 rounded-full overflow-hidden border border-[#d3c7a7] mr-2">
+          {/* 投稿者情報 - クリックでプロフィールページへ */}
+          <Link
+            href={`/profile/${checkPoint.userId}`}
+            className="flex items-center group"
+            onClick={(e) => e.stopPropagation()} // 親要素のクリックイベントを停止
+          >
+            <div className="relative h-6 w-6 rounded-full overflow-hidden border border-[#d3c7a7] mr-2 transition-transform group-hover:scale-105">
               <Image
                 src={avatarUrl}
                 alt={displayName}
@@ -87,15 +94,18 @@ const CheckPoint = ({
                 unoptimized
               />
             </div>
-            <span className="text-xs text-[#5c4d3c] font-medium">
+            <span className="text-xs text-[#5c4d3c] font-medium group-hover:text-[#a85751] transition-colors">
               {displayName}
             </span>
-          </div>
+          </Link>
 
           {/* インタラクションボタン */}
           <div className="flex items-center space-x-3">
             <button
-              onClick={handleLike}
+              onClick={(e) => {
+                e.stopPropagation(); // 親要素のクリックイベントを停止
+                handleLike(e);
+              }}
               className={`flex items-center text-xs ${liked ? "text-[#a85751]" : "text-[#7a6b59]"} hover:text-[#a85751] transition-colors`}
               aria-label="いいね"
             >
@@ -103,7 +113,10 @@ const CheckPoint = ({
               <span className="ml-1">0</span>
             </button>
             <button
-              onClick={handleShare}
+              onClick={(e) => {
+                e.stopPropagation(); // 親要素のクリックイベントを停止
+                handleShare(e);
+              }}
               className="flex items-center text-xs text-[#7a6b59] hover:text-[#5c4d3c] transition-colors"
               aria-label="シェア"
             >

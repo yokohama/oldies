@@ -52,6 +52,11 @@ const mapUserProfile = (profile: any): UserProfile => ({
   avatarUrl:
     profile.avatar_url ||
     `https://api.dicebear.com/7.x/initials/svg?seed=${profile.id}`,
+  websiteUrl: profile.website_url,
+  twitterUrl: profile.twitter_url,
+  instagramUrl: profile.instagram_url,
+  facebookUrl: profile.facebook_url,
+  youtubeUrl: profile.youtube_url,
 });
 
 // APIクラス
@@ -223,6 +228,9 @@ export class API {
       if (error.code === "PGRST116") return null;
       throw error;
     }
+
+    // デバッグ用：取得したデータを確認
+    console.log("取得したプロフィールデータ:", data);
 
     return data ? mapUserProfile(data) : null;
   }

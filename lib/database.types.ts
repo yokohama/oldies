@@ -178,6 +178,11 @@ export interface Database {
           full_name: string | null;
           avatar_url: string | null;
           email: string | null;
+          website_url: string | null;
+          twitter_url: string | null;
+          instagram_url: string | null;
+          facebook_url: string | null;
+          linkedin_url: string | null;
           created_at: string | null;
           updated_at: string | null;
         };
@@ -187,6 +192,11 @@ export interface Database {
           full_name?: string | null;
           avatar_url?: string | null;
           email?: string | null;
+          website_url?: string | null;
+          twitter_url?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
+          linkedin_url?: string | null;
           created_at?: string | null;
           updated_at?: string | null;
         };
@@ -196,6 +206,11 @@ export interface Database {
           full_name?: string | null;
           avatar_url?: string | null;
           email?: string | null;
+          website_url?: string | null;
+          twitter_url?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
+          linkedin_url?: string | null;
           created_at?: string | null;
           updated_at?: string | null;
         };

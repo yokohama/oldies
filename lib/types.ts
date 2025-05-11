@@ -30,6 +30,7 @@ export interface ProductEraCheckPoint {
   imageUrl: string;
   description: string;
   userId?: string | null;
+  createdAt?: string;
 }
 
 export interface UserProfile {
@@ -37,6 +38,11 @@ export interface UserProfile {
   name: string | null;
   email: string | null;
   avatarUrl: string | null;
+  websiteUrl?: string | null;
+  twitterUrl?: string | null;
+  instagramUrl?: string | null;
+  facebookUrl?: string | null;
+  youtubeUrl?: string | null;
 }
 
 export interface ApiError {

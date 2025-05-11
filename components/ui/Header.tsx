@@ -67,6 +67,14 @@ const Header = () => {
                         マイページ
                       </Link>
                     </DropdownMenu.Item>
+                    <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-medium">
+                      <Link
+                        href={`/profile/${user.id}`}
+                        className="flex w-full items-center"
+                      >
+                        プロフィール
+                      </Link>
+                    </DropdownMenu.Item>
                     <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none">
                       <LogoutButton onSuccess={handleAuthSuccess} />
                     </DropdownMenu.Item>
