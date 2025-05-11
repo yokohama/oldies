@@ -1,11 +1,5 @@
 import { useState } from "react";
-import { ProductEraCheckPoint } from "@/lib/types";
-
-interface UserProfile {
-  id: string;
-  name: string;
-  avatarUrl: string;
-}
+import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 
 interface UseCheckPointProps {
   checkPoint: ProductEraCheckPoint;
@@ -62,8 +56,8 @@ export function useCheckPoint({
     "https://api.dicebear.com/7.x/initials/svg?seed=" +
     (checkPoint.userId || "anonymous");
 
-  const displayName = userProfile?.name || "ユーザー";
-  const avatarUrl = userProfile?.avatarUrl || defaultAvatar;
+  const displayName = userProfile?.name ?? "ユーザー";
+  const avatarUrl = userProfile?.avatarUrl ?? defaultAvatar;
 
   return {
     liked,

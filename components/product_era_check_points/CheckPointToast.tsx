@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { toast } from "sonner";
@@ -54,8 +56,12 @@ export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18">
+            {" "}
+          </line>
+          <line x1="6" y1="6" x2="18" y2="18">
+            {" "}
+          </line>
         </svg>
       </button>
       {checkPoint.imageUrl && (
@@ -72,7 +78,7 @@ export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
       <h3 className="text-lg font-medium text-stone-800 mb-2">
         {checkPoint.point}
       </h3>
-      <p className="text-sm text-stone-600">{checkPoint.description}</p>
+      <p className="text-sm text-stone-600"> {checkPoint.description} </p>
     </div>,
     {
       duration: Infinity,

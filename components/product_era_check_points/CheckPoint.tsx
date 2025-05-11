@@ -1,15 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { ProductEraCheckPoint } from "@/lib/types";
+import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPoint } from "@/hooks/useCheckPoint";
-
-interface UserProfile {
-  id: string;
-  name: string;
-  avatarUrl: string;
-}
 
 interface CheckPointProps {
   checkPoint: ProductEraCheckPoint;

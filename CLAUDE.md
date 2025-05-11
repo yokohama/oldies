@@ -64,3 +64,82 @@ npm run lint
 2. **クライアントコンポーネント** - 'use client'ディレクティブを使用したReactのクライアントコンポーネントを使用
 3. **状態管理** - ローカル状態管理にReactのuseStateを使用
 4. **レスポンシブデザイン** - レスポンシブレイアウトにTailwind CSSを使用
+
+## プロジェクト構成
+
+### ディレクトリ構造
+
+```
+/
+├── app/                      # Next.js 13+ App Router
+│   ├── brand/                # ブランドページ
+│   ├── product/              # 商品ページ
+│   ├── product-era-check-point/ # 商品時代チェックポイントページ
+│   ├── globals.css           # グローバルスタイル
+│   ├── layout.tsx            # ルートレイアウト
+│   └── page.tsx              # ホームページ
+│
+├── components/               # Reactコンポーネント
+│   ├── auth/                 # 認証関連コンポーネント
+│   ├── brand/                # ブランド関連コンポーネント
+│   ├── product/              # 商品関連コンポーネント
+│   ├── product_era_check_points/ # 商品時代チェックポイント関連コンポーネント
+│   ├── theme/                # テーマ関連コンポーネント
+│   └── ui/                   # UIコンポーネント
+│
+├── contexts/                 # Reactコンテキスト
+│   └── AuthContext.tsx       # 認証コンテキスト
+│
+├── hooks/                    # カスタムReactフック
+│
+└── lib/                      # ユーティリティと型定義
+    ├── api.ts                # API関連ユーティリティ
+    ├── database.types.ts     # データベース型定義
+    ├── sample-data.ts        # サンプルデータ
+    ├── supabase.ts           # Supabaseクライアント設定
+    ├── types.ts              # 型定義
+    └── utils.ts              # 汎用ユーティリティ関数
+```
+
+### 主要なデータモデル
+
+```typescript
+// lib/types.ts から抜粋
+export interface Brand { /* ... */ }
+export interface Product { /* ... */ }
+export interface ProductEra { /* ... */ }
+export interface ProductEraCheckPoint { /* ... */ }
+export interface UserProfile { /* ... */ }
+```
+
+### 認証システム
+
+このプロジェクトはSupabaseを使用して認証を実装しています。`AuthContext.tsx`はGoogle認証を含む認証状態を管理します。
+
+```typescript
+// contexts/AuthContext.tsx から抜粋
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // ...
+  const signInWithGoogle = async () => {
+    // Googleを使用したOAuth認証
+  };
+
+  const signOut = async () => {
+    // ログアウト処理
+  };
+  // ...
+};
+
+export const useAuth = () => {
+  // AuthContextへのアクセスを提供するカスタムフック
+};
+```
+
+### UI/UXの特徴
+
+- モバイルレスポンシブデザイン
+- ダーク/ライトモードのサポート
+- カルーセルによる商品表示
+- スライダーによる時代選択
+- モーダルダイアログによるチェックポイント追加
+- トースト通知によるフィードバック

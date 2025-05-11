@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ProductEraCheckPoint, User } from "@/lib/types";
-import {
-  getUserProfile,
-  UserProfile,
-} from "@/components/product_era_check_points/utils/checkPointUtils";
+import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
+import { User } from "@supabase/supabase-js";
+import { getUserProfile } from "@/components/product_era_check_points/CheckPointToast";
 import { useCheckPoints } from "./useCheckPoints";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -66,7 +64,7 @@ export function useCheckPointList(
         );
 
       // 重複を排除
-      const uniqueUserIds = [...new Set(userIds)];
+      const uniqueUserIds = Array.from(new Set(userIds));
 
       // 各ユーザーのプロフィール情報を取得
       const profiles: Record<string, UserProfile> = {};
