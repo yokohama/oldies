@@ -9,6 +9,40 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      check_point_likes: {
+        Row: {
+          id: number;
+          user_id: string;
+          check_point_id: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          user_id: string;
+          check_point_id: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          user_id?: string;
+          check_point_id?: number;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "check_point_likes_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "check_point_likes_check_point_id_fkey";
+            columns: ["check_point_id"];
+            referencedRelation: "product_era_check_points";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       brands: {
         Row: {
           id: number;
@@ -182,7 +216,6 @@ export interface Database {
           twitter_url: string | null;
           instagram_url: string | null;
           facebook_url: string | null;
-          linkedin_url: string | null;
           created_at: string | null;
           updated_at: string | null;
         };
@@ -196,7 +229,6 @@ export interface Database {
           twitter_url?: string | null;
           instagram_url?: string | null;
           facebook_url?: string | null;
-          linkedin_url?: string | null;
           created_at?: string | null;
           updated_at?: string | null;
         };
@@ -210,7 +242,6 @@ export interface Database {
           twitter_url?: string | null;
           instagram_url?: string | null;
           facebook_url?: string | null;
-          linkedin_url?: string | null;
           created_at?: string | null;
           updated_at?: string | null;
         };

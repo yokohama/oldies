@@ -25,12 +25,14 @@ const CheckPoint = ({
   const { user } = useAuth();
   const {
     liked,
+    likeCount,
     displayName,
     avatarUrl,
     handleDelete,
     handleLike,
     handleShare,
     handleCheckPointClick,
+    isLikeLoading,
   } = useCheckPoint({
     checkPoint,
     showProductEraCheckPoint,
@@ -106,11 +108,12 @@ const CheckPoint = ({
                 e.stopPropagation(); // 親要素のクリックイベントを停止
                 handleLike(e);
               }}
-              className={`flex items-center text-xs ${liked ? "text-[#a85751]" : "text-[#7a6b59]"} hover:text-[#a85751] transition-colors`}
+              className={`flex items-center text-xs ${liked ? "text-[#a85751]" : "text-[#7a6b59]"} hover:text-[#a85751] transition-colors ${isLikeLoading ? "opacity-50 cursor-wait" : ""}`}
               aria-label="いいね"
+              disabled={isLikeLoading}
             >
               <Heart size={14} className={liked ? "fill-[#a85751]" : ""} />
-              <span className="ml-1">0</span>
+              <span className="ml-1">{likeCount}</span>
             </button>
             <button
               onClick={(e) => {
