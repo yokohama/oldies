@@ -6,13 +6,12 @@ interface ProductTitleProps {
 
 const ProductTitle = ({ productName }: ProductTitleProps) => {
   return (
-    <header className="mb-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-medium text-stone-600 font-playfair pb-1">
-          {productName}
-        </h1>
-      </div>
-    </header>
+    <div className="text-center mb-8">
+      <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
+        {productName || "製品詳細"}
+      </h1>
+      <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+    </div>
   );
 };
 

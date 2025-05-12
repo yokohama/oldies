@@ -57,13 +57,6 @@ const EraSelector = ({
             data-draggable="true"
           />
         </SliderPrimitive.Root>
-        <div className="flex justify-between mt-2 text-[#7a6b59] font-serif text-sm italic">
-          <span>{sortedProductEras[0]?.manufacturing_start_year || ""}</span>
-          <span>
-            {sortedProductEras[sortedProductEras.length - 1]
-              ?.manufacturing_end_year || ""}
-          </span>
-        </div>
       </div>
     </div>
   );
