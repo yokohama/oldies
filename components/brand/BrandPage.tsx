@@ -5,6 +5,9 @@ import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 import Image from "next/image";
 import { useBrands } from "@/hooks/useBrands";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+import NotFound from "../ui/NotFound";
 
 const BrandPage = () => {
   const router = useRouter();
@@ -24,14 +27,7 @@ const BrandPage = () => {
           </h1>
           <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
         </div>
-        <div className="flex justify-center items-center h-64">
-          <div className="h-16 w-16 relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#7a6b59]"></div>
-            <div className="absolute inset-0 flex items-center justify-center text-[#5c4d3c] font-serif">
-              読込中
-            </div>
-          </div>
-        </div>
+        <Spinner size="lg" />
         <Footer />
       </div>
     );
@@ -47,11 +43,7 @@ const BrandPage = () => {
           </h1>
           <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
         </div>
-        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
-          <p className="text-lg text-[#7a6b59] italic">
-            エラーが発生しました。再度お試しください。
-          </p>
-        </div>
+        <Error />
         <Footer />
       </div>
     );
@@ -67,11 +59,7 @@ const BrandPage = () => {
         <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
       </div>
       {brands.length === 0 ? (
-        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
-          <p className="text-lg text-[#7a6b59] italic">
-            ブランドが見つかりませんでした。
-          </p>
-        </div>
+        <NotFound text="ブランドが見つかりませんでした。" />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {brands.map((brand) => (

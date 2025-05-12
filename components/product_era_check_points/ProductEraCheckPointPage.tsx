@@ -3,6 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+import NotFound from "../ui/NotFound";
 //import ProductTitle from "../ui/ProductTitle";
 //import EraSelector from "./EraSelector";
 import ProductEraCarousel from "./ProductEraCarousel";
@@ -37,24 +40,11 @@ const ProductEraCheckPointPage = () => {
         <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
       </div>
       {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="h-16 w-16 relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#7a6b59]"></div>
-            <div className="absolute inset-0 flex items-center justify-center text-[#5c4d3c] font-serif">
-              読込中
-            </div>
-          </div>
-        </div>
+        <Spinner size="lg" />
       ) : error ? (
-        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
-          <p className="text-lg text-[#7a6b59] italic">{error}</p>
-        </div>
+        <Error />
       ) : productEras.length === 0 ? (
-        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
-          <p className="text-lg text-[#7a6b59] italic">
-            この製品の時代情報はありません
-          </p>
-        </div>
+        <NotFound text="この製品の時代情報はありません" />
       ) : (
         <div className="max-w-4xl mx-auto">
           {/*

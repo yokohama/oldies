@@ -7,6 +7,9 @@ import Footer from "../ui/Footer";
 import BrandTitle from "../ui/BrandTitle";
 import Link from "next/link";
 import Image from "next/image";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+import NotFound from "../ui/NotFound";
 
 const ProductPage = () => {
   const searchParams = useSearchParams();
@@ -21,29 +24,12 @@ const ProductPage = () => {
       <BrandTitle brandName={brand?.name} />
 
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="h-16 w-16 relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#7a6b59]"></div>
-            <div className="absolute inset-0 flex items-center justify-center text-[#5c4d3c] font-serif">
-              読込中
-            </div>
-          </div>
-        </div>
+        <Spinner size="lg" />
       ) : error ? (
-        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
-          <p className="text-lg text-[#a85751] font-serif italic">{error}</p>
-          <Link
-            href="/brand"
-            className="mt-4 inline-block text-[#5c4d3c] hover:text-[#7a6b59] border-b border-[#d3c7a7] font-serif"
-          >
-            ブランド一覧に戻る
-          </Link>
-        </div>
+        <Error label="ブランド一覧に戻る" returnUrl="/brand" />
       ) : products.length === 0 ? (
         <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
-          <p className="text-lg text-[#7a6b59] font-serif italic">
-            このブランドの年代情報が見つかりませんでした。
-          </p>
+          <NotFound text="このブランドの年代情報が見つかりませんでした。" />
           <Link
             href="/brand"
             className="mt-4 inline-block text-[#5c4d3c] hover:text-[#7a6b59] border-b border-[#d3c7a7] font-serif"

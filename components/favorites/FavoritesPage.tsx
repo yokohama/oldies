@@ -6,6 +6,11 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import Header from "../ui/Header";
+import Footer from "../ui/Footer";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+import NotFound from "../ui/NotFound";
 
 const FavoritesPage = () => {
   const { likedCheckPoints, isLoading, error, unlikeCheckPoint } =
@@ -26,133 +31,147 @@ const FavoritesPage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-6">
-        <Heart className="h-16 w-16 text-amber-300 mb-4" />
-        <h1 className="text-2xl font-bold text-amber-800 mb-2">お気に入り</h1>
-        <p className="text-stone-600 mb-6 text-center">
-          お気に入りを表示するにはログインしてください。
-        </p>
-        <Link
-          href="/"
-          className="px-6 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
-        >
-          ホームに戻る
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+        <Header />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
+            お気に入りチェックポイント
+          </h1>
+          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+        </div>
+        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
+          <Heart className="h-16 w-16 text-[#d3c7a7] mx-auto mb-4" />
+          <p className="text-lg text-[#7a6b59] italic mb-6">
+            お気に入りを表示するにはログインしてください。
+          </p>
+          <Link
+            href="/"
+            className="px-6 py-2 bg-[#7a6b59] text-white rounded-sm hover:bg-[#5c4d3c] transition-colors"
+          >
+            ホームに戻る
+          </Link>
+        </div>
+        <Footer />
       </div>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="h-16 w-16 bg-amber-200 rounded-full mb-4"></div>
-          <div className="h-6 w-48 bg-amber-200 rounded mb-4"></div>
-          <div className="h-4 w-64 bg-amber-100 rounded"></div>
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+        <Header />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
+            お気に入りチェックポイント
+          </h1>
+          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+          <Spinner size="lg" />
         </div>
+        <Footer />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-6">
-        <Heart className="h-16 w-16 text-red-400 mb-4" />
-        <h1 className="text-2xl font-bold text-amber-800 mb-2">
-          エラーが発生しました
-        </h1>
-        <p className="text-stone-600 mb-6 text-center">{error.message}</p>
-        <Link
-          href="/"
-          className="px-6 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
-        >
-          ホームに戻る
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+        <Header />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
+            お気に入りチェックポイント
+          </h1>
+          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+        </div>
+        <Error />
+        <Footer />
       </div>
     );
   }
 
   if (likedCheckPoints.length === 0) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-6">
-        <Heart className="h-16 w-16 text-amber-300 mb-4" />
-        <h1 className="text-2xl font-bold text-amber-800 mb-2">
-          お気に入りはありません
-        </h1>
-        <p className="text-stone-600 mb-6 text-center">
-          チェックポイントにいいねを追加すると、ここに表示されます。
-        </p>
-        <Link
-          href="/"
-          className="px-6 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
-        >
-          ホームに戻る
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+        <Header />
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
+            お気に入りチェックポイント
+          </h1>
+          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+        </div>
+        <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
+          <Heart className="h-16 w-16 text-[#d3c7a7] mx-auto mb-4" />
+          <NotFound text="お気に入りはありません。チェックポイントにいいねを追加すると、ここに表示されます。" />
+        </div>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center mb-8">
-        <Heart className="h-6 w-6 text-amber-600 mr-2" />
-        <h1 className="text-2xl font-bold text-amber-800 font-playfair">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <Header />
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
           お気に入りチェックポイント
         </h1>
+        <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {likedCheckPoints.map((checkPoint) => (
           <div
             key={checkPoint.id}
-            className="bg-[#f9f6f0] rounded-lg overflow-hidden shadow-md border border-amber-100 hover:shadow-lg transition-shadow"
+            className="bg-[#f8f3e6] border-2 border-[#d3c7a7] rounded-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_20px_rgba(122,95,67,0.3)]"
           >
-            <div className="relative h-64 w-full">
+            <div className="h-48 overflow-hidden relative">
+              <div className="absolute inset-0 border-b-2 border-[#d3c7a7] z-10"></div>
               <Image
                 src={checkPoint.imageUrl}
                 alt={checkPoint.point}
                 fill
-                className="object-cover sepia-[0.15]"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                className="object-cover sepia-[0.2] brightness-[0.95]"
               />
               <button
                 onClick={() => handleUnlike(checkPoint.id)}
                 disabled={removingId === checkPoint.id}
-                className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
+                className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors z-20"
               >
                 <Heart
                   className={`h-5 w-5 ${removingId === checkPoint.id
-                      ? "text-amber-300"
-                      : "text-amber-600 fill-amber-600"
+                      ? "text-[#d3c7a7]"
+                      : "text-[#7a6b59] fill-[#7a6b59]"
                     }`}
                 />
               </button>
             </div>
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-amber-800 mb-1">
+            <div className="p-5">
+              <h2 className="text-xl font-serif text-[#5c4d3c] mb-2 border-b border-[#d3c7a7] pb-2">
                 {checkPoint.point}
-              </h3>
-              <p className="text-sm text-stone-600 mb-3">
+              </h2>
+              <p className="text-[#7a6b59] font-light mb-2">
                 {checkPoint.productEra?.manufacturing_start_year}年 -{" "}
                 {checkPoint.productEra?.manufacturing_end_year}年
               </p>
               {checkPoint.productEra?.product && (
                 <Link
                   href={`/product/${checkPoint.productEra.product.id}`}
-                  className="text-amber-600 hover:text-amber-700 text-sm font-medium flex items-center"
+                  className="text-[#7a6b59] hover:text-[#5c4d3c] text-sm font-medium block mb-2"
                 >
                   {checkPoint.productEra.product.brand?.name} -{" "}
                   {checkPoint.productEra.product.name}
                 </Link>
               )}
               {checkPoint.description && (
-                <p className="text-sm text-stone-600 mt-2 line-clamp-2">
+                <div className="text-[#7a6b59] font-light italic line-clamp-2">
                   {checkPoint.description}
-                </p>
+                </div>
               )}
             </div>
           </div>
         ))}
       </div>
+      <Footer />
     </div>
   );
 };
