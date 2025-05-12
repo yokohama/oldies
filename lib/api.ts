@@ -229,9 +229,6 @@ export class API {
       throw error;
     }
 
-    // デバッグ用：取得したデータを確認
-    console.log("取得したプロフィールデータ:", data);
-
     return data ? mapUserProfile(data) : null;
   }
 }

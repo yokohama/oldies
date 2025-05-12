@@ -26,7 +26,6 @@ interface UseCheckPointReturn {
 export function useCheckPoint({
   checkPoint,
   showProductEraCheckPoint,
-  isOwnCheckPoint = false,
   onDelete,
   userProfile,
 }: UseCheckPointProps): UseCheckPointReturn {
@@ -42,14 +41,15 @@ export function useCheckPoint({
 
       try {
         // 現在のユーザーがこのチェックポイントにいいねしているか確認
+        // api.tsのパターンに合わせて修正
         const { data, error } = await supabase
           .from("check_point_likes")
           .select("*")
-          .eq("user_id", user.id)
+          .eq("user_id", user.id as string)
           .eq("check_point_id", checkPoint.id)
-          .single();
+          .maybeSingle(); // single()の代わりにmaybeSingle()を使用
 
-        if (error && error.code !== "PGRST116") {
+        if (error) {
           console.error("いいね状態の取得エラー:", error);
           return;
         }
@@ -109,7 +109,7 @@ export function useCheckPoint({
         const { error } = await supabase
           .from("check_point_likes")
           .delete()
-          .eq("user_id", user.id)
+          .eq("user_id", user.id as string)
           .eq("check_point_id", checkPoint.id);
 
         if (error) throw error;
@@ -119,7 +119,7 @@ export function useCheckPoint({
       } else {
         // いいねを追加
         const { error } = await supabase.from("check_point_likes").insert({
-          user_id: user.id,
+          user_id: user.id as string,
           check_point_id: checkPoint.id,
         });
 
