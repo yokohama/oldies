@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownWideNarrow } from "lucide-react";
+import { ArrowDownWideNarrow, Heart } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -73,6 +73,15 @@ const Header = () => {
                         className="flex w-full items-center"
                       >
                         プロフィール
+                      </Link>
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-medium">
+                      <Link
+                        href="/favorites"
+                        className="flex w-full items-center gap-2"
+                      >
+                        <Heart className="h-4 w-4 text-amber-700" />
+                        お気に入り
                       </Link>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none">

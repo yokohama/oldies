@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
-import { supabase } from "@/lib/supabase";
+import { API } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UseCheckPointProps {
@@ -40,21 +40,11 @@ export function useCheckPoint({
       if (!user || !checkPoint.id) return;
 
       try {
-        // 現在のユーザーがこのチェックポイントにいいねしているか確認
-        // api.tsのパターンに合わせて修正
-        const { data, error } = await supabase
-          .from("check_point_likes")
-          .select("*")
-          .eq("user_id", user.id as string)
-          .eq("check_point_id", checkPoint.id)
-          .maybeSingle(); // single()の代わりにmaybeSingle()を使用
-
-        if (error) {
-          console.error("いいね状態の取得エラー:", error);
-          return;
-        }
-
-        setLiked(!!data);
+        const isLiked = await API.isCheckPointLiked(
+          user.id as string,
+          checkPoint.id,
+        );
+        setLiked(isLiked);
       } catch (err) {
         console.error("いいね状態の取得に失敗:", err);
       }
@@ -69,17 +59,8 @@ export function useCheckPoint({
       if (!checkPoint.id) return;
 
       try {
-        const { count, error } = await supabase
-          .from("check_point_likes")
-          .select("*", { count: "exact", head: true })
-          .eq("check_point_id", checkPoint.id);
-
-        if (error) {
-          console.error("いいね数の取得エラー:", error);
-          return;
-        }
-
-        setLikeCount(count || 0);
+        const count = await API.getCheckPointLikesCount(checkPoint.id);
+        setLikeCount(count);
       } catch (err) {
         console.error("いいね数の取得に失敗:", err);
       }
@@ -106,25 +87,12 @@ export function useCheckPoint({
     try {
       if (liked) {
         // いいねを削除
-        const { error } = await supabase
-          .from("check_point_likes")
-          .delete()
-          .eq("user_id", user.id as string)
-          .eq("check_point_id", checkPoint.id);
-
-        if (error) throw error;
-
+        await API.unlikeCheckPoint(user.id as string, checkPoint.id);
         setLiked(false);
         setLikeCount((prev) => Math.max(0, prev - 1));
       } else {
         // いいねを追加
-        const { error } = await supabase.from("check_point_likes").insert({
-          user_id: user.id as string,
-          check_point_id: checkPoint.id,
-        });
-
-        if (error) throw error;
-
+        await API.likeCheckPoint(user.id as string, checkPoint.id);
         setLiked(true);
         setLikeCount((prev) => prev + 1);
       }

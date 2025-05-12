@@ -30,7 +30,40 @@ export interface ProductEraCheckPoint {
   imageUrl: string;
   description: string;
   userId?: string | null;
-  createdAt?: string;
+  createdAt?: string | null;
+  isLiked?: boolean;
+  likeCount?: number;
+}
+
+export interface CheckPointLike {
+  id: number;
+  userId: string;
+  checkPointId: number;
+  createdAt: string;
+}
+
+export interface LikedCheckPoint extends ProductEraCheckPoint {
+  productEra?: {
+    id: number;
+    productId: number;
+    manufacturing_start_year: number;
+    manufacturing_end_year: number;
+    imageUrl: string;
+    description: string;
+    product?: {
+      id: number;
+      brandId: number;
+      name: string;
+      imageUrl: string;
+      description: string;
+      brand?: {
+        id: number;
+        name: string;
+        imageUrl: string;
+        description: string;
+      };
+    };
+  };
 }
 
 export interface UserProfile {
