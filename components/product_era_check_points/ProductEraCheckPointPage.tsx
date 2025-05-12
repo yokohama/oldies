@@ -3,8 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
-import ProductTitle from "../ui/ProductTitle";
-import EraSelector from "./EraSelector";
+//import ProductTitle from "../ui/ProductTitle";
+//import EraSelector from "./EraSelector";
 import ProductEraCarousel from "./ProductEraCarousel";
 import { useProductEras } from "@/hooks/useProductEras";
 
@@ -57,11 +57,13 @@ const ProductEraCheckPointPage = () => {
         </div>
       ) : (
         <div className="max-w-4xl mx-auto">
+          {/*
           <EraSelector
             productEras={productEras}
             selectedEraIndex={selectedEraIndex}
             onEraIndexChange={handleEraIndexChange}
           />
+          */}
           <ProductEraCarousel
             productEras={productEras}
             selectedEraIndex={selectedEraIndex}
