@@ -1,6 +1,6 @@
 "use client";
 
-import { useLikedCheckPoints } from "@/hooks/useLikedCheckPoints";
+import { useLikedCheckPoints } from "@/hooks/checkpoint/useLikedCheckPoints";
 import { useAuth } from "@/contexts/AuthContext";
 import { Heart } from "lucide-react";
 import Image from "next/image";

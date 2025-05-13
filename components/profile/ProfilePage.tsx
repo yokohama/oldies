@@ -2,8 +2,8 @@
 
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
-import { useUserProfile } from "@/hooks/useUserProfile";
-import { useSuccessMessage } from "@/hooks/useSuccessMessage";
+import { useProfile } from "@/hooks/profile/useProfile";
+import { useSuccessMessage } from "@/hooks/common/useSuccessMessage";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileCheckPoints from "@/components/profile/ProfileCheckPoints";
 import ProfileLoading from "@/components/profile/ProfileLoading";
@@ -14,7 +14,7 @@ interface ProfilePageProps {
 }
 
 const ProfilePage = ({ userId }: ProfilePageProps) => {
-  const { user, loading, error } = useUserProfile({ userId });
+  const { user, loading, error } = useProfile({ userId });
   const { showSuccessMessage, message } = useSuccessMessage({
     message: "プロフィールを更新しました",
   });

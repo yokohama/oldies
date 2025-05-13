@@ -184,6 +184,43 @@ export class API {
     });
   }
 
+  // ユーザーが投稿したチェックポイントを取得
+  static async getUserCheckPoints(
+    userId: string,
+  ): Promise<ProductEraCheckPoint[]> {
+    const { data, error } = await supabase
+      .from("product_era_check_points")
+      .select(
+        `
+        *,
+        product_eras!fk_product_era(
+          *,
+          products!fk_product(
+            *,
+            brands!fk_brand(*)
+          )
+        )
+      `,
+      )
+      .eq("user_id", userId)
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return (data || []).map((checkPoint) => {
+      return {
+        id: checkPoint.id,
+        productEraId: checkPoint.product_era_id,
+        point: checkPoint.point,
+        imageUrl: checkPoint.image_url,
+        description: checkPoint.description || "",
+        userId: checkPoint.user_id,
+        createdAt: checkPoint.created_at,
+      };
+    });
+  }
+
   // ブランド関連
   static async getBrands(): Promise<Brand[]> {
     const { data, error } = await supabase
@@ -230,6 +267,21 @@ export class API {
 
     if (error) throw error;
     return (data || []).map(mapProduct);
+  }
+
+  static async getProduct(id: number): Promise<Product | null> {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .is("deleted_at", null)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") return null; // PGRST116 は "結果が見つからない" エラー
+      throw error;
+    }
+    return data ? mapProduct(data) : null;
   }
 
   // 製品時代関連

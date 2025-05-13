@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         {/* ブランド情報とソーシャルリンク */}
         <div className="flex flex-col items-center text-center mb-6">
-          <Link href="/brand">
+          <Link href="/brands">
             <h2 className="text-2xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group inline-block">
               <span className="italic tracking-wide">Oldies</span>
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
@@ -51,7 +51,7 @@ const Footer = () => {
         {/* ナビゲーションリンク */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 max-w-2xl mx-auto mb-8">
           <Link
-            href="/brand"
+            href="/brands"
             className="text-stone-600 hover:text-amber-800 transition-colors text-sm text-center"
           >
             ブランド一覧
