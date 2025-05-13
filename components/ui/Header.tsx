@@ -1,6 +1,12 @@
 "use client";
 
-import { ArrowDownWideNarrow, Heart } from "lucide-react";
+import {
+  ArrowDownWideNarrow,
+  Heart,
+  User,
+  UserCircle,
+  LogOut,
+} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -62,16 +68,18 @@ const Header = () => {
                     <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-medium">
                       <Link
                         href="/profile"
-                        className="flex w-full items-center"
+                        className="flex w-full items-center gap-2"
                       >
+                        <User className="h-4 w-4 text-amber-700" />
                         マイページ
                       </Link>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none font-medium">
                       <Link
                         href={`/profile/${user.id}`}
-                        className="flex w-full items-center"
+                        className="flex w-full items-center gap-2"
                       >
+                        <UserCircle className="h-4 w-4 text-amber-700" />
                         プロフィール
                       </Link>
                     </DropdownMenu.Item>
@@ -85,7 +93,10 @@ const Header = () => {
                       </Link>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item className="px-4 py-3 text-base text-stone-800 hover:bg-amber-100 rounded cursor-pointer focus:outline-none">
-                      <LogoutButton onSuccess={handleAuthSuccess} />
+                      <div className="flex items-center gap-2 w-full">
+                        <LogOut className="h-4 w-4 text-amber-700" />
+                        <LogoutButton onSuccess={handleAuthSuccess} />
+                      </div>
                     </DropdownMenu.Item>
                   </>
                 )}
