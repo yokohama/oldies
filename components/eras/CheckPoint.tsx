@@ -50,14 +50,11 @@ const CheckPoint = ({
   };
 
   return (
-    <div
-      className="bg-[#f8f3e6] border border-[#d3c7a7] rounded-sm overflow-hidden relative transition-all duration-200 hover:shadow-[0_2px_8px_rgba(122,95,67,0.15)] cursor-pointer"
-      onClick={handleCheckPointClick}
-    >
+    <div className="oldies-card cursor-pointer" onClick={handleCheckPointClick}>
       {isOwnCheckPoint && (
         <button
           onClick={handleDeleteClickPoint}
-          className="absolute top-2 right-2 text-[#a85751] hover:text-[#8a3c37] transition-colors z-10"
+          className="absolute top-2 right-2 text-[var(--oldies-accent-primary)] hover:text-[var(--oldies-accent-secondary)] transition-colors z-10"
           aria-label="削除"
         >
           <Trash2 size={18} />
@@ -65,7 +62,7 @@ const CheckPoint = ({
       )}
       <div className="flex items-start p-3">
         {checkPoint.imageUrl && (
-          <div className="relative h-16 w-16 mr-3 flex-shrink-0 bg-[#e5dcc3] rounded-sm overflow-hidden border border-[#d3c7a7]">
+          <div className="relative h-16 w-16 mr-3 flex-shrink-0 oldies-bg-accent rounded-sm overflow-hidden oldies-border">
             <Image
               src={checkPoint.imageUrl}
               alt={checkPoint.point}
@@ -76,17 +73,15 @@ const CheckPoint = ({
           </div>
         )}
         <div className="flex-1">
-          <h4 className="text-sm font-serif text-[#5c4d3c] mb-1 border-b border-[#d3c7a7] pb-1">
-            {checkPoint.point}
-          </h4>
-          <p className="text-xs text-[#7a6b59] font-light italic">
+          <h4 className="oldies-card-header">{checkPoint.point}</h4>
+          <p className="text-xs oldies-text-secondary font-light italic">
             {checkPoint.description}
           </p>
         </div>
       </div>
 
       {/* フッター部分（SNS領域） */}
-      <div className="border-t border-[#d3c7a7] bg-[#f0ebe0] px-3 py-2">
+      <div className="oldies-card-footer">
         <div className="flex items-center justify-between">
           {/* 投稿者情報 - クリックでプロフィールページへ */}
           <Link
@@ -94,7 +89,7 @@ const CheckPoint = ({
             className="flex items-center group"
             onClick={(e) => e.stopPropagation()} // 親要素のクリックイベントを停止
           >
-            <div className="relative h-6 w-6 rounded-full overflow-hidden border border-[#d3c7a7] mr-2 transition-transform group-hover:scale-105">
+            <div className="relative h-6 w-6 rounded-full overflow-hidden oldies-border mr-2 transition-transform group-hover:scale-105">
               <Image
                 src={avatarUrl}
                 alt={displayName}
@@ -104,7 +99,7 @@ const CheckPoint = ({
                 unoptimized
               />
             </div>
-            <span className="text-xs text-[#5c4d3c] font-medium group-hover:text-[#a85751] transition-colors">
+            <span className="text-xs oldies-text-primary font-medium group-hover:text-[var(--oldies-accent-primary)] transition-colors">
               {displayName}
             </span>
           </Link>
@@ -116,11 +111,14 @@ const CheckPoint = ({
                 e.stopPropagation(); // 親要素のクリックイベントを停止
                 handleLike(e);
               }}
-              className={`flex items-center text-xs ${liked ? "text-[#a85751]" : "text-[#7a6b59]"} hover:text-[#a85751] transition-colors ${isLikeLoading ? "opacity-50 cursor-wait" : ""}`}
+              className={`flex items-center text-xs ${liked ? "oldies-text-accent" : "oldies-text-secondary"} hover:oldies-text-accent transition-colors ${isLikeLoading ? "opacity-50 cursor-wait" : ""}`}
               aria-label="いいね"
               disabled={isLikeLoading}
             >
-              <Heart size={14} className={liked ? "fill-[#a85751]" : ""} />
+              <Heart
+                size={14}
+                className={liked ? "fill-[var(--oldies-accent-primary)]" : ""}
+              />
               <span className="ml-1">{likeCount}</span>
             </button>
             <button
@@ -128,7 +126,7 @@ const CheckPoint = ({
                 e.stopPropagation(); // 親要素のクリックイベントを停止
                 handleShare(e);
               }}
-              className="flex items-center text-xs text-[#7a6b59] hover:text-[#5c4d3c] transition-colors"
+              className="flex items-center text-xs oldies-text-secondary hover:oldies-text-primary transition-colors"
               aria-label="シェア"
             >
               <Share2 size={14} />

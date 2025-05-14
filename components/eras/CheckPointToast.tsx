@@ -6,10 +6,10 @@ import { toast } from "sonner";
 
 export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
   const toastId = toast(
-    <div className="relative bg-white p-4 rounded-lg">
+    <div className="relative oldies-bg-primary p-4 rounded-lg oldies-border">
       <button
         onClick={() => toast.dismiss(toastId)}
-        className="absolute top-0 right-0 p-1 rounded-full hover:bg-stone-100"
+        className="absolute top-0 right-0 p-1 rounded-full hover:oldies-bg-secondary"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -21,6 +21,7 @@ export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="oldies-text-secondary"
         >
           <line x1="18" y1="6" x2="6" y2="18">
             {" "}
@@ -31,20 +32,23 @@ export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
         </svg>
       </button>
       {checkPoint.imageUrl && (
-        <div className="relative h-48 w-full bg-stone-100 rounded-lg overflow-hidden mb-4">
+        <div className="relative h-48 w-full oldies-bg-secondary rounded-lg overflow-hidden mb-4 oldies-border">
           <Image
             src={checkPoint.imageUrl}
             alt={checkPoint.point}
             fill
-            className="object-cover"
+            className="object-cover sepia-[0.15] brightness-[0.98]"
             unoptimized
           />
         </div>
       )}
-      <h3 className="text-lg font-medium text-stone-800 mb-2">
+      <h3 className="text-lg font-medium oldies-text-primary mb-2 font-serif">
         {checkPoint.point}
       </h3>
-      <p className="text-sm text-stone-600"> {checkPoint.description} </p>
+      <p className="text-sm oldies-text-secondary">
+        {" "}
+        {checkPoint.description}{" "}
+      </p>
     </div>,
     {
       duration: Infinity,

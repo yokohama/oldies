@@ -6,7 +6,7 @@ import { User } from "@supabase/supabase-js";
 import { API } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 
-interface UseCheckPointListReturn {
+interface UseCheckPointsReturn {
   checkPoints: ProductEraCheckPoint[];
   setCheckPoints: React.Dispatch<React.SetStateAction<ProductEraCheckPoint[]>>;
   userProfiles: Record<string, UserProfile>;
@@ -16,9 +16,9 @@ interface UseCheckPointListReturn {
   user: User | null;
 }
 
-export function useCheckPointList(
+export function useCheckPoints(
   initialCheckPoints: ProductEraCheckPoint[],
-): UseCheckPointListReturn {
+): UseCheckPointsReturn {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [checkPoints, setCheckPoints] =
     useState<ProductEraCheckPoint[]>(initialCheckPoints);

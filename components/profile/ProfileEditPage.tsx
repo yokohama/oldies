@@ -54,7 +54,7 @@ const ProfileEditPage = () => {
   }
 
   return (
-    <div className="container mx-auto py-12 px-4">
+    <div className="container mx-auto py-12 px-4 bg-transparent">
       <Header />
       <div className="max-w-2xl mx-auto">
         <div className="bg-[#f8f3e6] border border-[#d3c7a7] rounded-md p-6 mb-8">

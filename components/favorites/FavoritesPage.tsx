@@ -11,6 +11,7 @@ import Footer from "../ui/Footer";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import NotFound from "../ui/NotFound";
+import PageTitle from "../ui/PageTitle";
 
 const FavoritesPage = () => {
   const { likedCheckPoints, isLoading, error, unlikeCheckPoint } =
@@ -31,14 +32,9 @@ const FavoritesPage = () => {
 
   if (!user) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-            お気に入りチェックポイント
-          </h1>
-          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
-        </div>
+        <PageTitle title="お気に入りチェックポイント" />
         <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
           <Heart className="h-16 w-16 text-[#d3c7a7] mx-auto mb-4" />
           <p className="text-lg text-[#7a6b59] italic mb-6">
@@ -58,13 +54,10 @@ const FavoritesPage = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-            お気に入りチェックポイント
-          </h1>
-          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+        <PageTitle title="お気に入りチェックポイント" />
+        <div className="text-center">
           <Spinner size="lg" />
         </div>
         <Footer />
@@ -74,14 +67,9 @@ const FavoritesPage = () => {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-            お気に入りチェックポイント
-          </h1>
-          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
-        </div>
+        <PageTitle title="お気に入りチェックポイント" />
         <Error />
         <Footer />
       </div>
@@ -90,14 +78,9 @@ const FavoritesPage = () => {
 
   if (likedCheckPoints.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-            お気に入りチェックポイント
-          </h1>
-          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
-        </div>
+        <PageTitle title="お気に入りチェックポイント" />
         <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
           <Heart className="h-16 w-16 text-[#d3c7a7] mx-auto mb-4" />
           <NotFound text="お気に入りはありません。チェックポイントにいいねを追加すると、ここに表示されます。" />
@@ -108,14 +91,9 @@ const FavoritesPage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
       <Header />
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-          お気に入りチェックポイント
-        </h1>
-        <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
-      </div>
+      <PageTitle title="お気に入りチェックポイント" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {likedCheckPoints.map((checkPoint) => (

@@ -44,13 +44,13 @@ const AddCheckPointModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white border border-[#d3c7a7] shadow-[0_4px_12px_rgba(122,95,67,0.15)]">
+      <DialogContent className="sm:max-w-[425px] oldies-bg-primary oldies-border shadow-[0_4px_12px_rgba(122,95,67,0.15)]">
         <DialogHeader>
-          <DialogTitle className="text-[#5c4d3c] font-serif text-xl relative inline-block pb-2">
+          <DialogTitle className="oldies-text-primary font-serif text-xl relative inline-block pb-2">
             Check point
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d3c7a7]"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--oldies-border-primary)]"></div>
           </DialogTitle>
-          <DialogDescription className="text-[#7a6b59] font-light italic">
+          <DialogDescription className="oldies-text-secondary font-light italic">
             あなたの製品の特徴や見分け方のポイントを追加してください。
           </DialogDescription>
         </DialogHeader>
@@ -63,7 +63,7 @@ const AddCheckPointModal = ({
                 id="point"
                 value={point}
                 onChange={(e) => setPoint(e.target.value)}
-                className="col-span-3 border-[#d3c7a7] focus-visible:ring-[#e5dcc3] focus-visible:ring-opacity-50 bg-[#f9f6f0] text-[#5c4d3c]"
+                className="oldies-input"
                 placeholder="ポイント"
                 required
               />
@@ -73,14 +73,14 @@ const AddCheckPointModal = ({
                 {!previewUrl ? (
                   <div className="flex flex-col gap-2">
                     <div
-                      className="border-2 border-dashed border-[#d3c7a7] rounded-sm p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-[#f9f6f0] transition-colors bg-[#f8f3e6]"
+                      className="oldies-border-dashed rounded-sm p-6 flex flex-col items-center justify-center cursor-pointer hover:oldies-bg-primary transition-colors oldies-bg-secondary"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      <Upload className="h-8 w-8 text-[#7a6b59] mb-2" />
-                      <p className="text-sm font-serif text-[#5c4d3c]">
+                      <Upload className="h-8 w-8 oldies-text-secondary mb-2" />
+                      <p className="text-sm font-serif oldies-text-primary">
                         クリックして画像をアップロード
                       </p>
-                      <p className="text-xs text-[#7a6b59] mt-1 italic">
+                      <p className="text-xs oldies-text-secondary mt-1 italic">
                         JPG, PNG, GIF (最大5MB)
                       </p>
                     </div>
@@ -95,7 +95,7 @@ const AddCheckPointModal = ({
                   </div>
                 ) : (
                   <div className="relative">
-                    <div className="relative aspect-video w-full overflow-hidden rounded-sm border border-[#d3c7a7] bg-[#e5dcc3]">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-sm oldies-border oldies-bg-accent">
                       <Image
                         src={previewUrl}
                         alt="プレビュー"
@@ -108,21 +108,21 @@ const AddCheckPointModal = ({
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="absolute -right-2 -top-2 h-6 w-6 rounded-full bg-white border-[#d3c7a7] hover:bg-[#f9f6f0]"
+                      className="absolute -right-2 -top-2 h-6 w-6 rounded-full oldies-bg-primary oldies-border hover:oldies-bg-secondary"
                       onClick={handleRemoveFile}
                     >
-                      <X className="h-4 w-4 text-[#a85751]" />
+                      <X className="h-4 w-4 oldies-text-accent" />
                       <span className="sr-only">削除</span>
                     </Button>
                     {isSubmitting && (
                       <div className="mt-2">
-                        <div className="h-2 w-full bg-[#f8f3e6] rounded-full overflow-hidden">
+                        <div className="h-2 w-full oldies-bg-secondary rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-[#b8a88a] transition-all duration-300 ease-in-out"
+                            className="h-full bg-[var(--oldies-border-secondary)] transition-all duration-300 ease-in-out"
                             style={{ width: `${uploadProgress}%` }}
                           />
                         </div>
-                        <p className="text-xs text-[#7a6b59] mt-1 text-right italic">
+                        <p className="text-xs oldies-text-secondary mt-1 text-right italic">
                           {uploadProgress}%
                         </p>
                       </div>
@@ -136,7 +136,7 @@ const AddCheckPointModal = ({
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="col-span-3 border-[#d3c7a7] focus-visible:ring-[#e5dcc3] focus-visible:ring-opacity-50 bg-[#f9f6f0] text-[#5c4d3c]"
+                className="oldies-textarea"
                 rows={4}
                 placeholder="説明"
               />
@@ -147,14 +147,14 @@ const AddCheckPointModal = ({
               type="button"
               variant="outline"
               onClick={onClose}
-              className="border-[#d3c7a7] text-[#7a6b59] hover:bg-[#f9f6f0] hover:text-[#5c4d3c] font-serif"
+              className="oldies-btn-outline font-serif"
             >
               キャンセル
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-[#7a6b59] text-white hover:bg-[#5c4d3c] font-serif"
+              className="oldies-btn-primary font-serif"
             >
               {isSubmitting ? "送信中..." : "追加"}
             </Button>

@@ -68,7 +68,7 @@ const ErasCarousel = ({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-amber-500 transform rotate-180"
+            className="oldies-text-accent transform rotate-180"
           >
             <path d="m9 18 6-6-6-6"></path>
           </svg>
@@ -91,7 +91,7 @@ const ErasCarousel = ({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-amber-500"
+            className="oldies-text-accent"
           >
             <path d="m9 18 6-6-6-6"></path>
           </svg>
@@ -105,8 +105,8 @@ const ErasCarousel = ({
                 key={index}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${
                   index === currentIndex
-                    ? "bg-amber-600"
-                    : "bg-stone-300 hover:bg-stone-400"
+                    ? "bg-[var(--oldies-accent-primary)]"
+                    : "bg-[var(--oldies-border-primary)] hover:bg-[var(--oldies-border-secondary)]"
                 }`}
               />
             ))}
@@ -119,22 +119,22 @@ const ErasCarousel = ({
               key={productEra.id}
               className="basis-full pl-1.5 pr-1.5 pt-3 pb-0"
             >
-              <Card className="border-stone-200 overflow-hidden">
+              <Card className="oldies-card overflow-hidden">
                 <CardContent className="p-0">
-                  <div className="relative h-52 w-full bg-stone-100">
+                  <div className="relative h-52 w-full oldies-bg-secondary">
                     <Image
                       src={productEra.imageUrl}
                       alt={`製造年代: ${productEra.manufacturing_start_year}-${productEra.manufacturing_end_year}`}
                       fill
-                      className="object-cover"
+                      className="object-cover sepia-[0.15] brightness-[0.98]"
                       unoptimized
                     />
-                    <span className="absolute top-2 right-2 bg-amber-100 text-amber-800 text-base px-3 py-1.5 rounded-full font-medium">
+                    <span className="absolute top-2 right-2 bg-[var(--oldies-bg-accent)] oldies-text-primary text-base px-3 py-1.5 rounded-full font-medium">
                       {productEra.manufacturing_start_year}-
                       {productEra.manufacturing_end_year}
                     </span>
                   </div>
-                  <h3 className="text-sm font-normal text-stone-600 px-2 mt-2">
+                  <h3 className="text-sm oldies-text-secondary px-2 mt-2">
                     {currentProductEra?.description}
                   </h3>
                   <CheckPoints era={productEra} />

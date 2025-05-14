@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPoint from "./CheckPoint";
 import { showProductEraCheckPoint } from "./CheckPointToast";
-import { useCheckPointList } from "@/hooks";
+import { useCheckPoints } from "@/hooks";
 
 interface CheckPointsProps {
   era: ProductEra;
@@ -20,7 +20,7 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
     setIsAddModalOpen,
     handleAddButtonClick,
     user,
-  } = useCheckPointList(era.checkPoints || []);
+  } = useCheckPoints(era.checkPoints || []);
 
   return (
     <>
@@ -34,16 +34,15 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
         }}
       />
 
-      <div className="mt-6 bg-white rounded-sm p-4 shadow-sm">
+      <div className="mt-6 oldies-bg-primary rounded-sm p-4 shadow-sm">
         <div className="flex justify-between items-center mb-3 px-2">
-          <h3 className="text-xl font-serif text-[#5c4d3c] relative inline-block pb-1">
+          <h3 className="oldies-section-title relative inline-block pb-1">
             Check point
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d3c7a7]"></div>
           </h3>
           <Button
             variant="outline"
             size="sm"
-            className="text-xs border-[#d3c7a7] text-[#7a6b59] hover:bg-[#f9f6f0] hover:border-[#b8a88a] transition-colors"
+            className="oldies-btn-outline text-xs"
             onClick={handleAddButtonClick}
           >
             <svg
@@ -81,8 +80,8 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
               />
             ))
           ) : (
-            <div className="text-center py-6 border border-dashed border-[#d3c7a7] rounded-sm bg-[#f9f6f0]">
-              <p className="text-[#7a6b59] font-serif italic">
+            <div className="text-center py-6 oldies-border-dashed rounded-sm oldies-bg-secondary">
+              <p className="oldies-text-secondary font-serif italic">
                 チェックポイントがまだありません。
               </p>
             </div>

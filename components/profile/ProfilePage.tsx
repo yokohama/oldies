@@ -30,7 +30,7 @@ const ProfilePage = ({ userId }: ProfilePageProps) => {
   }
 
   return (
-    <div className="container mx-auto py-12 px-4">
+    <div className="container mx-auto py-12 px-4 bg-transparent">
       <Header />
       <div className="max-w-4xl mx-auto">
         {/* 成功メッセージ */}

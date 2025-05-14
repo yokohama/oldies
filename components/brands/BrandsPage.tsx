@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 import Image from "next/image";
-
+import PageTitle from "../ui/PageTitle";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import NotFound from "../ui/NotFound";
@@ -21,14 +21,9 @@ const BrandsPage = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <div className="oldies-container">
         <Header />
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-            ブランドコレクション
-          </h1>
-          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
-        </div>
+        <PageTitle title="ブランドコレクション" />
         <Spinner size="lg" />
         <Footer />
       </div>
@@ -37,13 +32,11 @@ const BrandsPage = () => {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+      <div className="oldies-container">
         <Header />
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-            ブランドコレクション
-          </h1>
-          <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+          <h1 className="oldies-page-title">ブランドコレクション</h1>
+          <div className="oldies-title-underline"></div>
         </div>
         <Error />
         <Footer />
@@ -52,13 +45,11 @@ const BrandsPage = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">
+    <div className="oldies-container">
       <Header />
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-serif text-[#5c4d3c] mb-2">
-          ブランドコレクション
-        </h1>
-        <div className="w-24 h-1 bg-[#d3c7a7] mx-auto"></div>
+        <h1 className="oldies-page-title">ブランドコレクション</h1>
+        <div className="oldies-title-underline"></div>
       </div>
       {brands.length === 0 ? (
         <NotFound text="ブランドが見つかりませんでした。" />
@@ -67,11 +58,11 @@ const BrandsPage = () => {
           {brands.map((brand) => (
             <div
               key={brand.id}
-              className="bg-[#f8f3e6] border-2 border-[#d3c7a7] rounded-sm overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_20px_rgba(122,95,67,0.3)]"
+              className="oldies-card-interactive"
               onClick={() => handleBrandClick(brand.id)}
             >
               <div className="h-48 overflow-hidden relative">
-                <div className="absolute inset-0 border-b-2 border-[#d3c7a7] z-10"></div>
+                <div className="absolute inset-0 border-b border-[var(--oldies-border-primary)] z-10"></div>
                 <Image
                   src={brand.imageUrl}
                   alt={brand.name}
@@ -80,11 +71,9 @@ const BrandsPage = () => {
                   className="object-cover sepia-[0.2] brightness-[0.95]"
                 />
               </div>
-              <div className="p-5">
-                <h2 className="text-xl font-serif text-[#5c4d3c] mb-2 border-b border-[#d3c7a7] pb-2">
-                  {brand.name}
-                </h2>
-                <div className="text-[#7a6b59] font-light italic">
+              <div className="oldies-card-content">
+                <h2 className="oldies-section-title">{brand.name}</h2>
+                <div className="oldies-text-secondary font-light italic">
                   {brand.description}
                 </div>
               </div>
