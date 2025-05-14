@@ -5,8 +5,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
-import { useProfileEdit } from "@/hooks/profile/useProfileEdit";
-import { useProfileRedirect } from "@/hooks/profile/useProfileRedirect";
+import { useProfileEdit, useProfileRedirect } from "@/hooks";
 import ProfileLoading from "./ProfileLoading";
 import ProfileError from "./ProfileError";
 import { useAuth } from "@/contexts/AuthContext";
@@ -42,11 +41,7 @@ const ProfileEditPage = () => {
   // 保存成功後にプロフィールページにリダイレクト
   useEffect(() => {
     if (success && user) {
-      const timer = setTimeout(() => {
-        router.push(`/profile/${user.id}?updated=true`);
-      }, 1500); // 1.5秒後にリダイレクト
-
-      return () => clearTimeout(timer);
+      router.push(`/profile/${user.id}?updated=true`);
     }
   }, [success, router, user]);
 
@@ -236,8 +231,9 @@ const ProfileEditPage = () => {
               <button
                 type="submit"
                 disabled={saving || success}
-                className={`bg-[#a85751] hover:bg-[#8a3c37] text-white px-6 py-2 rounded-md transition-colors ${saving || success ? "opacity-70 cursor-not-allowed" : ""
-                  }`}
+                className={`bg-[#a85751] hover:bg-[#8a3c37] text-white px-6 py-2 rounded-md transition-colors ${
+                  saving || success ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
                 {saving ? "保存中..." : success ? "保存完了" : "保存する"}
               </button>

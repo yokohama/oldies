@@ -30,7 +30,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // チェックポイント追加のカスタムフックを使用
-  const { addCheckPoint, isSubmitting, uploadProgress } =
+  const { handleAddCheckPoint, isSubmitting, uploadProgress } =
     useCheckPointActions();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +85,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
     }
 
     // カスタムフックのaddCheckPoint関数を使用
-    const success = await addCheckPoint(
+    const success = await handleAddCheckPoint(
       productEraId,
       point,
       selectedFile,

@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
-import { useCheckPointInteractions } from "@/hooks/checkpoint/useCheckPointInteractions";
 import { useCheckPointActions } from "@/hooks";
 
 interface CheckPointProps {
@@ -23,27 +22,27 @@ const CheckPoint = ({
   userProfile,
 }: CheckPointProps) => {
   const {
-    liked,
-    likeCount,
-    displayName,
-    avatarUrl,
-    handleLike,
-    handleShare,
-    handleCheckPointClick,
-    isLikeLoading,
-  } = useCheckPointInteractions({
+    liked = false,
+    likeCount = 0,
+    displayName = "ユーザー",
+    avatarUrl = "https://api.dicebear.com/7.x/initials/svg?seed=anonymous",
+    handleLike = () => {},
+    handleShare = () => {},
+    handleCheckPointClick = () => {},
+    isLikeLoading = false,
+    handleDeleteCheckPoint,
+  } = useCheckPointActions({
     checkPoint,
     showProductEraCheckPoint,
     isOwnCheckPoint,
     userProfile,
   });
-  const { deleteCheckPoint } = useCheckPointActions();
 
   const handleDeleteClickPoint = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
     if (window.confirm("このチェックポイントを削除してもよろしいですか？")) {
-      const success = await deleteCheckPoint(checkPoint.id);
+      const success = await handleDeleteCheckPoint(checkPoint.id);
       if (success) {
         setCheckPoints((prev) => prev.filter((cp) => cp.id !== checkPoint.id));
       }

@@ -7,7 +7,7 @@ import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import NotFound from "../ui/NotFound";
 import ErasCarousel from "./ErasCarousel";
-import { useEras } from "@/hooks/era/useEras";
+import { useEras } from "@/hooks";
 
 const ProductEraCheckPointPage = () => {
   const params = useParams();

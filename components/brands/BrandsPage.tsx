@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 import Image from "next/image";
-import { useBrands } from "@/hooks/product/useBrands";
+
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import NotFound from "../ui/NotFound";
+
+import { useBrands } from "@/hooks";
 
 const BrandsPage = () => {
   const router = useRouter();

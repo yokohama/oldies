@@ -1,6 +1,6 @@
 "use client";
 
-import { useProduct } from "@/hooks/product/useProduct";
+import { useProducts } from "@/hooks";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 import BrandTitle from "../ui/BrandTitle";
@@ -11,7 +11,7 @@ import Error from "../ui/Error";
 import NotFound from "../ui/NotFound";
 
 const ProductsPage = () => {
-  const { brand, products, loading, error } = useProduct();
+  const { brand, products, loading, error } = useProducts();
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[#f9f6f0]">

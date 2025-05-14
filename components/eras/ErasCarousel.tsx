@@ -10,7 +10,7 @@ import {
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Toaster } from "sonner";
 import CheckPoints from "./CheckPoints";
-import { useErasCarousel } from "@/hooks/era/useErasCarousel";
+import { useErasCarousel } from "@/hooks";
 
 interface ErasCarouselProps {
   productEras: ProductEra[];

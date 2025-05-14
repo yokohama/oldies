@@ -2,12 +2,14 @@
 
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
-import { useProfile } from "@/hooks/profile/useProfile";
-import { useSuccessMessage } from "@/hooks/common/useSuccessMessage";
-import ProfileHeader from "@/components/profile/ProfileHeader";
+
+import ProfileHeader from "./ProfileHeader";
 import ProfileCheckPoints from "@/components/profile/ProfileCheckPoints";
 import ProfileLoading from "@/components/profile/ProfileLoading";
 import ProfileError from "@/components/profile/ProfileError";
+
+import { useProfile } from "@/hooks";
+import { useSuccessMessage } from "@/hooks";
 
 interface ProfilePageProps {
   userId: string;

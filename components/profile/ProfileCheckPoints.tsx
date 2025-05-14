@@ -1,6 +1,6 @@
 "use client";
 
-import { useProfileCheckPoints } from "@/hooks/profile/useProfileCheckPoints";
+import { useProfileCheckPoints } from "@/hooks";
 import CheckPoint from "../eras/CheckPoint";
 import { UserProfile } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";

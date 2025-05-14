@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPoint from "./CheckPoint";
 import { showProductEraCheckPoint } from "./CheckPointToast";
-import { useCheckPointList } from "@/hooks/checkpoint/useCheckPointList";
+import { useCheckPointList } from "@/hooks";
 
 interface CheckPointsProps {
   era: ProductEra;

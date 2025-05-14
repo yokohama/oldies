@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { API } from "@/lib/api";
 import { Brand, Product } from "@/lib/types";
 
-export const useProduct = () => {
+export const useProducts = () => {
   const params = useParams();
   const [brand, setBrand] = useState<Brand | null>(null);
   const [products, setProducts] = useState<Product[]>([]);

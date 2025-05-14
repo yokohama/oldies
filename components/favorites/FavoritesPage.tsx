@@ -1,6 +1,6 @@
 "use client";
 
-import { useLikedCheckPoints } from "@/hooks/checkpoint/useLikedCheckPoints";
+import { useLikedCheckPoints } from "@/hooks";
 import { useAuth } from "@/contexts/AuthContext";
 import { Heart } from "lucide-react";
 import Image from "next/image";
@@ -138,10 +138,11 @@ const FavoritesPage = () => {
                 className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors z-20"
               >
                 <Heart
-                  className={`h-5 w-5 ${removingId === checkPoint.id
+                  className={`h-5 w-5 ${
+                    removingId === checkPoint.id
                       ? "text-[#d3c7a7]"
                       : "text-[#7a6b59] fill-[#7a6b59]"
-                    }`}
+                  }`}
                 />
               </button>
             </div>
