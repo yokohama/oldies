@@ -192,7 +192,7 @@
 	}
 
 	.oldies-textarea {
-		@apply oldies-input min-h-[80px];
+		@apply w-full px-3 py-2 min-h-[80px] border border-[var(--oldies-border-primary)] rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-[var(--oldies-accent-primary)] text-[var(--oldies-text-primary)];
 	}
 
 	.oldies-label {

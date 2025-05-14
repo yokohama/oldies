@@ -34,10 +34,7 @@ const BrandsPage = () => {
     return (
       <div className="oldies-container">
         <Header />
-        <div className="text-center mb-8">
-          <h1 className="oldies-page-title">ブランドコレクション</h1>
-          <div className="oldies-title-underline"></div>
-        </div>
+        <PageTitle title="ブランドコレクション" />
         <Error />
         <Footer />
       </div>
