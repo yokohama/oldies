@@ -1,7 +1,8 @@
 // サイト全体の設定を一元管理するファイル
 export const siteConfig = {
   // サイト基本情報
-  name: "Oldies",
+  name: "US古着 Hacking",
+  subtitle: "hoge",
   description:
     "アメカジ好き必見！US古着・ヴィンテージのタグ・仕様・年代別特徴を大量データ＆専門コメントの日本最大データベース(を目指す笑)。ビギナーでも簡単に見分け方が身につき、さらにアメカジへの愛が深まる情報サイト",
   url: "https://champion-vintage.example.com",

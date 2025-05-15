@@ -13,6 +13,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import LoginButton from "@/components/auth/LoginButton";
 import LogoutButton from "@/components/auth/LogoutButton";
+import { siteConfig } from "@/lib/config/siteConfig";
 import Image from "next/image";
 
 const Header = () => {
@@ -28,10 +29,11 @@ const Header = () => {
       <div className="flex items-center justify-between">
         <Link href="/">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group pl-2 md:pl-4 lg:pl-6">
-            <span className="italic tracking-wide">Oldies</span>
+            <span className="italic tracking-wide">{siteConfig.name}</span>
             <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
           </h1>
         </Link>
+
         <div className="flex items-center">
           <DropdownMenu.Root open={open} onOpenChange={setOpen}>
             <DropdownMenu.Trigger asChild>
