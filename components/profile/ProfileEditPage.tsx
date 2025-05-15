@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useEffect } from "react";
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
 import { useProfileEdit, useProfileRedirect } from "@/hooks";
-import ProfileLoading from "./ProfileLoading";
-import ProfileError from "./ProfileError";
 import { useAuth } from "@/contexts/AuthContext";
 
 const ProfileEditPage = () => {
@@ -46,11 +46,11 @@ const ProfileEditPage = () => {
   }, [success, router, user]);
 
   if (authLoading || loading) {
-    return <ProfileLoading />;
+    return <Spinner />;
   }
 
   if (error || !profile) {
-    return <ProfileError error={error} />;
+    return <Error />;
   }
 
   return (

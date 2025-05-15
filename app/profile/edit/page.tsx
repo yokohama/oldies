@@ -2,11 +2,11 @@
 
 import { Suspense } from "react";
 import ProfileEditPage from "@/components/profile/ProfileEditPage";
-import ProfileLoading from "@/components/profile/ProfileLoading";
+import Spinner from "@/components/ui/Spinner";
 
 export default function EditProfilePage() {
   return (
-    <Suspense fallback={<ProfileLoading />}>
+    <Suspense fallback={<Spinner />}>
       <ProfileEditPage />
     </Suspense>
   );
