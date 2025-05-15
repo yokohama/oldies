@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Instagram, Twitter, Facebook, Heart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 const Footer = () => {
   const { user } = useAuth();
@@ -20,8 +21,7 @@ const Footer = () => {
             </h2>
           </Link>
           <p className="text-sm text-stone-600 leading-relaxed max-w-md mt-3 mb-4">
-            ビンテージアパレルの魅力を再発見するプラットフォーム。
-            時代を超えて愛されるアイテムの歴史と価値を共有します。
+            {siteConfig.description}
           </p>
           <div className="flex space-x-6">
             <a

@@ -121,7 +121,7 @@
 
 	/* レイアウト関連 */
 	.oldies-container {
-		@apply max-w-7xl mx-auto px-4 py-6 sm:px-6 bg-[var(--oldies-bg-primary)];
+		@apply max-w-7xl mx-auto px-4 pt-0 pb-6 sm:px-6 bg-[var(--oldies-bg-primary)];
 	}
 
 	.oldies-page-title {

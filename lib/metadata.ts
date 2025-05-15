@@ -36,54 +36,19 @@ export const baseMetadata: Metadata = {
   },
 };
 
-// ブランドページのメタデータ生成
-export function generateBrandsMetadata(): Metadata {
-  return {
-    title: "ブランド一覧",
-    description:
-      brand.description || `${brand.name}のヴィンテージアパレルコレクション`,
-    openGraph: {
-      title: `${brand.name} | ${siteConfig.name}`,
-      description:
-        brand.description || `${brand.name}のヴィンテージアパレルコレクション`,
-      images: [
-        {
-          url: brand.imageUrl,
-          width: 1200,
-          height: 630,
-          alt: brand.name,
-        },
-      ],
-    },
-    twitter: {
-      images: [
-        {
-          url: brand.imageUrl,
-          width: 1200,
-          height: 630,
-          alt: brand.name,
-        },
-      ],
-    },
-    alternates: {
-      canonical: siteUrls.brand(brand.id),
-    },
-  };
-}
-
 export function generateProductsMetadata(brand: Brand): Metadata {
   return {
-    title: `${brand.name}の製品一覧`,
-    description: `${brand.name}のヴィンテージアパレル製品コレクション`,
+    title: `${brand.name}の名作一覧`,
+    description: `${brand.name}の今でも多くの人に愛されるアパレルコレクション`,
     openGraph: {
-      title: `${brand.name}の製品一覧 | ${siteConfig.name}`,
-      description: `${brand.name}のヴィンテージアパレル製品コレクション`,
+      title: `${brand.name}の名作一覧 | ${siteConfig.name}`,
+      description: `${brand.name}の今での多くの人に愛されるアパレルコレクション`,
       images: [
         {
           url: brand.imageUrl,
           width: 1200,
           height: 630,
-          alt: `${brand.name}の製品一覧`,
+          alt: `${brand.name}の名作一覧`,
         },
       ],
     },
