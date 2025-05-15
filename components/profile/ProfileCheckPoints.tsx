@@ -5,6 +5,7 @@ import CheckPoint from "../eras/CheckPoint";
 import { UserProfile } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { showProductEraCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
+import Spinner from "../ui/Spinner";
 
 interface ProfileCheckPointsProps {
   userId: string;
@@ -33,9 +34,7 @@ const ProfileCheckPoints = ({
       </h2>
 
       {loading ? (
-        <div className="text-center py-8">
-          <p className="text-sm text-[#7a6b59]">読み込み中...</p>
-        </div>
+        <Spinner size="lg" />
       ) : error ? (
         <div className="text-center py-8">
           <p className="text-sm text-[#7a6b59]">エラーが発生しました</p>

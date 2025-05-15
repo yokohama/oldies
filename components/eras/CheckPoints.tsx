@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductEraCheckPoint, ProductEra } from "@/lib/types";
+import { ProductEra } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPoint from "./CheckPoint";

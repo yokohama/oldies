@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { ProductEra } from "@/lib/types";
 import {
@@ -12,17 +13,18 @@ import { Toaster } from "sonner";
 import CheckPoints from "./CheckPoints";
 import { useErasCarousel } from "@/hooks";
 
+// 外部から使用するためのプロップス
 interface ErasCarouselProps {
   productEras: ProductEra[];
-  selectedEraIndex: number;
-  onEraIndexChange?: (index: number) => void;
 }
 
-const ErasCarousel = ({
-  productEras,
-  selectedEraIndex,
-  onEraIndexChange,
-}: ErasCarouselProps) => {
+const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
+  const [selectedEraIndex, setSelectedEraIndex] = useState(0);
+
+  const handleEraIndexChange = (index: number) => {
+    setSelectedEraIndex(index);
+  };
+
   const {
     sortedProductEras,
     setApi,
@@ -33,7 +35,7 @@ const ErasCarousel = ({
   } = useErasCarousel({
     productEras,
     selectedEraIndex,
-    onEraIndexChange,
+    onEraIndexChange: handleEraIndexChange,
   });
 
   return (

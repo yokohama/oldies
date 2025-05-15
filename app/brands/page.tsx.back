@@ -13,43 +13,44 @@ import BrandCard from "@/components/brands/BrandCard";
 // 静的メタデータの基本部分
 export const metadata: Metadata = {
   ...baseMetadata,
-  title: "Champion リバースウィーブ",
-  description: "50年代から90年代のChampionリバースウィーブのコレクションサイト",
+  title: "ブランドコレクション",
+  description:
+    "50年代から90年代のChampionリバースウィーブの様々なブランドコレクションを展示しています。",
   openGraph: {
     ...baseMetadata.openGraph,
-    title: "Champion リバースウィーブ | ホーム",
+    title: "ブランドコレクション | Champion リバースウィーブ",
     description:
-      "50年代から90年代のChampionリバースウィーブのコレクションサイト",
-    url: "/",
+      "50年代から90年代のChampionリバースウィーブの様々なブランドコレクションを展示しています。",
+    url: "/brands",
     images: [
       {
-        url: "/images/home-banner.jpg", // 実際の画像パスに置き換えてください
+        url: "/images/brands-collection.jpg", // 実際の画像パスに置き換えてください
         width: 1200,
         height: 630,
-        alt: "Champion リバースウィーブ ホーム",
+        alt: "Champion リバースウィーブ ブランドコレクション",
       },
     ],
   },
   twitter: {
     ...baseMetadata.twitter,
-    title: "Champion リバースウィーブ | ホーム",
+    title: "ブランドコレクション | Champion リバースウィーブ",
     description:
-      "50年代から90年代のChampionリバースウィーブのコレクションサイト",
+      "50年代から90年代のChampionリバースウィーブの様々なブランドコレクションを展示しています。",
     images: [
       {
-        url: "/images/home-banner.jpg", // 実際の画像パスに置き換えてください
+        url: "/images/brands-collection.jpg", // 実際の画像パスに置き換えてください
         width: 1200,
         height: 630,
-        alt: "Champion リバースウィーブ ホーム",
+        alt: "Champion リバースウィーブ ブランドコレクション",
       },
     ],
   },
   alternates: {
-    canonical: "/",
+    canonical: "/brands",
   },
 };
 
-export default async function Home() {
+export default async function Brands() {
   // サーバーサイドでデータを取得
   const { brands, error } = await getBrandsData();
 
@@ -57,7 +58,7 @@ export default async function Home() {
     <main className="min-h-screen oldies-bg-primary">
       <div className="oldies-container">
         <Header />
-        <PageTitle title="Champion リバースウィーブ" />
+        <PageTitle title="ブランドコレクション" />
         <Suspense fallback={<Spinner />}>
           {error ? (
             <Error />

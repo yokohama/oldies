@@ -2,5 +2,4 @@
 export * from "./checkPoint";
 export * from "./eras";
 export * from "./profile";
-export * from "./product";
 export * from "./common";

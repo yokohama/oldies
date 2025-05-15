@@ -3,23 +3,21 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { baseMetadata } from "@/lib/metadata";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
+  display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Champion リバースウィーブ | ビンテージアパレル",
-  description:
-    "Discover vintage Champion Reverse Weave apparel from the 50s to 90s",
-  metadataBase: new URL("https://your-domain.com"),
-};
+export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
   children,
