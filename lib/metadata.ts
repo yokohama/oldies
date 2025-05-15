@@ -1,26 +1,34 @@
 import { Metadata } from "next";
 import { Brand, Product, ProductEra, UserProfile } from "./types";
+import { siteConfig, siteUrls } from "./config/siteConfig";
 
 // サイト全体のベースとなるメタデータ
 export const baseMetadata: Metadata = {
   title: {
-    template: "%s | Champion リバースウィーブ",
-    default: "Champion リバースウィーブ | ビンテージアパレル",
+    template: siteConfig.seo.titleTemplate,
+    default: siteConfig.seo.defaultTitle,
   },
-  description:
-    "50年代から90年代のChampionリバースウィーブウェアを展示するヴィンテージアパレルストア",
-  metadataBase: new URL("https://champion-vintage.example.com"),
+  description: siteConfig.description,
+  metadataBase: new URL(siteConfig.url),
   openGraph: {
     type: "website",
-    locale: "ja_JP",
-    siteName: "Champion リバースウィーブ | ビンテージアパレル",
+    locale: siteConfig.locale,
+    siteName: siteConfig.seo.defaultTitle,
+    images: [
+      {
+        url: siteConfig.images.defaultOgImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    creator: "@champion_vintage",
+    creator: siteConfig.social.twitter,
   },
   alternates: {
-    canonical: "/",
+    canonical: siteUrls.home(),
   },
   robots: {
     index: true,
@@ -29,13 +37,13 @@ export const baseMetadata: Metadata = {
 };
 
 // ブランドページのメタデータ生成
-export function generateBrandMetadata(brand: Brand): Metadata {
+export function generateBrandsMetadata(): Metadata {
   return {
-    title: `${brand.name}`,
+    title: "ブランド一覧",
     description:
       brand.description || `${brand.name}のヴィンテージアパレルコレクション`,
     openGraph: {
-      title: `${brand.name} | Champion リバースウィーブ`,
+      title: `${brand.name} | ${siteConfig.name}`,
       description:
         brand.description || `${brand.name}のヴィンテージアパレルコレクション`,
       images: [
@@ -58,7 +66,29 @@ export function generateBrandMetadata(brand: Brand): Metadata {
       ],
     },
     alternates: {
-      canonical: `/brands/${brand.id}`,
+      canonical: siteUrls.brand(brand.id),
+    },
+  };
+}
+
+export function generateProductsMetadata(brand: Brand): Metadata {
+  return {
+    title: `${brand.name}の製品一覧`,
+    description: `${brand.name}のヴィンテージアパレル製品コレクション`,
+    openGraph: {
+      title: `${brand.name}の製品一覧 | ${siteConfig.name}`,
+      description: `${brand.name}のヴィンテージアパレル製品コレクション`,
+      images: [
+        {
+          url: brand.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${brand.name}の製品一覧`,
+        },
+      ],
+    },
+    alternates: {
+      canonical: siteUrls.brand(brand.id) + "/products",
     },
   };
 }
@@ -74,7 +104,7 @@ export function generateProductMetadata(
       product.description ||
       `${brand.name}の${product.name}ヴィンテージアパレル`,
     openGraph: {
-      title: `${product.name} - ${brand.name} | Champion リバースウィーブ`,
+      title: `${product.name} - ${brand.name} | ${siteConfig.name}`,
       description:
         product.description ||
         `${brand.name}の${product.name}ヴィンテージアパレル`,
@@ -98,49 +128,7 @@ export function generateProductMetadata(
       ],
     },
     alternates: {
-      canonical: `/brands/${brand.id}/products/${product.id}`,
-    },
-  };
-}
-
-// 時代ページのメタデータ生成
-export function generateEraMetadata(
-  era: ProductEra,
-  product: Product,
-  brand: Brand,
-): Metadata {
-  const eraYears = `${era.manufacturing_start_year}年〜${era.manufacturing_end_year}年`;
-  return {
-    title: `${eraYears} ${product.name} - ${brand.name}`,
-    description:
-      era.description ||
-      `${eraYears}の${brand.name} ${product.name}ヴィンテージアパレル`,
-    openGraph: {
-      title: `${eraYears} ${product.name} - ${brand.name} | Champion リバースウィーブ`,
-      description:
-        era.description ||
-        `${eraYears}の${brand.name} ${product.name}ヴィンテージアパレル`,
-      images: [
-        {
-          url: era.imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${eraYears} ${product.name}`,
-        },
-      ],
-    },
-    twitter: {
-      images: [
-        {
-          url: era.imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${eraYears} ${product.name}`,
-        },
-      ],
-    },
-    alternates: {
-      canonical: `/brands/${brand.id}/products/${product.id}/eras/${era.id}`,
+      canonical: siteUrls.product(brand.id, product.id),
     },
   };
 }
@@ -149,10 +137,10 @@ export function generateEraMetadata(
 export function generateProfileMetadata(profile: UserProfile): Metadata {
   return {
     title: `${profile.name || "ユーザー"}のプロフィール`,
-    description: `${profile.name || "ユーザー"}のChampion リバースウィーブコレクション`,
+    description: `${profile.name || "ユーザー"}の${siteConfig.name}コレクション`,
     openGraph: {
-      title: `${profile.name || "ユーザー"}のプロフィール | Champion リバースウィーブ`,
-      description: `${profile.name || "ユーザー"}のChampion リバースウィーブコレクション`,
+      title: `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`,
+      description: `${profile.name || "ユーザー"}の${siteConfig.name}コレクション`,
       images: profile.avatarUrl
         ? [
             {
@@ -165,7 +153,7 @@ export function generateProfileMetadata(profile: UserProfile): Metadata {
         : [],
     },
     alternates: {
-      canonical: `/profile/${profile.id}`,
+      canonical: siteUrls.profile(profile.id),
     },
   };
 }
@@ -173,9 +161,8 @@ export function generateProfileMetadata(profile: UserProfile): Metadata {
 // お気に入りページのメタデータ
 export const favoritesMetadata: Metadata = {
   title: "お気に入り",
-  description:
-    "あなたがお気に入りに登録したChampion リバースウィーブのチェックポイント",
+  description: `あなたがお気に入りに登録した${siteConfig.name}のチェックポイント`,
   alternates: {
-    canonical: "/favorites",
+    canonical: siteUrls.favorites(),
   },
 };

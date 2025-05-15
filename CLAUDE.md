@@ -70,44 +70,56 @@ npm run lint
 ### ディレクトリ構造
 
 ```
-/
-├── app/                      # Next.js 13+ App Router
-│   ├── globals.css           # グローバルスタイル
-│   ├── layout.tsx            # ルートレイアウト
-│   ├── page.tsx              # ホームページ
-│   ├── auth                  # 認証のコールバック関連
-│   ├── favorites             # 個人のお気に入りページ(SEO対象外)
-│   ├── login                 # ログイン関連
-│   ├── profile               # ユーザープロフィール
-│   └── brands/               
-│       ├ page.tsx            # ブランド一覧ページ
-│       └ [brandId]/        
-│           └ products/         
-│             ├ page.tsx      # 商品一覧ページ
-│             └ [productId]/ 
-│               └ eras/         
-│                 └ page.tsx  # 年代一覧ページ
-│
-├── components/               # Reactコンポーネント
-│   ├── auth/                 # 認証関連コンポーネント
-│   ├── brand/                # ブランド関連コンポーネント
-│   ├── product/              # 商品関連コンポーネント
-│   ├── product_era_check_points/ # 商品時代チェックポイント関連コンポーネント
-│   ├── theme/                # テーマ関連コンポーネント
-│   └── ui/                   # UIコンポーネント
-│
-├── contexts/                 # Reactコンテキスト
-│   └── AuthContext.tsx       # 認証コンテキスト
-│
-├── hooks/                    # カスタムReactフック
-│
-└── lib/                      # ユーティリティと型定義
-    ├── api.ts                # API関連ユーティリティ
-    ├── database.types.ts     # データベース型定義
-    ├── sample-data.ts        # サンプルデータ
-    ├── supabase.ts           # Supabaseクライアント設定
-    ├── types.ts              # 型定義
-    └── utils.ts              # 汎用ユーティリティ関数
+./
+├── CLAUDE.md                        # Claude用の作業指示書
+├── app                              # ルーティングに関連するページ
+│   ├── auth                         # 認証コールバック
+│   ├── brands
+│   │   ├── [brandId]
+│   │   │   ├── layout.tsx
+│   │   │   └── products
+│   │   │       ├── [productId]
+│   │   │       │   └── eras
+│   │   │       │       └── page.tsx
+│   │   │       └── page.tsx
+│   │   └── layout.tsx
+│   ├── favorites
+│   ├── globals.css                   # tailwindをグループ化
+│   ├── layout.tsx
+│   ├── login
+│   ├── page.tsx
+│   └── profile
+├── components                        # 見分易いようにappのしたと同名フォルダ
+│   ├── (省略)
+│   ├── theme
+│   │   └── theme-provider.tsx
+│   └── ui                            # UI共通コンポーネント
+│       └── (省略)
+├── components.json
+├── contexts
+│   └── AuthContext.tsx
+├── hooks                             # クライアントサイドビジネスロジック
+│   ├── checkPoint
+│   │   └── (省略)
+│   ├── common
+│   │   └── (省略)
+│   ├── eras
+│   │   └── (省略)
+│   ├── index.ts
+│   └── profile
+│       └── (省略)
+├── lib
+│   ├── api.ts                        # supbaseへのアクセス
+│   ├── database.types.ts             # テーブル型定義
+│   ├── metadata.ts                   # SEO用メタデータ
+│   ├── server                        # サーバーサイドビジネスロジック
+│   │   └── (省略)
+│   ├── supabase.ts
+│   ├── types.ts
+│   └── utils.ts
+├── (省略)
+├── tailwind.config.ts
+└── tsconfig.json
 ```
 
 ### 主要なデータモデル

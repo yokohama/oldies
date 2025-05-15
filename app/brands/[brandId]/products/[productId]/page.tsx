@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { baseMetadata, generateEraMetadata } from "@/lib/metadata";
+import { baseMetadata, generateProductMetadata } from "@/lib/metadata";
 import { getErasData } from "@/lib/server/erasServer";
 import Spinner from "@/components/ui/Spinner";
 import NotFound from "@/components/ui/NotFound";
@@ -17,41 +17,15 @@ export async function generateMetadata({
   params: { brandId: string; productId: string };
 }): Promise<Metadata> {
   const productId = parseInt(params.productId, 10);
-  const { product, productEras, brand, error } = await getErasData(productId);
+  const { product, brand, error } = await getErasData(productId);
 
   if (!product || !brand || error) {
     return {
       ...baseMetadata,
-      title: "製品時代詳細",
-      description: "製品の時代別詳細ページ",
     };
   }
 
-  // 最初の時代情報があればそれを使用、なければ製品情報のみ
-  if (productEras.length > 0) {
-    return generateEraMetadata(productEras[0], product, brand);
-  }
-
-  return {
-    ...baseMetadata,
-    title: `${product.name} - ${brand.name}の時代情報`,
-    description: `${brand.name}の${product.name}の時代別詳細情報`,
-    openGraph: {
-      title: `${product.name} - ${brand.name}の時代情報 | Champion リバースウィーブ`,
-      description: `${brand.name}の${product.name}の時代別詳細情報`,
-      images: [
-        {
-          url: product.imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${product.name}の時代情報`,
-        },
-      ],
-    },
-    alternates: {
-      canonical: `/brands/${brand.id}/products/${product.id}/eras`,
-    },
-  };
+  return generateProductMetadata(product, brand);
 }
 
 export default async function ProductEras({

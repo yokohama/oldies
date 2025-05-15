@@ -10,44 +10,10 @@ import Error from "@/components/ui/Error";
 import NotFound from "@/components/ui/NotFound";
 import BrandCard from "@/components/brands/BrandCard";
 
-// 静的メタデータの基本部分
-export const metadata: Metadata = {
-  ...baseMetadata,
-  title: "Champion リバースウィーブ",
-  description: "50年代から90年代のChampionリバースウィーブのコレクションサイト",
-  openGraph: {
-    ...baseMetadata.openGraph,
-    title: "Champion リバースウィーブ | ホーム",
-    description:
-      "50年代から90年代のChampionリバースウィーブのコレクションサイト",
-    url: "/",
-    images: [
-      {
-        url: "/images/home-banner.jpg", // 実際の画像パスに置き換えてください
-        width: 1200,
-        height: 630,
-        alt: "Champion リバースウィーブ ホーム",
-      },
-    ],
-  },
-  twitter: {
-    ...baseMetadata.twitter,
-    title: "Champion リバースウィーブ | ホーム",
-    description:
-      "50年代から90年代のChampionリバースウィーブのコレクションサイト",
-    images: [
-      {
-        url: "/images/home-banner.jpg", // 実際の画像パスに置き換えてください
-        width: 1200,
-        height: 630,
-        alt: "Champion リバースウィーブ ホーム",
-      },
-    ],
-  },
-  alternates: {
-    canonical: "/",
-  },
-};
+// 動的メタデータの生成
+export async function generateMetadata(): Promise<Metadata> {
+  return baseMetadata;
+}
 
 export default async function Home() {
   // サーバーサイドでデータを取得
@@ -57,7 +23,7 @@ export default async function Home() {
     <main className="min-h-screen oldies-bg-primary">
       <div className="oldies-container">
         <Header />
-        <PageTitle title="Champion リバースウィーブ" />
+        <PageTitle title="ブランド一覧" />
         <Suspense fallback={<Spinner />}>
           {error ? (
             <Error />

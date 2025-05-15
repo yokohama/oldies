@@ -26,7 +26,6 @@ const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
   };
 
   const {
-    sortedProductEras,
     setApi,
     currentIndex,
     currentProductEra,
@@ -102,7 +101,7 @@ const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
         {/* カルーセルのナビゲーションインジケーター */}
         <div className="flex justify-center mt-4 gap-2">
           <div className="flex items-center gap-1.5 mx-2">
-            {sortedProductEras.map((_, index) => (
+            {productEras.map((_, index) => (
               <div
                 key={index}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${
@@ -116,7 +115,7 @@ const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
         </div>
 
         <CarouselContent className="-ml-2 -mr-2">
-          {sortedProductEras.map((productEra) => (
+          {productEras.map((productEra) => (
             <CarouselItem
               key={productEra.id}
               className="basis-full pl-1.5 pr-1.5 pt-3 pb-0"

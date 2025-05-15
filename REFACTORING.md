@@ -15,6 +15,7 @@ bransのビジネスロジックをサーバーサイドに移行した例があ
 - lib/server/brandsService.tsx // brandsに提供するサーバーサイドのビジネスロジック。
 
 # このタスクでやりたいこと
+## STEP1
 移行の際は、page.tsxにSEO対策でメタデータ(lib/metadata.ts)を実装する。
 - [完了] 上記の例に習って、app/brands/[brandId]/products/page.tsxも適切に移行する。
 - [完了] 上記の例に習って、app/brands/[brandId]/products/[productId]/eras/page.tsxも適切に移行する。
@@ -23,4 +24,8 @@ bransのビジネスロジックをサーバーサイドに移行した例があ
 - [完了] components/brans/BrandsPage.tsxの中身を、app/brans/page.tsxに移行。
 - [完了] components/products/ProductsPage.tsxの中身を、app/products/page.tsxに移行。
 - [完了] components/profile/ProfilePage.tsxの中身を、app/profile/[id]/page.tsxに移行。サーバーサイドの処理が必要な場合は、lib/server/profileServer.tsを使用する。
-- components/ears/ErasPage.tsxの中身を、app/brans/[brandId]/products/[productId]/eras/page.tsxに移行。サーバーサイドの処理が必要な場合は、lib/server/erasServer.tsを使用する。
+- [完了] components/ears/ErasPage.tsxの中身を、app/brans/[brandId]/products/[productId]/eras/page.tsxに移行。サーバーサイドの処理が必要な場合は、lib/server/erasServer.tsを使用する。
+- [完了] 上記の修正によって、hooksの中に使われなくなったファイルやメソッドの一覧を作成
+- [完了] hooks/eras/useErasCarousel.tsの中で上記の作業により、return中でリターンが不要になったものはあるか？
+
+# リファクタリングのディレクトリ構成

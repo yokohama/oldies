@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { baseMetadata } from "@/lib/metadata";
+import { baseMetadata, generateProductsMetadata } from "@/lib/metadata";
 import { getProductsData } from "@/lib/server/productsServer";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
@@ -23,33 +23,10 @@ export async function generateMetadata({
   if (!brand) {
     return {
       ...baseMetadata,
-      title: "ブランド詳細",
-      description: "ブランド詳細ページ",
     };
   }
 
-  // 製品一覧ページ用のメタデータを生成
-  return {
-    ...baseMetadata,
-    title: `${brand.name}の製品一覧`,
-    description: `${brand.name}のヴィンテージアパレル製品コレクション`,
-    openGraph: {
-      ...baseMetadata.openGraph,
-      title: `${brand.name}の製品一覧 | Champion リバースウィーブ`,
-      description: `${brand.name}のヴィンテージアパレル製品コレクション`,
-      images: [
-        {
-          url: brand.imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${brand.name}の製品一覧`,
-        },
-      ],
-    },
-    alternates: {
-      canonical: `/brands/${brand.id}/products`,
-    },
-  };
+  return generateProductsMetadata(brand);
 }
 
 export default async function Products({
@@ -83,7 +60,7 @@ export default async function Products({
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {products.map((product) => (
                 <Link
-                  href={`/brands/${brand?.id}/products/${product.id}/eras`}
+                  href={`/brands/${brand?.id}/products/${product.id}`}
                   key={product.id}
                   className="oldies-card-interactive"
                 >
