@@ -26,7 +26,7 @@ const Header = () => {
   return (
     <header className="mb-8 pt-4 border-b border-amber-100 bg-[url('/images/cover.png')] bg-cover bg-center">
       <div className="flex items-center justify-between pb-4">
-        <Link href="/brands">
+        <Link href="/">
           <h1 className="text-3xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group">
             <span className="italic tracking-wide">Oldies</span>
             <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-600 transition-all duration-300 group-hover:w-full"></span>

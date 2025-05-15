@@ -20,6 +20,7 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
     setIsAddModalOpen,
     handleAddButtonClick,
     user,
+    addNewCheckPoint,
   } = useCheckPoints(era.checkPoints || []);
 
   return (
@@ -28,9 +29,10 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         productEraId={era.id}
-        onSuccess={() => {
-          // データを再取得するためのコールバック
-          window.location.reload();
+        onSuccess={(newCheckPoint) => {
+          // 新しいチェックポイントを状態に追加
+          addNewCheckPoint(newCheckPoint);
+          setIsAddModalOpen(false);
         }}
       />
 

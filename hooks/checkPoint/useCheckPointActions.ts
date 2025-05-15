@@ -20,7 +20,7 @@ interface UseCheckPointActionsReturn {
     point: string,
     file: File,
     description: string | null,
-  ) => Promise<boolean>;
+  ) => Promise<{ success: boolean; checkPoint?: ProductEraCheckPoint }>;
   handleDeleteCheckPoint: (checkPointId: number) => Promise<boolean>;
   isSubmitting: boolean;
   uploadProgress: number;
@@ -92,7 +92,7 @@ export function useCheckPointActions(
     point: string,
     file: File,
     description: string | null,
-  ): Promise<boolean> => {
+  ): Promise<{ success: boolean; checkPoint?: ProductEraCheckPoint }> => {
     setIsSubmitting(true);
     setUploadProgress(0);
 
@@ -102,7 +102,7 @@ export function useCheckPointActions(
 
       if (!user) {
         toast.error("ログインが必要です");
-        return false;
+        return { success: false };
       }
 
       // アップロード開始時に進捗を設定
@@ -115,7 +115,7 @@ export function useCheckPointActions(
       setUploadProgress(70);
 
       // チェックポイントの追加
-      await API.addCheckPoint(
+      const newCheckPoint = await API.addCheckPoint(
         productEraId,
         point,
         imageUrl,
@@ -125,11 +125,11 @@ export function useCheckPointActions(
 
       setUploadProgress(100);
       toast.success("チェックポイントを追加しました");
-      return true;
+      return { success: true, checkPoint: newCheckPoint };
     } catch (error) {
       console.error("チェックポイントの追加に失敗しました:", error);
       toast.error("チェックポイントの追加に失敗しました");
-      return false;
+      return { success: false };
     } finally {
       setIsSubmitting(false);
     }

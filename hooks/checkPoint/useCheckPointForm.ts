@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { useCheckPointActions } from "./useCheckPointActions";
+import { ProductEraCheckPoint } from "@/lib/types";
 
 interface UseCheckPointFormReturn {
   point: string;
@@ -17,7 +18,7 @@ interface UseCheckPointFormReturn {
   handleSubmit: (
     e: React.FormEvent,
     productEraId: number,
-    onSuccess: () => void,
+    onSuccess: (newCheckPoint: ProductEraCheckPoint) => void,
     onClose: () => void,
   ) => Promise<void>;
 }
@@ -69,7 +70,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
   const handleSubmit = async (
     e: React.FormEvent,
     productEraId: number,
-    onSuccess: () => void,
+    onSuccess: (newCheckPoint: ProductEraCheckPoint) => void,
     onClose: () => void,
   ) => {
     e.preventDefault();
@@ -85,20 +86,19 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
     }
 
     // カスタムフックのaddCheckPoint関数を使用
-    const success = await handleAddCheckPoint(
+    const result = await handleAddCheckPoint(
       productEraId,
       point,
       selectedFile,
       description || null,
     );
 
-    if (success) {
+    if (result.success && result.checkPoint) {
       setPoint("");
       setDescription("");
       setSelectedFile(null);
       setPreviewUrl(null);
-      onSuccess();
-      onClose();
+      onSuccess(result.checkPoint);
     }
   };
 

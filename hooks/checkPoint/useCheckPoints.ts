@@ -14,6 +14,7 @@ interface UseCheckPointsReturn {
   setIsAddModalOpen: (isOpen: boolean) => void;
   handleAddButtonClick: () => void;
   user: User | null;
+  addNewCheckPoint: (newCheckPoint: ProductEraCheckPoint) => void;
 }
 
 export function useCheckPoints(
@@ -36,6 +37,23 @@ export function useCheckPoints(
     } else {
       // ログイン済みの場合はモーダルを開く
       setIsAddModalOpen(true);
+    }
+  };
+
+  // 新しいチェックポイントを追加するメソッド
+  const addNewCheckPoint = (newCheckPoint: ProductEraCheckPoint) => {
+    setCheckPoints((prevCheckPoints) => [newCheckPoint, ...prevCheckPoints]);
+
+    // 新しいチェックポイントのユーザープロフィールを取得
+    if (newCheckPoint.userId && !userProfiles[newCheckPoint.userId]) {
+      API.getUserProfile(newCheckPoint.userId).then((profile) => {
+        if (profile) {
+          setUserProfiles((prev) => ({
+            ...prev,
+            [newCheckPoint.userId as string]: profile,
+          }));
+        }
+      });
     }
   };
 
@@ -85,5 +103,6 @@ export function useCheckPoints(
     setIsAddModalOpen,
     handleAddButtonClick,
     user,
+    addNewCheckPoint,
   };
 }
