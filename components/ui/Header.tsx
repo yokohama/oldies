@@ -15,6 +15,7 @@ import LoginButton from "@/components/auth/LoginButton";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { siteConfig } from "@/lib/config/siteConfig";
 import Image from "next/image";
+import styles from "@/styles/header.module.css";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <header className="mb-8 pt-12 pb-10 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16 xl:pt-24 xl:pb-20 2xl:pt-32 2xl:pb-24 border-b border-amber-100 bg-[url('/images/cover.png')] bg-cover bg-center">
+    <header className="mb-8 pt-12 pb-10 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16 xl:pt-24 xl:pb-20 2xl:pt-32 2xl:pb-24 border-b border-amber-100 oldies-header-background">
       <div className="flex items-center justify-between">
         <Link href="/">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group pl-2 md:pl-4 lg:pl-6">

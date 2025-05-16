@@ -119,6 +119,13 @@
 
 @layer components {
 
+	/* ヘッダー関連 */
+	.oldies-header-background {
+		background-image: url("/images/cover.webp");
+		background-size: cover;
+		background-position: center;
+	}
+
 	/* レイアウト関連 */
 	.oldies-container {
 		@apply max-w-7xl mx-auto px-4 pt-0 pb-6 sm:px-6 bg-[var(--oldies-bg-primary)];
@@ -180,6 +187,10 @@
 
 	.oldies-btn-accent {
 		@apply oldies-btn bg-[var(--oldies-accent-primary)] text-white hover:bg-[var(--oldies-accent-secondary)];
+	}
+
+	.oldies-btn-orange {
+		@apply oldies-btn bg-amber-600 text-white hover:bg-amber-700;
 	}
 
 	.oldies-btn-outline {

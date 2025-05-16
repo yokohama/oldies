@@ -86,6 +86,7 @@ const ProfileEditPage = () => {
                     }
                     alt={name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 96px"
                     className="object-cover"
                     unoptimized
                   />

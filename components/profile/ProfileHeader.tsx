@@ -51,6 +51,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
             }
             alt={`${user.name || "ユーザー"}のプロフィール | ${siteConfig.name}`}
             fill
+            sizes="(max-width: 768px) 100vw, 96px"
             className="object-cover"
             unoptimized
             priority={true}

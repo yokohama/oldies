@@ -131,8 +131,8 @@ const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
                       src={productEra.imageUrl}
                       alt={` ${brand.name} - ${product.name} | ${productEra.manufacturing_start_year}年から${productEra.manufacturing_end_year}年のヴィンテージの特徴 | ${siteConfig.name}`}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover sepia-[0.15] brightness-[0.98]"
-                      unoptimized
                       priority={currentIndex === 0}
                     />
 

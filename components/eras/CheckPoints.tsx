@@ -6,6 +6,7 @@ import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPoint from "./CheckPoint";
 import { showProductEraCheckPoint } from "./CheckPointToast";
 import { useCheckPoints } from "@/hooks";
+import NotFound from "../ui/NotFound";
 
 interface CheckPointsProps {
   brand: Brand;
@@ -26,7 +27,7 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
   } = useCheckPoints(era.checkPoints || []);
 
   return (
-    <>
+    <div>
       <AddCheckPointModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
@@ -38,15 +39,15 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
         }}
       />
 
-      <div className="mt-6 oldies-bg-primary rounded-sm p-4 shadow-sm">
+      <div className="mt-6 rounded-sm p-4 shadow-sm">
         <div className="flex justify-between items-center mb-3 px-2">
           <h3 className="oldies-section-title relative inline-block pb-1">
             Check point
           </h3>
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
-            className="oldies-btn-outline text-xs"
+            className="bg-amber-600 hover:bg-amber-700 text-white text-xs"
             onClick={handleAddButtonClick}
           >
             <svg
@@ -68,7 +69,9 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
           </Button>
         </div>
         <div className="space-y-4 px-2">
-          {checkPoints && checkPoints.length > 0 ? (
+          {checkPoints && checkPoints.length == 0 ? (
+            <NotFound text="チェックポイントがまだありません。" />
+          ) : (
             checkPoints.map((checkPoint) => (
               <CheckPoint
                 key={checkPoint.id}
@@ -87,16 +90,15 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
                 }
               />
             ))
-          ) : (
-            <div className="text-center py-6 oldies-border-dashed rounded-sm oldies-bg-secondary">
-              <p className="oldies-text-secondary font-serif italic">
-                チェックポイントがまだありません。
-              </p>
-            </div>
           )}
         </div>
       </div>
-    </>
+      <div className="mt-4 text-center">
+        <span className="inline-block bg-[var(--oldies-bg-accent)] oldies-text-primary text-sm px-3 py-1.5 rounded-full font-medium">
+          {era.manufacturing_start_year}〜{era.manufacturing_end_year}
+        </span>
+      </div>
+    </div>
   );
 };
 

@@ -62,7 +62,10 @@ const CheckPoint = ({
   };
 
   return (
-    <div className="oldies-card cursor-pointer" onClick={handleCheckPointClick}>
+    <div
+      className="oldies-card cursor-pointer flex flex-col h-full"
+      onClick={handleCheckPointClick}
+    >
       {isOwnCheckPoint && (
         <button
           onClick={handleDeleteClickPoint}
@@ -72,23 +75,16 @@ const CheckPoint = ({
           <Trash2 size={18} />
         </button>
       )}
-      <div className="flex items-start p-3">
+      <div className="flex items-start p-3 flex-grow">
         {checkPoint.imageUrl && (
           <div className="relative h-16 w-16 mr-3 flex-shrink-0 oldies-bg-accent rounded-sm overflow-hidden oldies-border">
             <Image
               src={checkPoint.imageUrl}
               alt={checkPoint.point}
               fill
+              sizes="(max-width: 768px) 100vw, 64px"
               className="object-cover sepia-[0.15] brightness-[0.98]"
               priority={true}
-            />
-
-            <Image
-              src={avatarUrl}
-              alt={`プロフィールアイコン | ${checkPoint.point} - ${product.name} - ${brand.name} | ${siteConfig.name}`}
-              width={24}
-              height={24}
-              className="object-cover"
             />
           </div>
         )}
@@ -101,24 +97,25 @@ const CheckPoint = ({
       </div>
 
       {/* フッター部分（SNS領域） */}
-      <div className="oldies-card-footer">
-        <div className="flex items-center justify-between">
+      <div className="oldies-card-footer mt-auto">
+        <div className="flex items-center justify-between space-x-2">
           {/* 投稿者情報 - クリックでプロフィールページへ */}
           <Link
             href={`/profile/${checkPoint.userId}`}
-            className="flex items-center group"
+            className="flex items-center gap-2 group"
             onClick={(e) => e.stopPropagation()} // 親要素のクリックイベントを停止
           >
-            <div className="relative h-6 w-6 rounded-full overflow-hidden oldies-border mr-2 transition-transform group-hover:scale-105">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
               <Image
                 src={avatarUrl}
                 alt={displayName}
                 width={24}
                 height={24}
-                className="object-cover"
+                className="object-cover w-full h-full"
+                unoptimized={avatarUrl.includes("api.dicebear.com")}
               />
             </div>
-            <span className="text-xs oldies-text-primary font-medium group-hover:text-[var(--oldies-accent-primary)] transition-colors">
+            <span className="text-xs oldies-text-primary font-medium group-hover:text-[var(--oldies-accent-primary)] transition-colors truncate max-w-[100px]">
               {displayName}
             </span>
           </Link>
