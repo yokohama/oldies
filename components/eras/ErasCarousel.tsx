@@ -12,13 +12,17 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Toaster } from "sonner";
 import CheckPoints from "./CheckPoints";
 import { useErasCarousel } from "@/hooks";
+import { Brand, Product } from "@/lib/types";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 // 外部から使用するためのプロップス
 interface ErasCarouselProps {
+  brand: Brand;
+  product: Product;
   productEras: ProductEra[];
 }
 
-const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
+const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
   const [selectedEraIndex, setSelectedEraIndex] = useState(0);
 
   const handleEraIndexChange = (index: number) => {
@@ -125,11 +129,13 @@ const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
                   <div className="relative h-52 w-full oldies-bg-secondary">
                     <Image
                       src={productEra.imageUrl}
-                      alt={`製造年代: ${productEra.manufacturing_start_year}-${productEra.manufacturing_end_year}`}
+                      alt={` ${brand.name} - ${product.name} | ${productEra.manufacturing_start_year}年から${productEra.manufacturing_end_year}年のヴィンテージの特徴 | ${siteConfig.name}`}
                       fill
                       className="object-cover sepia-[0.15] brightness-[0.98]"
                       unoptimized
+                      priority={currentIndex === 0}
                     />
+
                     <span className="absolute top-2 right-2 bg-[var(--oldies-bg-accent)] oldies-text-primary text-base px-3 py-1.5 rounded-full font-medium">
                       {productEra.manufacturing_start_year}-
                       {productEra.manufacturing_end_year}
@@ -138,7 +144,11 @@ const ErasCarousel = ({ productEras }: ErasCarouselProps) => {
                   <h3 className="text-sm oldies-text-secondary px-2 mt-2">
                     {currentProductEra?.description}
                   </h3>
-                  <CheckPoints era={productEra} />
+                  <CheckPoints
+                    brand={brand}
+                    product={product}
+                    era={productEra}
+                  />
                 </CardContent>
                 <CardFooter className="p-3 flex justify-between items-center"></CardFooter>
               </Card>

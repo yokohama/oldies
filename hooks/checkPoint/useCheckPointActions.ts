@@ -5,10 +5,17 @@ import { API } from "@/lib/api";
 import { toast } from "sonner";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
+import { Brand, Product } from "@/lib/types";
 
 interface UseCheckPointActionsProps {
+  brand: Brand;
+  product: Product;
   checkPoint?: ProductEraCheckPoint;
-  showProductEraCheckPoint?: (checkPoint: ProductEraCheckPoint) => void;
+  showProductEraCheckPoint?: (
+    brand: Brand,
+    product: Product,
+    checkPoint: ProductEraCheckPoint,
+  ) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfile;
 }
@@ -48,6 +55,8 @@ export function useCheckPointActions(
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
 
+  const brand = props?.brand;
+  const product = props?.product;
   const checkPoint = props?.checkPoint;
   const showProductEraCheckPoint = props?.showProductEraCheckPoint;
   const userProfile = props?.userProfile;
@@ -184,8 +193,8 @@ export function useCheckPointActions(
   };
 
   const handleCheckPointClick = () => {
-    if (checkPoint && showProductEraCheckPoint) {
-      showProductEraCheckPoint(checkPoint);
+    if (brand && product && checkPoint && showProductEraCheckPoint) {
+      showProductEraCheckPoint(brand, product, checkPoint);
     }
   };
 

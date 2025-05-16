@@ -1,25 +1,28 @@
 "use client";
 
-import { useProfileCheckPoints } from "@/hooks";
 import CheckPoint from "../eras/CheckPoint";
-import { UserProfile } from "@/lib/types";
+import { UserProfile, ProductEraCheckPoint } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { showProductEraCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
-import Spinner from "../ui/Spinner";
+import { useState } from "react";
 
 interface ProfileCheckPointsProps {
   userId: string;
   userProfile: UserProfile;
+  initialCheckPoints: ProductEraCheckPoint[];
+  initialError?: string | null;
 }
 
 const ProfileCheckPoints = ({
   userId,
   userProfile,
+  initialCheckPoints,
+  initialError = null,
 }: ProfileCheckPointsProps) => {
   const { user } = useAuth();
-  const { checkPoints, setCheckPoints, loading, error } = useProfileCheckPoints(
-    { userId },
-  );
+  const [checkPoints, setCheckPoints] =
+    useState<ProductEraCheckPoint[]>(initialCheckPoints);
+  const [error] = useState<string | null>(initialError);
 
   const isOwnProfile = user?.id === userId;
 
@@ -33,9 +36,7 @@ const ProfileCheckPoints = ({
         )}
       </h2>
 
-      {loading ? (
-        <Spinner size="lg" />
-      ) : error ? (
+      {error ? (
         <div className="text-center py-8">
           <p className="text-sm text-[#7a6b59]">エラーが発生しました</p>
         </div>
@@ -50,6 +51,8 @@ const ProfileCheckPoints = ({
           {checkPoints.map((checkPoint) => (
             <CheckPoint
               key={checkPoint.id}
+              brand={checkPoint.brand}
+              product={checkPoint.product}
               checkPoint={checkPoint}
               setCheckPoints={setCheckPoints}
               showProductEraCheckPoint={toastShowProductEraCheckPoint}

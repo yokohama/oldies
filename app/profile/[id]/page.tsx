@@ -2,7 +2,10 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { baseMetadata, generateProfileMetadata } from "@/lib/metadata";
-import { getProfileData } from "@/lib/server/profileServer";
+import {
+  getProfileData,
+  getProfileCheckPointsData,
+} from "@/lib/server/profileServer";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 import Spinner from "@/components/ui/Spinner";
@@ -45,6 +48,10 @@ export default async function UserProfilePage({
     notFound();
   }
 
+  // チェックポイントデータを取得
+  const { checkPoints, error: checkPointsError } =
+    await getProfileCheckPointsData(params.id);
+
   return (
     <main className="min-h-screen oldies-bg-primary">
       <Suspense fallback={<Spinner />}>
@@ -59,7 +66,12 @@ export default async function UserProfilePage({
 
               {/* ユーザーのチェックポイント一覧 */}
               <div className="mt-8">
-                <ProfileCheckPoints userId={params.id} userProfile={user} />
+                <ProfileCheckPoints
+                  userId={params.id}
+                  userProfile={user}
+                  initialCheckPoints={checkPoints}
+                  initialError={checkPointsError}
+                />
               </div>
             </div>
             <Footer />

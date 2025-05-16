@@ -3,8 +3,14 @@
 import Image from "next/image";
 import { ProductEraCheckPoint } from "@/lib/types";
 import { toast } from "sonner";
+import { siteConfig } from "@/lib/config/siteConfig";
+import { Brand, Product } from "@/lib/types";
 
-export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
+export const showProductEraCheckPoint = (
+  brand: Brand,
+  product: Product,
+  checkPoint: ProductEraCheckPoint,
+) => {
   const toastId = toast(
     <div className="relative oldies-bg-primary p-4 rounded-lg oldies-border">
       <button
@@ -35,7 +41,7 @@ export const showProductEraCheckPoint = (checkPoint: ProductEraCheckPoint) => {
         <div className="relative h-48 w-full oldies-bg-secondary rounded-lg overflow-hidden mb-4 oldies-border">
           <Image
             src={checkPoint.imageUrl}
-            alt={checkPoint.point}
+            alt={`${checkPoint.point} - ${product.name} - ${brand.name} | ヴィンテージアパレル| 時代の特徴ポイント | ${siteConfig.name}`}
             fill
             className="object-cover sepia-[0.15] brightness-[0.98]"
             unoptimized

@@ -10,6 +10,7 @@ import PageTitle from "@/components/ui/PageTitle";
 import Spinner from "@/components/ui/Spinner";
 import Error from "@/components/ui/Error";
 import NotFound from "@/components/ui/NotFound";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 // 動的メタデータの生成
 export async function generateMetadata({
@@ -68,10 +69,11 @@ export default async function Products({
                     <div className="absolute inset-0 border-b border-[var(--oldies-border-primary)] z-10"></div>
                     <Image
                       src={product.imageUrl}
-                      alt={product.name}
+                      alt={`${product.name} | ${brand?.name}コレクション | ${siteConfig.name}`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover sepia-[0.2] brightness-[0.95]"
+                      priority={product.id === products[0]?.id}
                     />
                   </div>
                   <div className="oldies-card-content">

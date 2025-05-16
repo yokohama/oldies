@@ -33,18 +33,41 @@ const mapProductEra = (era: any): ProductEra => ({
   imageUrl: era.image_url,
   description: era.description || "",
   checkPoints: era.product_era_check_points
-    ? era.product_era_check_points.map(mapProductEraCheckPoint)
+    ? era.product_era_check_points.map((checkpoint: any) => {
+        // 製品時代のチェックポイントにブランドと製品の情報を追加
+        const checkpointWithRefs = {
+          ...checkpoint,
+          product_eras: {
+            products: era.products || { brands: {} },
+          },
+        };
+        return mapProductEraCheckPoint(checkpointWithRefs);
+      })
     : [],
 });
 
-const mapProductEraCheckPoint = (checkpoint: any): ProductEraCheckPoint => ({
-  id: checkpoint.id,
-  productEraId: checkpoint.product_era_id,
-  point: checkpoint.point,
-  imageUrl: checkpoint.image_url,
-  description: checkpoint.description || "",
-  userId: checkpoint.user_id,
-});
+const mapProductEraCheckPoint = (checkpoint: any): ProductEraCheckPoint => {
+  // 関連するブランドと製品の情報がある場合はそれを使用
+  const brand = checkpoint.product_eras?.products?.brands
+    ? mapBrand(checkpoint.product_eras.products.brands)
+    : undefined;
+
+  const product = checkpoint.product_eras?.products
+    ? mapProduct(checkpoint.product_eras.products)
+    : undefined;
+
+  return {
+    id: checkpoint.id,
+    brand: brand as Brand, // 型アサーションを使用
+    product: product as Product, // 型アサーションを使用
+    productEraId: checkpoint.product_era_id,
+    point: checkpoint.point,
+    imageUrl: checkpoint.image_url,
+    description: checkpoint.description || "",
+    userId: checkpoint.user_id,
+    createdAt: checkpoint.created_at,
+  };
+};
 
 const mapUserProfile = (profile: any): UserProfile => ({
   id: profile.id,
@@ -150,8 +173,26 @@ export class API {
       const product = productEra.products;
       const brand = product.brands;
 
+      // brand と product オブジェクトを作成
+      const brandObj: Brand = {
+        id: brand.id,
+        name: brand.name,
+        imageUrl: brand.image_url,
+        description: brand.description || "",
+      };
+
+      const productObj: Product = {
+        id: product.id,
+        brandId: product.brand_id,
+        name: product.name,
+        imageUrl: product.image_url,
+        description: product.description || "",
+      };
+
       return {
         id: checkPoint.id,
+        brand: brandObj,
+        product: productObj,
         productEraId: checkPoint.product_era_id,
         point: checkPoint.point,
         imageUrl: checkPoint.image_url,
@@ -209,8 +250,25 @@ export class API {
     if (error) throw error;
 
     return (data || []).map((checkPoint) => {
+      const productEra = checkPoint.product_eras;
+      const product = productEra.products;
+      const brand = product.brands;
+
       return {
         id: checkPoint.id,
+        brand: {
+          id: brand.id,
+          name: brand.name,
+          imageUrl: brand.image_url,
+          description: brand.description || "",
+        },
+        product: {
+          id: product.id,
+          brandId: product.brand_id,
+          name: product.name,
+          imageUrl: product.image_url,
+          description: product.description || "",
+        },
         productEraId: checkPoint.product_era_id,
         point: checkPoint.point,
         imageUrl: checkPoint.image_url,
@@ -317,11 +375,50 @@ export class API {
   static async getProductEraCheckPoints(): Promise<ProductEraCheckPoint[]> {
     const { data, error } = await supabase
       .from("product_era_check_points")
-      .select("*")
+      .select(
+        `
+        *,
+        product_eras!fk_product_era(
+          *,
+          products!fk_product(
+            *,
+            brands!fk_brand(*)
+          )
+        )
+      `,
+      )
       .is("deleted_at", null);
 
     if (error) throw error;
-    return (data || []).map(mapProductEraCheckPoint);
+
+    return (data || []).map((checkPoint) => {
+      const productEra = checkPoint.product_eras;
+      const product = productEra.products;
+      const brand = product.brands;
+
+      return {
+        id: checkPoint.id,
+        brand: {
+          id: brand.id,
+          name: brand.name,
+          imageUrl: brand.image_url,
+          description: brand.description || "",
+        },
+        product: {
+          id: product.id,
+          brandId: product.brand_id,
+          name: product.name,
+          imageUrl: product.image_url,
+          description: product.description || "",
+        },
+        productEraId: checkPoint.product_era_id,
+        point: checkPoint.point,
+        imageUrl: checkPoint.image_url,
+        description: checkPoint.description || "",
+        userId: checkPoint.user_id,
+        createdAt: checkPoint.created_at,
+      };
+    });
   }
 
   static async addCheckPoint(
@@ -340,11 +437,48 @@ export class API {
         description: description || null,
         user_id: userId,
       })
-      .select()
+      .select(
+        `
+        *,
+        product_eras!fk_product_era(
+          *,
+          products!fk_product(
+            *,
+            brands!fk_brand(*)
+          )
+        )
+      `,
+      )
       .single();
 
     if (error) throw error;
-    return mapProductEraCheckPoint(data);
+
+    const productEra = data.product_eras;
+    const product = productEra.products;
+    const brand = product.brands;
+
+    return {
+      id: data.id,
+      brand: {
+        id: brand.id,
+        name: brand.name,
+        imageUrl: brand.image_url,
+        description: brand.description || "",
+      },
+      product: {
+        id: product.id,
+        brandId: product.brand_id,
+        name: product.name,
+        imageUrl: product.image_url,
+        description: product.description || "",
+      },
+      productEraId: data.product_era_id,
+      point: data.point,
+      imageUrl: data.image_url,
+      description: data.description || "",
+      userId: data.user_id,
+      createdAt: data.created_at,
+    };
   }
 
   static async deleteCheckPoint(checkPointId: number): Promise<void> {

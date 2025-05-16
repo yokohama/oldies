@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Brand } from "@/lib/types";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 interface BrandCardProps {
   brand: Brand;
@@ -24,10 +25,11 @@ const BrandCard = ({ brand }: BrandCardProps) => {
         <div className="absolute inset-0 border-b border-[var(--oldies-border-primary)] z-10"></div>
         <Image
           src={brand.imageUrl}
-          alt={brand.name}
+          alt={`${brand.name} | ヴィンテージブランドコレクション | ${siteConfig.name}`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           className="object-cover sepia-[0.2] brightness-[0.95]"
+          priority={true}
         />
       </div>
       <div className="oldies-card-content">

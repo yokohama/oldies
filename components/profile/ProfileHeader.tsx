@@ -12,6 +12,7 @@ import {
   Facebook,
   Youtube,
 } from "lucide-react";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 interface ProfileHeaderProps {
   user: UserProfile;
@@ -48,10 +49,11 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
               user.avatarUrl ||
               `https://api.dicebear.com/7.x/initials/svg?seed=${user.id}`
             }
-            alt={user.name || "ユーザープロフィール画像"}
+            alt={`${user.name || "ユーザー"}のプロフィール | ${siteConfig.name}`}
             fill
             className="object-cover"
             unoptimized
+            priority={true}
           />
         </div>
 

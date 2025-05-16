@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductEra } from "@/lib/types";
+import { Brand, Product, ProductEra } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPoint from "./CheckPoint";
@@ -8,10 +8,12 @@ import { showProductEraCheckPoint } from "./CheckPointToast";
 import { useCheckPoints } from "@/hooks";
 
 interface CheckPointsProps {
+  brand: Brand;
+  product: Product;
   era: ProductEra;
 }
 
-const CheckPoints = ({ era }: CheckPointsProps) => {
+const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
   const {
     userProfiles,
     checkPoints,
@@ -70,9 +72,13 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
             checkPoints.map((checkPoint) => (
               <CheckPoint
                 key={checkPoint.id}
+                brand={brand}
+                product={product}
                 checkPoint={checkPoint}
                 setCheckPoints={setCheckPoints}
-                showProductEraCheckPoint={showProductEraCheckPoint}
+                showProductEraCheckPoint={() =>
+                  showProductEraCheckPoint(brand, product, checkPoint)
+                }
                 isOwnCheckPoint={user?.id === checkPoint.userId}
                 userProfile={
                   checkPoint.userId

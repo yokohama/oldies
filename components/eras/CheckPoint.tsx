@@ -5,16 +5,26 @@ import Link from "next/link";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPointActions } from "@/hooks";
+import { Brand, Product } from "@/lib/types";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 interface CheckPointProps {
+  brand: Brand;
+  product: Product;
   checkPoint: ProductEraCheckPoint;
   setCheckPoints: React.Dispatch<React.SetStateAction<ProductEraCheckPoint[]>>;
-  showProductEraCheckPoint: (checkPoint: ProductEraCheckPoint) => void;
+  showProductEraCheckPoint: (
+    brand: Brand,
+    product: Product,
+    checkPoint: ProductEraCheckPoint,
+  ) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfile;
 }
 
 const CheckPoint = ({
+  brand,
+  product,
   checkPoint,
   setCheckPoints,
   showProductEraCheckPoint,
@@ -32,6 +42,8 @@ const CheckPoint = ({
     isLikeLoading = false,
     handleDeleteCheckPoint,
   } = useCheckPointActions({
+    brand,
+    product,
     checkPoint,
     showProductEraCheckPoint,
     isOwnCheckPoint,
@@ -68,7 +80,15 @@ const CheckPoint = ({
               alt={checkPoint.point}
               fill
               className="object-cover sepia-[0.15] brightness-[0.98]"
-              unoptimized
+              priority={true}
+            />
+
+            <Image
+              src={avatarUrl}
+              alt={`プロフィールアイコン | ${checkPoint.point} - ${product.name} - ${brand.name} | ${siteConfig.name}`}
+              width={24}
+              height={24}
+              className="object-cover"
             />
           </div>
         )}
@@ -96,7 +116,6 @@ const CheckPoint = ({
                 width={24}
                 height={24}
                 className="object-cover"
-                unoptimized
               />
             </div>
             <span className="text-xs oldies-text-primary font-medium group-hover:text-[var(--oldies-accent-primary)] transition-colors">

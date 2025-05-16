@@ -35,10 +35,10 @@ export default async function ProductEras({
 }) {
   // サーバーサイドでデータを取得
   const productId = parseInt(params.productId, 10);
-  const { product, productEras, error } = await getErasData(productId);
+  const { brand, product, productEras, error } = await getErasData(productId);
 
-  // 製品が見つからない場合は404ページを表示
-  if (!product && !error) {
+  // ブランドや製品が見つからない場合は404ページを表示
+  if ((!product && !error) || !brand) {
     return <NotFound />;
   }
 
@@ -54,7 +54,11 @@ export default async function ProductEras({
             <NotFound text="この製品の時代情報はありません" />
           ) : (
             <div className="max-w-4xl mx-auto">
-              <ErasCarousel productEras={productEras} />
+              <ErasCarousel
+                brand={brand}
+                product={product}
+                productEras={productEras}
+              />
             </div>
           )}
         </Suspense>

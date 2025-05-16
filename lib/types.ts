@@ -25,6 +25,8 @@ export interface ProductEra {
 
 export interface ProductEraCheckPoint {
   id: number;
+  brand: Brand;
+  product: Product;
   productEraId: number;
   point: string;
   imageUrl: string;

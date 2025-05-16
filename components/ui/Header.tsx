@@ -46,6 +46,7 @@ const Header = () => {
                       width={80}
                       height={80}
                       className="object-cover sepia-[0.15]"
+                      priority={true}
                     />
                   </div>
                 ) : (
