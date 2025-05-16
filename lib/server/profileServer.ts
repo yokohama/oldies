@@ -2,7 +2,7 @@ import { API } from "@/lib/api";
 import { cache } from "react";
 
 // サーバーコンポーネントでユーザープロフィールデータを取得するための関数（キャッシュ対応）
-export const getProfileData = cache(async (userId: string) => {
+export const getProfileData = async (userId: string) => {
   try {
     // ユーザープロフィール情報を取得
     const user = await API.getUserProfile(userId);
@@ -22,10 +22,10 @@ export const getProfileData = cache(async (userId: string) => {
       error: "プロフィールの取得に失敗しました",
     };
   }
-});
+};
 
-// サーバーコンポーネントでユーザーのチェックポイントを取得するための関数（キャッシュ対応）
-export const getProfileCheckPointsData = cache(async (userId: string) => {
+// サーバーコンポーネントでユーザーのチェックポイントを取得するための関数（キャッシュなし）
+export const getProfileCheckPointsData = async (userId: string) => {
   try {
     // ユーザーのチェックポイントを取得
     const checkPoints = await API.getUserCheckPoints(userId);
@@ -38,4 +38,4 @@ export const getProfileCheckPointsData = cache(async (userId: string) => {
       error: "チェックポイントの取得に失敗しました",
     };
   }
-});
+};

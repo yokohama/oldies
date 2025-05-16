@@ -1,8 +1,7 @@
 import { API } from "@/lib/api";
-import { cache } from "react";
 
-// サーバーコンポーネントでデータを取得するための関数（キャッシュ対応）
-export const getErasData = cache(async (productId: number) => {
+// サーバーコンポーネントでデータを取得するための関数（キャッシュなし）
+export const getErasData = async (productId: number) => {
   try {
     // 製品情報を取得
     const product = await API.getProduct(productId);
@@ -51,4 +50,4 @@ export const getErasData = cache(async (productId: number) => {
       error: "時代データの取得に失敗しました",
     };
   }
-});
+};

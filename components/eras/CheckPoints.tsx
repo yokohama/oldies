@@ -7,6 +7,7 @@ import CheckPoint from "./CheckPoint";
 import { showProductEraCheckPoint } from "./CheckPointToast";
 import { useCheckPoints } from "@/hooks";
 import NotFound from "../ui/NotFound";
+import { siteConfig } from "@/lib/config/siteConfig";
 
 interface CheckPointsProps {
   brand: Brand;
@@ -51,7 +52,7 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
             onClick={handleAddButtonClick}
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns={siteConfig.svg.xmlns}
               width="16"
               height="16"
               viewBox="0 0 24 24"

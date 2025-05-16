@@ -8,6 +8,7 @@ import {
   LikedCheckPoint,
 } from "./types";
 import { User } from "@supabase/supabase-js";
+import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 // データ変換用のヘルパー関数
 const mapBrand = (brand: any): Brand => ({
@@ -73,9 +74,7 @@ const mapUserProfile = (profile: any): UserProfile => ({
   id: profile.id,
   name: profile.full_name || profile.username || "ユーザー",
   email: profile.email,
-  avatarUrl:
-    profile.avatar_url ||
-    `https://api.dicebear.com/7.x/initials/svg?seed=${profile.id}`,
+  avatarUrl: profile.avatar_url || getAvatarUrl(profile.id),
   websiteUrl: profile.website_url,
   twitterUrl: profile.twitter_url,
   instagramUrl: profile.instagram_url,

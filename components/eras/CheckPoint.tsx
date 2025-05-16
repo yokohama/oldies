@@ -6,7 +6,7 @@ import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPointActions } from "@/hooks";
 import { Brand, Product } from "@/lib/types";
-import { siteConfig } from "@/lib/config/siteConfig";
+import { siteConfig, getAvatarUrl } from "@/lib/config/siteConfig";
 
 interface CheckPointProps {
   brand: Brand;
@@ -35,7 +35,7 @@ const CheckPoint = ({
     liked = false,
     likeCount = 0,
     displayName = "ユーザー",
-    avatarUrl = "https://api.dicebear.com/7.x/initials/svg?seed=anonymous",
+    avatarUrl = getAvatarUrl(),
     handleLike = () => {},
     handleShare = () => {},
     handleCheckPointClick = () => {},

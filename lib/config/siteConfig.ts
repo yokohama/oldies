@@ -27,6 +27,15 @@ export const siteConfig = {
     defaultOgImage: "/images/og-default.jpg",
     defaultProfileAvatar: "/images/default-avatar.jpg",
   },
+
+  // SVG関連
+  svg: {
+    xmlns: "http://www.w3.org/2000/svg",
+    dicebear: {
+      baseUrl: "https://api.dicebear.com/7.x/initials/svg",
+      defaultSeed: "anonymous",
+    },
+  },
 };
 
 // 各種URLを生成するヘルパー関数
@@ -39,4 +48,11 @@ export const siteUrls = {
     `/brands/${brandId}/products/${productId}/eras/${eraId}`,
   profile: (profileId: string) => `/profile/${profileId}`,
   favorites: () => "/favorites",
+};
+
+// アバターURLを生成するヘルパー関数
+export const getAvatarUrl = (
+  seed: string = siteConfig.svg.dicebear.defaultSeed,
+) => {
+  return `${siteConfig.svg.dicebear.baseUrl}?seed=${seed}`;
 };

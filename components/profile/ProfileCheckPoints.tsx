@@ -4,7 +4,9 @@ import CheckPoint from "../eras/CheckPoint";
 import { UserProfile, ProductEraCheckPoint } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { showProductEraCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useUserCheckPoints } from "@/hooks/checkPoint/useUserCheckPoints";
+import Spinner from "../ui/Spinner";
 
 interface ProfileCheckPointsProps {
   userId: string;
@@ -22,7 +24,24 @@ const ProfileCheckPoints = ({
   const { user } = useAuth();
   const [checkPoints, setCheckPoints] =
     useState<ProductEraCheckPoint[]>(initialCheckPoints);
-  const [error] = useState<string | null>(initialError);
+  const [error, setError] = useState<string | null>(initialError);
+
+  // useUserCheckPointsフックを使用して最新のデータを取得
+  const {
+    checkPoints: latestCheckPoints,
+    loading,
+    error: fetchError,
+  } = useUserCheckPoints(userId);
+
+  // 最新のデータが取得できたら状態を更新
+  useEffect(() => {
+    if (latestCheckPoints.length > 0) {
+      setCheckPoints(latestCheckPoints);
+    }
+    if (fetchError) {
+      setError(fetchError);
+    }
+  }, [latestCheckPoints, fetchError]);
 
   const isOwnProfile = user?.id === userId;
 
@@ -40,6 +59,8 @@ const ProfileCheckPoints = ({
         <div className="text-center py-8">
           <p className="text-sm text-[#7a6b59]">エラーが発生しました</p>
         </div>
+      ) : loading && checkPoints.length === 0 ? (
+        <Spinner />
       ) : checkPoints.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-sm text-[#7a6b59]">

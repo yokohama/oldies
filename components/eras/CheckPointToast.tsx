@@ -18,7 +18,7 @@ export const showProductEraCheckPoint = (
         className="absolute top-0 right-0 p-1 rounded-full hover:oldies-bg-secondary"
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns={siteConfig.svg.xmlns}
           width="16"
           height="16"
           viewBox="0 0 24 24"

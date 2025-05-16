@@ -64,7 +64,7 @@ const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
           aria-label="前のスライドへ"
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns={siteConfig.svg.xmlns}
             width="40"
             height="40"
             viewBox="0 0 24 24"
@@ -87,7 +87,7 @@ const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
           aria-label="次のスライドへ"
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns={siteConfig.svg.xmlns}
             width="40"
             height="40"
             viewBox="0 0 24 24"

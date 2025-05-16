@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { Brand, Product } from "@/lib/types";
+import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 interface UseCheckPointActionsProps {
   brand: Brand;
@@ -199,9 +200,7 @@ export function useCheckPointActions(
   };
 
   // ユーザープロフィール情報の処理
-  const defaultAvatar =
-    "https://api.dicebear.com/7.x/initials/svg?seed=" +
-    (checkPoint?.userId || "anonymous");
+  const defaultAvatar = getAvatarUrl(checkPoint?.userId || "anonymous");
 
   const displayName = userProfile?.name ?? "ユーザー";
   const avatarUrl = userProfile?.avatarUrl ?? defaultAvatar;

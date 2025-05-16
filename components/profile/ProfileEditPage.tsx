@@ -9,6 +9,7 @@ import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import { useProfileEdit, useProfileRedirect } from "@/hooks";
 import { useAuth } from "@/contexts/AuthContext";
+import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 const ProfileEditPage = () => {
   const router = useRouter();
@@ -82,7 +83,7 @@ const ProfileEditPage = () => {
                     src={
                       avatarPreview ||
                       profile.avatarUrl ||
-                      `https://api.dicebear.com/7.x/initials/svg?seed=${profile.id}`
+                      getAvatarUrl(profile.id)
                     }
                     alt={name}
                     fill
