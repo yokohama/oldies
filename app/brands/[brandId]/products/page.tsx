@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { baseMetadata, generateProductsMetadata } from "@/lib/metadata";
-import { getProductsData } from "@/lib/server/productsServer";
+import { getProductsDataByBrandId } from "@/lib/server/productsServer";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 import PageTitle from "@/components/ui/PageTitle";
@@ -19,7 +19,7 @@ export async function generateMetadata({
   params: { brandId: string };
 }): Promise<Metadata> {
   const brandId = parseInt(params.brandId, 10);
-  const { brand } = await getProductsData(brandId);
+  const { brand } = await getProductsDataByBrandId(brandId);
 
   if (!brand) {
     return {
@@ -30,14 +30,14 @@ export async function generateMetadata({
   return generateProductsMetadata(brand);
 }
 
-export default async function Products({
+export default async function ProductsPage({
   params,
 }: {
   params: { brandId: string };
 }) {
   // サーバーサイドでデータを取得（React Cacheによって同じリクエストは再利用される）
   const brandId = parseInt(params.brandId, 10);
-  const { brand, products, error } = await getProductsData(brandId);
+  const { brand, products, error } = await getProductsDataByBrandId(brandId);
 
   return (
     <main className="min-h-screen oldies-bg-primary">

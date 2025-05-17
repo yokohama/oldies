@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Brand, Product, ProductEra, UserProfile } from "./types";
+import { Brand, Product, UserProfile } from "./types";
 import { siteConfig, siteUrls } from "./config/siteConfig";
 
 // サイト全体のベースとなるメタデータ
@@ -37,18 +37,21 @@ export const baseMetadata: Metadata = {
 };
 
 export function generateProductsMetadata(brand: Brand): Metadata {
+  const title = `${brand.name}の名作一覧 | ${siteConfig.name}`;
+  const description = `${brand.name}の今でも多くの人に愛されるアパレルコレクション`;
+
   return {
-    title: `${brand.name}の名作一覧`,
-    description: `${brand.name}の今でも多くの人に愛されるアパレルコレクション`,
+    title: title,
+    description: description,
     openGraph: {
-      title: `${brand.name}の名作一覧 | ${siteConfig.name}`,
-      description: `${brand.name}の今での多くの人に愛されるアパレルコレクション`,
+      title: title,
+      description: description,
       images: [
         {
           url: brand.imageUrl,
           width: 1200,
           height: 630,
-          alt: `${brand.name}の名作一覧`,
+          alt: title,
         },
       ],
     },
@@ -59,20 +62,16 @@ export function generateProductsMetadata(brand: Brand): Metadata {
 }
 
 // 商品ページのメタデータ生成
-export function generateProductMetadata(
-  product: Product,
-  brand: Brand,
-): Metadata {
+export function generateProductMetadata(product: Product): Metadata {
+  const title = `${product.name} - ${product.brand.name} | ${siteConfig.name}`;
+  const description = `${product.brand.name}の${product.name}ヴィンテージアパレル`;
+
   return {
-    title: `${product.name} - ${brand.name}`,
-    description:
-      product.description ||
-      `${brand.name}の${product.name}ヴィンテージアパレル`,
+    title: title,
+    description: description,
     openGraph: {
-      title: `${product.name} - ${brand.name} | ${siteConfig.name}`,
-      description:
-        product.description ||
-        `${brand.name}の${product.name}ヴィンテージアパレル`,
+      title: title,
+      description: description,
       images: [
         {
           url: product.imageUrl,
@@ -93,19 +92,46 @@ export function generateProductMetadata(
       ],
     },
     alternates: {
-      canonical: siteUrls.product(brand.id, product.id),
+      canonical: siteUrls.product(product.brand.id, product.id),
+    },
+  };
+}
+
+export function generateCheckpointsMetadata() {
+  const title = `US古着鑑定ポイント一覧 | ${siteConfig.name}`;
+  const description = "みんなでシェアするUS古着鑑定ポイント一覧";
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      images: [
+        {
+          url: siteConfig.images.homeBanner,
+          width: 1200,
+          height: 630,
+          alt: `${title} | ${siteConfig.name}`,
+        },
+      ],
+    },
+    alternates: {
+      canonical: siteUrls.checkpoints,
     },
   };
 }
 
 // プロフィールページのメタデータ生成
 export function generateProfileMetadata(profile: UserProfile): Metadata {
+  const title = `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`;
+  const description = `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`;
   return {
-    title: `${profile.name || "ユーザー"}のプロフィール`,
-    description: `${profile.name || "ユーザー"}の${siteConfig.name}コレクション`,
+    title: title,
+    description: description,
     openGraph: {
-      title: `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`,
-      description: `${profile.name || "ユーザー"}の${siteConfig.name}コレクション`,
+      title: title,
+      description: description,
       images: profile.avatarUrl
         ? [
             {

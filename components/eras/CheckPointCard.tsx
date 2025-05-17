@@ -2,35 +2,35 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
+import { CheckPoint, UserProfile } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPointActions } from "@/hooks";
 import { Brand, Product } from "@/lib/types";
-import { siteConfig, getAvatarUrl } from "@/lib/config/siteConfig";
+import { getAvatarUrl } from "@/lib/config/siteConfig";
 
-interface CheckPointProps {
+interface CheckPointCardProps {
   brand: Brand;
   product: Product;
-  checkPoint: ProductEraCheckPoint;
-  setCheckPoints: React.Dispatch<React.SetStateAction<ProductEraCheckPoint[]>>;
-  showProductEraCheckPoint: (
+  checkPoint: CheckPoint;
+  setCheckPoints: React.Dispatch<React.SetStateAction<CheckPoint[]>>;
+  showCheckPoint: (
     brand: Brand,
     product: Product,
-    checkPoint: ProductEraCheckPoint,
+    checkPoint: CheckPoint,
   ) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfile;
 }
 
-const CheckPoint = ({
+const CheckPointCard = ({
   brand,
   product,
   checkPoint,
   setCheckPoints,
-  showProductEraCheckPoint,
+  showCheckPoint,
   isOwnCheckPoint = false,
   userProfile,
-}: CheckPointProps) => {
+}: CheckPointCardProps) => {
   const {
     liked = false,
     likeCount = 0,
@@ -45,7 +45,7 @@ const CheckPoint = ({
     brand,
     product,
     checkPoint,
-    showProductEraCheckPoint,
+    showCheckPoint,
     isOwnCheckPoint,
     userProfile,
   });
@@ -154,4 +154,4 @@ const CheckPoint = ({
   );
 };
 
-export default CheckPoint;
+export default CheckPointCard;

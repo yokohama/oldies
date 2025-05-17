@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ProductEra } from "@/lib/types";
+import { Era } from "@/lib/types";
 import {
   Carousel,
   CarouselContent,
@@ -19,10 +19,10 @@ import { siteConfig } from "@/lib/config/siteConfig";
 interface ErasCarouselProps {
   brand: Brand;
   product: Product;
-  productEras: ProductEra[];
+  eras: Era[];
 }
 
-const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
+const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
   const [selectedEraIndex, setSelectedEraIndex] = useState(0);
 
   const handleEraIndexChange = (index: number) => {
@@ -36,7 +36,7 @@ const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
     handlePrevSlide,
     handleNextSlide,
   } = useErasCarousel({
-    productEras,
+    eras,
     selectedEraIndex,
     onEraIndexChange: handleEraIndexChange,
   });
@@ -105,7 +105,7 @@ const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
         {/* カルーセルのナビゲーションインジケーター */}
         <div className="flex justify-center mt-4 gap-2">
           <div className="flex items-center gap-1.5 mx-2">
-            {productEras.map((_, index) => (
+            {eras.map((_, index) => (
               <div
                 key={index}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${
@@ -119,7 +119,7 @@ const ErasCarousel = ({ brand, product, productEras }: ErasCarouselProps) => {
         </div>
 
         <CarouselContent className="-ml-2 -mr-2">
-          {productEras.map((productEra) => (
+          {eras.map((productEra) => (
             <CarouselItem
               key={productEra.id}
               className="basis-full pl-1.5 pr-1.5 pt-3 pb-0"

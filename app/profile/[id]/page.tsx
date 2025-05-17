@@ -1,17 +1,21 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { baseMetadata, generateProfileMetadata } from "@/lib/metadata";
 import {
   getProfileData,
-  getProfileCheckPointsData,
+  getProfileCheckPointsDataByUserId,
 } from "@/lib/server/profileServer";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 import Spinner from "@/components/ui/Spinner";
 import Error from "@/components/ui/Error";
+import NotFound from "@/components/ui/NotFound";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileCheckPoints from "@/components/profile/ProfileCheckPoints";
+
+// キャッシュを無効化するための設定
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // 動的メタデータの生成
 export async function generateMetadata({
@@ -35,7 +39,7 @@ export async function generateMetadata({
   return generateProfileMetadata(user);
 }
 
-export default async function UserProfilePage({
+export default async function ProfilePage({
   params,
 }: {
   params: { id: string };
@@ -43,20 +47,17 @@ export default async function UserProfilePage({
   // サーバーサイドでデータを取得
   const { user, error } = await getProfileData(params.id);
 
-  // ユーザーが見つからない場合は404ページを表示
-  if (!user && error === "ユーザーが見つかりませんでした") {
-    notFound();
-  }
-
   // チェックポイントデータを取得
   const { checkPoints, error: checkPointsError } =
-    await getProfileCheckPointsData(params.id);
+    await getProfileCheckPointsDataByUserId(params.id);
 
   return (
     <main className="min-h-screen oldies-bg-primary">
       <Suspense fallback={<Spinner />}>
-        {error || !user ? (
+        {error ? (
           <Error />
+        ) : !user ? (
+          <NotFound text="ユーザーが見つかりませんでした。" />
         ) : (
           <div className="container mx-auto py-12 px-4 bg-transparent">
             <Header />

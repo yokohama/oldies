@@ -1,28 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
+import { CheckPoint, UserProfile } from "@/lib/types";
 import { User } from "@supabase/supabase-js";
 import { API } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UseCheckPointsReturn {
-  checkPoints: ProductEraCheckPoint[];
-  setCheckPoints: React.Dispatch<React.SetStateAction<ProductEraCheckPoint[]>>;
+  checkPoints: CheckPoint[];
+  setCheckPoints: React.Dispatch<React.SetStateAction<CheckPoint[]>>;
   userProfiles: Record<string, UserProfile>;
   isAddModalOpen: boolean;
   setIsAddModalOpen: (isOpen: boolean) => void;
   handleAddButtonClick: () => void;
   user: User | null;
-  addNewCheckPoint: (newCheckPoint: ProductEraCheckPoint) => void;
+  addNewCheckPoint: (newCheckPoint: CheckPoint) => void;
 }
 
 export function useCheckPoints(
-  initialCheckPoints: ProductEraCheckPoint[],
+  initialCheckPoints: CheckPoint[],
 ): UseCheckPointsReturn {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [checkPoints, setCheckPoints] =
-    useState<ProductEraCheckPoint[]>(initialCheckPoints);
+    useState<CheckPoint[]>(initialCheckPoints);
   const [userProfiles, setUserProfiles] = useState<Record<string, UserProfile>>(
     {},
   );
@@ -41,7 +41,7 @@ export function useCheckPoints(
   };
 
   // 新しいチェックポイントを追加するメソッド
-  const addNewCheckPoint = (newCheckPoint: ProductEraCheckPoint) => {
+  const addNewCheckPoint = (newCheckPoint: CheckPoint) => {
     setCheckPoints((prevCheckPoints) => [newCheckPoint, ...prevCheckPoints]);
 
     // 新しいチェックポイントのユーザープロフィールを取得

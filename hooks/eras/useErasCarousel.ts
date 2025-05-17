@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { ProductEra } from "@/lib/types";
+import { Era } from "@/lib/types";
 import { type CarouselApi } from "@/components/ui/carousel";
 
 interface UseProductEraCarouselProps {
-  productEras: ProductEra[];
+  eras: Era[];
   selectedEraIndex: number;
   onEraIndexChange?: (index: number) => void;
 }
@@ -11,20 +11,20 @@ interface UseProductEraCarouselProps {
 interface UseProductEraCarouselReturn {
   setApi: (api: CarouselApi | undefined) => void;
   currentIndex: number;
-  currentProductEra: ProductEra | null;
+  currentProductEra: Era | null;
   handlePrevSlide: () => void;
   handleNextSlide: () => void;
 }
 
 export function useErasCarousel({
-  productEras,
+  eras,
   selectedEraIndex,
   onEraIndexChange,
 }: UseProductEraCarouselProps): UseProductEraCarouselReturn {
   const [api, setApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentProductEra, setCurrentProductEra] = useState<ProductEra | null>(
-    productEras.length > 0 ? productEras[0] : null,
+  const [currentProductEra, setCurrentProductEra] = useState<Era | null>(
+    eras.length > 0 ? eras[0] : null,
   );
 
   // カルーセルAPIのイベントハンドリング
@@ -38,11 +38,7 @@ export function useErasCarousel({
       setCurrentIndex(newIndex);
 
       // カルーセルの選択が変わったらスライダーの値も更新する
-      if (
-        productEras.length > 0 &&
-        newIndex >= 0 &&
-        newIndex < productEras.length
-      ) {
+      if (eras.length > 0 && newIndex >= 0 && newIndex < eras.length) {
         // 親コンポーネントに選択したインデックスを通知
         if (onEraIndexChange) {
           onEraIndexChange(newIndex);
@@ -57,28 +53,24 @@ export function useErasCarousel({
     return () => {
       api.off("select", onSelect);
     };
-  }, [api, productEras, onEraIndexChange]);
+  }, [api, eras, onEraIndexChange]);
 
   // 現在の製品時代を更新
   useEffect(() => {
-    if (
-      productEras.length > 0 &&
-      currentIndex >= 0 &&
-      currentIndex < productEras.length
-    ) {
-      setCurrentProductEra(productEras[currentIndex]);
+    if (eras.length > 0 && currentIndex >= 0 && currentIndex < eras.length) {
+      setCurrentProductEra(eras[currentIndex]);
     }
-  }, [currentIndex, productEras]);
+  }, [currentIndex, eras]);
 
   // 選択したインデックスに基づいて適切なカードにスクロールする
   useEffect(() => {
-    if (!api || productEras.length === 0) return;
+    if (!api || eras.length === 0) return;
 
     // 選択されたインデックスが現在のインデックスと異なる場合、スクロールする
     if (selectedEraIndex !== currentIndex) {
       api.scrollTo(selectedEraIndex, true);
     }
-  }, [selectedEraIndex, productEras, api, currentIndex]);
+  }, [selectedEraIndex, eras, api, currentIndex]);
 
   // ナビゲーション関数
   const handlePrevSlide = () => api?.scrollPrev();

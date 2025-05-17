@@ -1,9 +1,9 @@
 "use client";
 
-import CheckPoint from "../eras/CheckPoint";
-import { UserProfile, ProductEraCheckPoint } from "@/lib/types";
+import CheckPointCard from "../eras/CheckPointCard";
+import { UserProfile, CheckPoint } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
-import { showProductEraCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
+import { showCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
 import { useState, useEffect } from "react";
 import { useUserCheckPoints } from "@/hooks/checkPoint/useUserCheckPoints";
 import Spinner from "../ui/Spinner";
@@ -11,7 +11,7 @@ import Spinner from "../ui/Spinner";
 interface ProfileCheckPointsProps {
   userId: string;
   userProfile: UserProfile;
-  initialCheckPoints: ProductEraCheckPoint[];
+  initialCheckPoints: CheckPoint[];
   initialError?: string | null;
 }
 
@@ -23,7 +23,7 @@ const ProfileCheckPoints = ({
 }: ProfileCheckPointsProps) => {
   const { user } = useAuth();
   const [checkPoints, setCheckPoints] =
-    useState<ProductEraCheckPoint[]>(initialCheckPoints);
+    useState<CheckPoint[]>(initialCheckPoints);
   const [error, setError] = useState<string | null>(initialError);
 
   // useUserCheckPointsフックを使用して最新のデータを取得
@@ -70,13 +70,13 @@ const ProfileCheckPoints = ({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           {checkPoints.map((checkPoint) => (
-            <CheckPoint
+            <CheckPointCard
               key={checkPoint.id}
-              brand={checkPoint.brand}
-              product={checkPoint.product}
+              brand={checkPoint.era.product.brand}
+              product={checkPoint.era.product}
               checkPoint={checkPoint}
               setCheckPoints={setCheckPoints}
-              showProductEraCheckPoint={toastShowProductEraCheckPoint}
+              showCheckPoint={toastShowProductEraCheckPoint}
               isOwnCheckPoint={isOwnProfile}
               userProfile={userProfile}
             />

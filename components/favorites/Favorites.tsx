@@ -13,7 +13,7 @@ import Error from "../ui/Error";
 import NotFound from "../ui/NotFound";
 import PageTitle from "../ui/PageTitle";
 
-const FavoritesPage = () => {
+const Favorites = () => {
   const { likedCheckPoints, isLoading, error, unlikeCheckPoint } =
     useLikedCheckPoints();
   const { user } = useAuth();
@@ -129,16 +129,16 @@ const FavoritesPage = () => {
                 {checkPoint.point}
               </h2>
               <p className="text-[#7a6b59] font-light mb-2">
-                {checkPoint.productEra?.manufacturing_start_year}年 -{" "}
-                {checkPoint.productEra?.manufacturing_end_year}年
+                {checkPoint.era?.manufacturing_start_year}年 -{" "}
+                {checkPoint.era?.manufacturing_end_year}年
               </p>
-              {checkPoint.productEra?.product && (
+              {checkPoint.era?.product && (
                 <Link
-                  href={`/product/${checkPoint.productEra.product.id}`}
+                  href={`/product/${checkPoint.era.product.id}`}
                   className="text-[#7a6b59] hover:text-[#5c4d3c] text-sm font-medium block mb-2"
                 >
-                  {checkPoint.productEra.product.brand?.name} -{" "}
-                  {checkPoint.productEra.product.name}
+                  {checkPoint.era.product.brand?.name} -{" "}
+                  {checkPoint.era.product.name}
                 </Link>
               )}
               {checkPoint.description && (
@@ -155,4 +155,4 @@ const FavoritesPage = () => {
   );
 };
 
-export default FavoritesPage;
+export default Favorites;

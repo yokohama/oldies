@@ -3,32 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { UserProfile } from "@/lib/types";
-import { useAuth } from "@/contexts/AuthContext";
-import {
-  Edit,
-  Globe,
-  Twitter,
-  Instagram,
-  Facebook,
-  Youtube,
-} from "lucide-react";
+import { Edit, Globe, X, Instagram, Facebook, Youtube } from "lucide-react";
 import { siteConfig } from "@/lib/config/siteConfig";
+import { useProfileHeader } from "@/hooks/profile/useProfileHeader";
 
 interface ProfileHeaderProps {
   user: UserProfile;
 }
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
-  const { user: currentUser } = useAuth();
-  const isOwnProfile = currentUser && currentUser.id === user.id;
-
-  // SNSリンクがあるかどうかを確認
-  const hasSocialLinks =
-    user.websiteUrl ||
-    user.twitterUrl ||
-    user.instagramUrl ||
-    user.facebookUrl ||
-    user.youtubeUrl;
+  const { profile, isOwnProfile, hasSocialLinks } = useProfileHeader({
+    user: user,
+  });
 
   return (
     <div className="bg-[#f8f3e6] border border-[#d3c7a7] rounded-md p-6 mb-8 relative">
@@ -46,10 +32,10 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
         <div className="relative h-24 w-24 rounded-full overflow-hidden border-2 border-[#d3c7a7]">
           <Image
             src={
-              user.avatarUrl ||
-              `https://api.dicebear.com/7.x/initials/svg?seed=${user.id}`
+              profile.avatarUrl ||
+              `https://api.dicebear.com/7.x/initials/svg?seed=${profile.id}`
             }
-            alt={`${user.name || "ユーザー"}のプロフィール | ${siteConfig.name}`}
+            alt={`${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`}
             fill
             sizes="(max-width: 768px) 100vw, 96px"
             className="object-cover"
@@ -60,7 +46,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
 
         <div className="flex-1 text-center md:text-left">
           <h1 className="text-2xl font-serif text-[#5c4d3c] mb-2">
-            {user.name || "ユーザー"}
+            {profile.name || "ユーザー"}
           </h1>
           <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
             <span className="inline-block bg-[#e5dcc3] text-[#5c4d3c] text-xs px-3 py-1 rounded-full">
@@ -74,9 +60,9 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           {/* SNSリンク */}
           {hasSocialLinks && (
             <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-3">
-              {user.websiteUrl && (
+              {profile.websiteUrl && (
                 <a
-                  href={user.websiteUrl}
+                  href={profile.websiteUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#5c4d3c] hover:text-[#a85751] transition-colors flex items-center gap-1"
@@ -86,21 +72,21 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 </a>
               )}
 
-              {user.twitterUrl && (
+              {profile.twitterUrl && (
                 <a
-                  href={user.twitterUrl}
+                  href={profile.twitterUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#5c4d3c] hover:text-[#a85751] transition-colors flex items-center gap-1"
                 >
-                  <Twitter size={18} />
+                  <X size={18} />
                   <span className="text-sm hidden sm:inline">Twitter</span>
                 </a>
               )}
 
-              {user.instagramUrl && (
+              {profile.instagramUrl && (
                 <a
-                  href={user.instagramUrl}
+                  href={profile.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#5c4d3c] hover:text-[#a85751] transition-colors flex items-center gap-1"
@@ -110,9 +96,9 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 </a>
               )}
 
-              {user.facebookUrl && (
+              {profile.facebookUrl && (
                 <a
-                  href={user.facebookUrl}
+                  href={profile.facebookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#5c4d3c] hover:text-[#a85751] transition-colors flex items-center gap-1"
@@ -122,9 +108,9 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 </a>
               )}
 
-              {user.youtubeUrl && (
+              {profile.youtubeUrl && (
                 <a
-                  href={user.youtubeUrl}
+                  href={profile.youtubeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#5c4d3c] hover:text-[#a85751] transition-colors flex items-center gap-1"

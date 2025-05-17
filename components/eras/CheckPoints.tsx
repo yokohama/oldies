@@ -1,10 +1,10 @@
 "use client";
 
-import { Brand, Product, ProductEra } from "@/lib/types";
+import { Brand, Product, Era } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
-import CheckPoint from "./CheckPoint";
-import { showProductEraCheckPoint } from "./CheckPointToast";
+import CheckPointCard from "./CheckPointCard";
+import { showCheckPoint } from "./CheckPointToast";
 import { useCheckPoints } from "@/hooks";
 import NotFound from "../ui/NotFound";
 import { siteConfig } from "@/lib/config/siteConfig";
@@ -12,7 +12,7 @@ import { siteConfig } from "@/lib/config/siteConfig";
 interface CheckPointsProps {
   brand: Brand;
   product: Product;
-  era: ProductEra;
+  era: Era;
 }
 
 const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
@@ -32,7 +32,7 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
       <AddCheckPointModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        productEraId={era.id}
+        eraId={era.id}
         onSuccess={(newCheckPoint) => {
           // 新しいチェックポイントを状態に追加
           addNewCheckPoint(newCheckPoint);
@@ -74,14 +74,14 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
             <NotFound text="チェックポイントがまだありません。" />
           ) : (
             checkPoints.map((checkPoint) => (
-              <CheckPoint
+              <CheckPointCard
                 key={checkPoint.id}
                 brand={brand}
                 product={product}
                 checkPoint={checkPoint}
                 setCheckPoints={setCheckPoints}
-                showProductEraCheckPoint={() =>
-                  showProductEraCheckPoint(brand, product, checkPoint)
+                showCheckPoint={() =>
+                  showCheckPoint(brand, product, checkPoint)
                 }
                 isOwnCheckPoint={user?.id === checkPoint.userId}
                 userProfile={

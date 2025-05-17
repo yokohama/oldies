@@ -1,7 +1,6 @@
 import { API } from "@/lib/api";
-import { cache } from "react";
 
-// サーバーコンポーネントでユーザープロフィールデータを取得するための関数（キャッシュ対応）
+// サーバーコンポーネントでユーザープロフィールデータを取得するための関数
 export const getProfileData = async (userId: string) => {
   try {
     // ユーザープロフィール情報を取得
@@ -25,7 +24,7 @@ export const getProfileData = async (userId: string) => {
 };
 
 // サーバーコンポーネントでユーザーのチェックポイントを取得するための関数（キャッシュなし）
-export const getProfileCheckPointsData = async (userId: string) => {
+export const getProfileCheckPointsDataByUserId = async (userId: string) => {
   try {
     // ユーザーのチェックポイントを取得
     const checkPoints = await API.getUserCheckPoints(userId);

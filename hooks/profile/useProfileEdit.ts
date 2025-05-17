@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useProfileContext } from "@/contexts/ProfileContext";
 import { UserProfile } from "@/lib/types";
 import { API } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 
 export const useProfileEdit = () => {
   const { user } = useAuth();
+  const { updateProfile } = useProfileContext();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -152,6 +154,8 @@ export const useProfileEdit = () => {
       const updatedProfile = await API.getUserProfile(user.id);
       if (updatedProfile) {
         setProfile(updatedProfile);
+        // グローバルコンテキストを更新して他のコンポーネントに通知
+        updateProfile(updatedProfile);
       }
     } catch (err) {
       console.error("プロフィール更新エラー:", err);

@@ -1,13 +1,13 @@
 "use client";
 
 import { Suspense } from "react";
-import ProfileEditPage from "@/components/profile/ProfileEditPage";
+import ProfileEdit from "@/components/profile/ProfileEdit";
 import Spinner from "@/components/ui/Spinner";
 
-export default function EditProfilePage() {
+export default function ProfileEditPage() {
   return (
     <Suspense fallback={<Spinner />}>
-      <ProfileEditPage />
+      <ProfileEdit />
     </Suspense>
   );
 }

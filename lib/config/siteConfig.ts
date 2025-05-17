@@ -22,6 +22,7 @@ export const siteConfig = {
   locale: "ja_JP",
 
   // 画像パス
+  // TODO: 実装
   images: {
     homeBanner: "/images/home-banner.jpg",
     defaultOgImage: "/images/og-default.jpg",
@@ -46,6 +47,7 @@ export const siteUrls = {
     `/brands/${brandId}/products/${productId}`,
   era: (brandId: number, productId: number, eraId: number) =>
     `/brands/${brandId}/products/${productId}/eras/${eraId}`,
+  checkpoints: "/checkpoints",
   profile: (profileId: string) => `/profile/${profileId}`,
   favorites: () => "/favorites",
 };

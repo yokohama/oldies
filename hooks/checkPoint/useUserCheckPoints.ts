@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { ProductEraCheckPoint } from "@/lib/types";
+import { CheckPoint } from "@/lib/types";
 import { API } from "@/lib/api";
 
 export const useUserCheckPoints = (userId: string | undefined) => {
-  const [checkPoints, setCheckPoints] = useState<ProductEraCheckPoint[]>([]);
+  const [checkPoints, setCheckPoints] = useState<CheckPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

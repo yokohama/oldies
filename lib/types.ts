@@ -3,31 +3,31 @@ export interface Brand {
   name: string;
   imageUrl: string;
   description: string;
+  products: Product[];
 }
 
 export interface Product {
   id: number;
-  brandId: number;
+  brand: Brand;
   name: string;
   imageUrl: string;
   description: string;
+  eras: Era[];
 }
 
-export interface ProductEra {
+export interface Era {
   id: number;
-  productId: number;
+  product: Product;
   manufacturing_start_year: number;
   manufacturing_end_year: number;
   imageUrl: string;
   description: string;
-  checkPoints?: ProductEraCheckPoint[];
+  checkPoints?: CheckPoint[];
 }
 
-export interface ProductEraCheckPoint {
+export interface CheckPoint {
   id: number;
-  brand: Brand;
-  product: Product;
-  productEraId: number;
+  era: Era;
   point: string;
   imageUrl: string;
   description: string;
@@ -44,28 +44,8 @@ export interface CheckPointLike {
   createdAt: string;
 }
 
-export interface LikedCheckPoint extends ProductEraCheckPoint {
-  productEra?: {
-    id: number;
-    productId: number;
-    manufacturing_start_year: number;
-    manufacturing_end_year: number;
-    imageUrl: string;
-    description: string;
-    product?: {
-      id: number;
-      brandId: number;
-      name: string;
-      imageUrl: string;
-      description: string;
-      brand?: {
-        id: number;
-        name: string;
-        imageUrl: string;
-        description: string;
-      };
-    };
-  };
+export interface LikedCheckPoint extends CheckPoint {
+  era: Era;
 }
 
 export interface UserProfile {

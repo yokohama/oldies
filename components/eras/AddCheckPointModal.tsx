@@ -14,19 +14,19 @@ import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { Upload, X } from "lucide-react";
 import { useCheckPointForm } from "@/hooks";
-import { ProductEraCheckPoint } from "@/lib/types";
+import { CheckPoint } from "@/lib/types";
 
 interface AddCheckPointModalProps {
   isOpen: boolean;
   onClose: () => void;
-  productEraId: number;
-  onSuccess: (newCheckPoint: ProductEraCheckPoint) => void;
+  eraId: number;
+  onSuccess: (newCheckPoint: CheckPoint) => void;
 }
 
 const AddCheckPointModal = ({
   isOpen,
   onClose,
-  productEraId,
+  eraId,
   onSuccess,
 }: AddCheckPointModalProps) => {
   const {
@@ -55,9 +55,7 @@ const AddCheckPointModal = ({
             あなたの製品の特徴や見分け方のポイントを追加してください。
           </DialogDescription>
         </DialogHeader>
-        <form
-          onSubmit={(e) => handleSubmit(e, productEraId, onSuccess, onClose)}
-        >
+        <form onSubmit={(e) => handleSubmit(e, eraId, onSuccess, onClose)}>
           <div className="grid gap-4 py-4">
             <div className="items-center">
               <Input

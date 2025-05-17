@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { baseMetadata, generateProductMetadata } from "@/lib/metadata";
-import { getErasData } from "@/lib/server/erasServer";
+import { getProductDataById } from "@/lib/server/erasServer";
 import Spinner from "@/components/ui/Spinner";
 import NotFound from "@/components/ui/NotFound";
 import Header from "@/components/ui/Header";
@@ -17,30 +17,25 @@ export async function generateMetadata({
   params: { brandId: string; productId: string };
 }): Promise<Metadata> {
   const productId = parseInt(params.productId, 10);
-  const { product, brand, error } = await getErasData(productId);
+  const { product, error } = await getProductDataById(productId);
 
-  if (!product || !brand || error) {
+  if (!product || error) {
     return {
       ...baseMetadata,
     };
   }
 
-  return generateProductMetadata(product, brand);
+  return generateProductMetadata(product);
 }
 
-export default async function ProductEras({
+export default async function ProductPage({
   params,
 }: {
   params: { brandId: string; productId: string };
 }) {
   // サーバーサイドでデータを取得
   const productId = parseInt(params.productId, 10);
-  const { brand, product, productEras, error } = await getErasData(productId);
-
-  // ブランドや製品が見つからない場合は404ページを表示
-  if ((!product && !error) || !brand) {
-    return <NotFound />;
-  }
+  const { product, error } = await getProductDataById(productId);
 
   return (
     <main className="min-h-screen oldies-bg-primary">
@@ -50,14 +45,16 @@ export default async function ProductEras({
         <Suspense fallback={<Spinner />}>
           {error ? (
             <Error />
-          ) : productEras.length === 0 ? (
+          ) : !product ? (
+            <NotFound />
+          ) : product.eras.length === 0 ? (
             <NotFound text="この製品の時代情報はありません" />
           ) : (
             <div className="max-w-4xl mx-auto">
               <ErasCarousel
-                brand={brand}
+                brand={product.brand}
                 product={product}
-                productEras={productEras}
+                eras={product.eras}
               />
             </div>
           )}

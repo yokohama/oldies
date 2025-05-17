@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { API } from "@/lib/api";
 import { toast } from "sonner";
-import { ProductEraCheckPoint, UserProfile } from "@/lib/types";
+import { CheckPoint, UserProfile } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { Brand, Product } from "@/lib/types";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
@@ -11,11 +11,11 @@ import { getAvatarUrl } from "@/lib/config/siteConfig";
 interface UseCheckPointActionsProps {
   brand: Brand;
   product: Product;
-  checkPoint?: ProductEraCheckPoint;
-  showProductEraCheckPoint?: (
+  checkPoint?: CheckPoint;
+  showCheckPoint?: (
     brand: Brand,
     product: Product,
-    checkPoint: ProductEraCheckPoint,
+    checkPoint: CheckPoint,
   ) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfile;
@@ -28,7 +28,7 @@ interface UseCheckPointActionsReturn {
     point: string,
     file: File,
     description: string | null,
-  ) => Promise<{ success: boolean; checkPoint?: ProductEraCheckPoint }>;
+  ) => Promise<{ success: boolean; checkPoint?: CheckPoint }>;
   handleDeleteCheckPoint: (checkPointId: number) => Promise<boolean>;
   isSubmitting: boolean;
   uploadProgress: number;
@@ -59,7 +59,7 @@ export function useCheckPointActions(
   const brand = props?.brand;
   const product = props?.product;
   const checkPoint = props?.checkPoint;
-  const showProductEraCheckPoint = props?.showProductEraCheckPoint;
+  const showCheckPoint = props?.showCheckPoint;
   const userProfile = props?.userProfile;
 
   // チェックポイントのいいね状態を取得
@@ -102,7 +102,7 @@ export function useCheckPointActions(
     point: string,
     file: File,
     description: string | null,
-  ): Promise<{ success: boolean; checkPoint?: ProductEraCheckPoint }> => {
+  ): Promise<{ success: boolean; checkPoint?: CheckPoint }> => {
     setIsSubmitting(true);
     setUploadProgress(0);
 
@@ -194,8 +194,8 @@ export function useCheckPointActions(
   };
 
   const handleCheckPointClick = () => {
-    if (brand && product && checkPoint && showProductEraCheckPoint) {
-      showProductEraCheckPoint(brand, product, checkPoint);
+    if (brand && product && checkPoint && showCheckPoint) {
+      showCheckPoint(brand, product, checkPoint);
     }
   };
 

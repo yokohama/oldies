@@ -11,7 +11,7 @@ import { useProfileEdit, useProfileRedirect } from "@/hooks";
 import { useAuth } from "@/contexts/AuthContext";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
 
-const ProfileEditPage = () => {
+const ProfileEdit = () => {
   const router = useRouter();
   const { user } = useAuth();
   const {
@@ -42,7 +42,7 @@ const ProfileEditPage = () => {
   // 保存成功後にプロフィールページにリダイレクト
   useEffect(() => {
     if (success && user) {
-      router.push(`/profile/${user.id}?updated=true`);
+      router.push(`/profile/${user.id}`);
     }
   }, [success, router, user]);
 
@@ -233,9 +233,8 @@ const ProfileEditPage = () => {
               <button
                 type="submit"
                 disabled={saving || success}
-                className={`bg-[#a85751] hover:bg-[#8a3c37] text-white px-6 py-2 rounded-md transition-colors ${
-                  saving || success ? "opacity-70 cursor-not-allowed" : ""
-                }`}
+                className={`bg-[#a85751] hover:bg-[#8a3c37] text-white px-6 py-2 rounded-md transition-colors ${saving || success ? "opacity-70 cursor-not-allowed" : ""
+                  }`}
               >
                 {saving ? "保存中..." : success ? "保存完了" : "保存する"}
               </button>
@@ -248,4 +247,4 @@ const ProfileEditPage = () => {
   );
 };
 
-export default ProfileEditPage;
+export default ProfileEdit;

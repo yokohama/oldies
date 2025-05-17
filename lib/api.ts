@@ -2,8 +2,8 @@ import { supabase } from "./supabase";
 import {
   Brand,
   Product,
-  ProductEra,
-  ProductEraCheckPoint,
+  Era,
+  CheckPoint,
   UserProfile,
   LikedCheckPoint,
 } from "./types";
@@ -16,19 +16,21 @@ const mapBrand = (brand: any): Brand => ({
   name: brand.name,
   imageUrl: brand.image_url,
   description: brand.description || "",
+  products: [],
 });
 
 const mapProduct = (product: any): Product => ({
   id: product.id,
-  brandId: product.brand_id,
+  brand: product.brand,
   name: product.name,
   imageUrl: product.image_url,
   description: product.description || "",
+  eras: [],
 });
 
-const mapProductEra = (era: any): ProductEra => ({
+const mapEra = (era: any): Era => ({
   id: era.id,
-  productId: era.product_id,
+  product: era.product,
   manufacturing_start_year: era.manufacturing_start_year,
   manufacturing_end_year: era.manufacturing_end_year,
   imageUrl: era.image_url,
@@ -38,30 +40,19 @@ const mapProductEra = (era: any): ProductEra => ({
         // 製品時代のチェックポイントにブランドと製品の情報を追加
         const checkpointWithRefs = {
           ...checkpoint,
-          product_eras: {
+          eras: {
             products: era.products || { brands: {} },
           },
         };
-        return mapProductEraCheckPoint(checkpointWithRefs);
+        return mapCheckPoint(checkpointWithRefs);
       })
     : [],
 });
 
-const mapProductEraCheckPoint = (checkpoint: any): ProductEraCheckPoint => {
-  // 関連するブランドと製品の情報がある場合はそれを使用
-  const brand = checkpoint.product_eras?.products?.brands
-    ? mapBrand(checkpoint.product_eras.products.brands)
-    : undefined;
-
-  const product = checkpoint.product_eras?.products
-    ? mapProduct(checkpoint.product_eras.products)
-    : undefined;
-
+const mapCheckPoint = (checkpoint: any): CheckPoint => {
   return {
     id: checkpoint.id,
-    brand: brand as Brand, // 型アサーションを使用
-    product: product as Product, // 型アサーションを使用
-    productEraId: checkpoint.product_era_id,
+    era: checkpoint.era,
     point: checkpoint.point,
     imageUrl: checkpoint.image_url,
     description: checkpoint.description || "",
@@ -118,6 +109,60 @@ export class API {
     return count || 0;
   }
 
+  static async getCheckPoint(id: number): Promise<CheckPoint | null> {
+    const { data, error } = await supabase
+      .from("product_era_check_points")
+      .select(
+        `
+        *,
+        product_eras!fk_product_era(
+          *,
+          products!fk_product(
+            *,
+            brands!fk_brand(*)
+          )
+        )
+      `,
+      )
+      .eq("id", id)
+      .is("deleted_at", null)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") return null; // PGRST116 は "結果が見つからない" エラー
+      throw error;
+    }
+
+    if (!data) return null;
+
+    const era = data.product_eras;
+    const product = era.products;
+    const brand = product.brands;
+
+    // ブランドとプロダクトのマッピング
+    const brandObj = mapBrand(brand);
+    const productObj = {
+      ...mapProduct(product),
+      brand: brandObj,
+    };
+
+    // 時代のマッピング
+    const eraObj = {
+      ...mapEra(era),
+      product: productObj,
+    };
+
+    return {
+      id: data.id,
+      era: eraObj,
+      point: data.point,
+      imageUrl: data.image_url,
+      description: data.description || "",
+      userId: data.user_id,
+      createdAt: data.created_at,
+    };
+  }
+
   static async likeCheckPoint(
     userId: string,
     checkPointId: number,
@@ -168,66 +213,38 @@ export class API {
 
     return (data || []).map((like) => {
       const checkPoint = like.product_era_check_points;
-      const productEra = checkPoint.product_eras;
-      const product = productEra.products;
+      const era = checkPoint.product_eras;
+      const product = era.products;
       const brand = product.brands;
 
-      // brand と product オブジェクトを作成
-      const brandObj: Brand = {
-        id: brand.id,
-        name: brand.name,
-        imageUrl: brand.image_url,
-        description: brand.description || "",
+      // ブランドとプロダクトのマッピング
+      const brandObj = mapBrand(brand);
+      const productObj = {
+        ...mapProduct(product),
+        brand: brandObj,
       };
 
-      const productObj: Product = {
-        id: product.id,
-        brandId: product.brand_id,
-        name: product.name,
-        imageUrl: product.image_url,
-        description: product.description || "",
+      // 時代のマッピング
+      const eraObj = {
+        ...mapEra(era),
+        product: productObj,
       };
 
       return {
         id: checkPoint.id,
-        brand: brandObj,
-        product: productObj,
-        productEraId: checkPoint.product_era_id,
+        era: eraObj,
         point: checkPoint.point,
         imageUrl: checkPoint.image_url,
         description: checkPoint.description || "",
         userId: checkPoint.user_id,
         createdAt: checkPoint.created_at,
         isLiked: true,
-        productEra: {
-          id: productEra.id,
-          productId: productEra.product_id,
-          manufacturing_start_year: productEra.manufacturing_start_year,
-          manufacturing_end_year: productEra.manufacturing_end_year,
-          imageUrl: productEra.image_url,
-          description: productEra.description || "",
-          product: {
-            id: product.id,
-            brandId: product.brand_id,
-            name: product.name,
-            imageUrl: product.image_url,
-            description: product.description || "",
-            brand: {
-              id: brand.id,
-              name: brand.name,
-              imageUrl: brand.image_url,
-              description: brand.description || "",
-            },
-          },
-        },
       };
     });
   }
 
   // ユーザーが投稿したチェックポイントを取得
-  static async getUserCheckPoints(
-    userId: string,
-  ): Promise<ProductEraCheckPoint[]> {
+  static async getUserCheckPoints(userId: string): Promise<CheckPoint[]> {
     const { data, error } = await supabase
       .from("product_era_check_points")
       .select(
@@ -249,26 +266,26 @@ export class API {
     if (error) throw error;
 
     return (data || []).map((checkPoint) => {
-      const productEra = checkPoint.product_eras;
-      const product = productEra.products;
+      const era = checkPoint.product_eras;
+      const product = era.products;
       const brand = product.brands;
+
+      // ブランドとプロダクトのマッピング
+      const brandObj = mapBrand(brand);
+      const productObj = {
+        ...mapProduct(product),
+        brand: brandObj,
+      };
+
+      // 時代のマッピング
+      const eraObj = {
+        ...mapEra(era),
+        product: productObj,
+      };
 
       return {
         id: checkPoint.id,
-        brand: {
-          id: brand.id,
-          name: brand.name,
-          imageUrl: brand.image_url,
-          description: brand.description || "",
-        },
-        product: {
-          id: product.id,
-          brandId: product.brand_id,
-          name: product.name,
-          imageUrl: product.image_url,
-          description: product.description || "",
-        },
-        productEraId: checkPoint.product_era_id,
+        era: eraObj,
         point: checkPoint.point,
         imageUrl: checkPoint.image_url,
         description: checkPoint.description || "",
@@ -292,7 +309,15 @@ export class API {
   static async getBrand(id: number): Promise<Brand | null> {
     const { data, error } = await supabase
       .from("brands")
-      .select("*")
+      .select(
+        `
+        *,
+        products!brand_id(
+          *,
+          product_eras(*)
+        )
+      `,
+      )
       .eq("id", id)
       .is("deleted_at", null)
       .single();
@@ -301,7 +326,32 @@ export class API {
       if (error.code === "PGRST116") return null; // PGRST116 は "結果が見つからない" エラー
       throw error;
     }
-    return data ? mapBrand(data) : null;
+
+    if (!data) return null;
+
+    // ブランドオブジェクトを作成し、関連する製品も含める
+    const brandObj = mapBrand(data);
+
+    // 関連する製品をマッピング
+    if (data.products && Array.isArray(data.products)) {
+      brandObj.products = data.products.map((product: any) => {
+        const productObj = mapProduct(product);
+        productObj.brand = brandObj; // 製品にブランド参照を設定
+
+        // 製品の時代情報をマッピング
+        if (product.product_eras && Array.isArray(product.product_eras)) {
+          productObj.eras = product.product_eras.map((era: any) => {
+            const eraObj = mapEra(era);
+            eraObj.product = productObj; // 時代に製品参照を設定
+            return eraObj;
+          });
+        }
+
+        return productObj;
+      });
+    }
+
+    return brandObj;
   }
 
   // 製品関連
@@ -312,24 +362,25 @@ export class API {
       .is("deleted_at", null);
 
     if (error) throw error;
-    return (data || []).map(mapProduct);
-  }
-
-  static async getProductsByBrandId(brandId: number): Promise<Product[]> {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("brand_id", brandId)
-      .is("deleted_at", null);
-
-    if (error) throw error;
-    return (data || []).map(mapProduct);
+    return (data || []).map((product) => {
+      const productObj = mapProduct(product);
+      return productObj;
+    });
   }
 
   static async getProduct(id: number): Promise<Product | null> {
     const { data, error } = await supabase
       .from("products")
-      .select("*")
+      .select(
+        `
+        *,
+        brands!fk_brand(*),
+        product_eras(
+          *,
+          product_era_check_points(*)
+        )
+      `,
+      )
       .eq("id", id)
       .is("deleted_at", null)
       .single();
@@ -338,99 +389,71 @@ export class API {
       if (error.code === "PGRST116") return null; // PGRST116 は "結果が見つからない" エラー
       throw error;
     }
-    return data ? mapProduct(data) : null;
+
+    if (!data) return null;
+
+    const productObj = mapProduct(data);
+
+    // ブランド情報をセット
+    if (data.brands) {
+      productObj.brand = mapBrand(data.brands);
+    }
+
+    // 時代情報をセット
+    if (data.product_eras && Array.isArray(data.product_eras)) {
+      productObj.eras = data.product_eras.map((era: any) => {
+        const eraObj = mapEra(era);
+        eraObj.product = productObj; // 時代に製品参照を設定
+
+        // チェックポイント情報をセット
+        if (
+          era.product_era_check_points &&
+          Array.isArray(era.product_era_check_points)
+        ) {
+          eraObj.checkPoints = era.product_era_check_points.map(
+            (checkpoint: any) => {
+              const checkpointObj = mapCheckPoint(checkpoint);
+              checkpointObj.era = eraObj; // チェックポイントに時代参照を設定
+              return checkpointObj;
+            },
+          );
+        }
+
+        return eraObj;
+      });
+    }
+
+    return productObj;
   }
 
   // 製品時代関連
-  static async getProductEras(): Promise<ProductEra[]> {
+  // static async getEras(): Promise<Era[]> {}
+
+  // 製品時代チェックポイント関連
+  static async getCheckPoints(): Promise<CheckPoint[]> {
     const { data, error } = await supabase
-      .from("product_eras")
+      .from("product_era_check_points")
       .select("*")
       .is("deleted_at", null);
 
     if (error) throw error;
-    return (data || []).map(mapProductEra);
-  }
-
-  static async getProductErasByProductId(
-    productId: number,
-  ): Promise<ProductEra[]> {
-    const { data, error } = await supabase
-      .from("product_eras")
-      .select(
-        `
-        *,
-        product_era_check_points(*)
-      `,
-      )
-      .eq("product_id", productId)
-      .is("deleted_at", null);
-
-    if (error) throw error;
-    return (data || []).map(mapProductEra);
-  }
-
-  // 製品時代チェックポイント関連
-  static async getProductEraCheckPoints(): Promise<ProductEraCheckPoint[]> {
-    const { data, error } = await supabase
-      .from("product_era_check_points")
-      .select(
-        `
-        *,
-        product_eras!fk_product_era(
-          *,
-          products!fk_product(
-            *,
-            brands!fk_brand(*)
-          )
-        )
-      `,
-      )
-      .is("deleted_at", null);
-
-    if (error) throw error;
-
-    return (data || []).map((checkPoint) => {
-      const productEra = checkPoint.product_eras;
-      const product = productEra.products;
-      const brand = product.brands;
-
-      return {
-        id: checkPoint.id,
-        brand: {
-          id: brand.id,
-          name: brand.name,
-          imageUrl: brand.image_url,
-          description: brand.description || "",
-        },
-        product: {
-          id: product.id,
-          brandId: product.brand_id,
-          name: product.name,
-          imageUrl: product.image_url,
-          description: product.description || "",
-        },
-        productEraId: checkPoint.product_era_id,
-        point: checkPoint.point,
-        imageUrl: checkPoint.image_url,
-        description: checkPoint.description || "",
-        userId: checkPoint.user_id,
-        createdAt: checkPoint.created_at,
-      };
+    return (data || []).map((cp) => {
+      const checkPoint = mapCheckPoint(cp);
+      return checkPoint;
     });
   }
 
   static async addCheckPoint(
-    productEraId: number,
+    eraId: number,
     point: string,
     imageUrl: string,
     description: string | null,
     userId: string,
-  ): Promise<ProductEraCheckPoint> {
+  ): Promise<CheckPoint> {
     const { data, error } = await supabase
       .from("product_era_check_points")
       .insert({
-        product_era_id: productEraId,
+        product_era_id: eraId,
         point: point,
         image_url: imageUrl,
         description: description || null,
@@ -456,22 +479,22 @@ export class API {
     const product = productEra.products;
     const brand = product.brands;
 
+    // ブランドとプロダクトのマッピング
+    const brandObj = mapBrand(brand);
+    const productObj = {
+      ...mapProduct(product),
+      brand: brandObj,
+    };
+
+    // 時代のマッピング
+    const eraObj = {
+      ...mapEra(productEra),
+      product: productObj,
+    };
+
     return {
       id: data.id,
-      brand: {
-        id: brand.id,
-        name: brand.name,
-        imageUrl: brand.image_url,
-        description: brand.description || "",
-      },
-      product: {
-        id: product.id,
-        brandId: product.brand_id,
-        name: product.name,
-        imageUrl: product.image_url,
-        description: product.description || "",
-      },
-      productEraId: data.product_era_id,
+      era: eraObj,
       point: data.point,
       imageUrl: data.image_url,
       description: data.description || "",
@@ -501,7 +524,7 @@ export class API {
     const filePath = `${folder}/${fileName}`;
 
     // Supabaseにアップロード
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("images")
       .upload(filePath, file, {
         cacheControl: "3600",
