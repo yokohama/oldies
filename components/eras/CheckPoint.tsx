@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckPointType, UserProfileType } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
+import { toast } from "sonner";
 import { useCheckPointActions } from "@/hooks";
+import { siteConfig } from "@/lib/config/siteConfig";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 interface CheckPointProps {
   checkPoint: CheckPointType;
   setCheckPoints: React.Dispatch<React.SetStateAction<CheckPointType[]>>;
-  showCheckPoint: (checkPoint: CheckPointType) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfileType;
 }
@@ -18,7 +19,6 @@ interface CheckPointProps {
 const CheckPoint = ({
   checkPoint,
   setCheckPoints,
-  showCheckPoint,
   isOwnCheckPoint = false,
   userProfile,
 }: CheckPointProps) => {
@@ -29,37 +29,24 @@ const CheckPoint = ({
     avatarUrl = getAvatarUrl(),
     handleLike = () => { },
     handleShare = () => { },
-    handleCheckPointClick = () => { },
     isLikeLoading = false,
-    handleDeleteCheckPoint,
+    handleDelete,
   } = useCheckPointActions({
     brand: checkPoint.era.product.brand,
     product: checkPoint.era.product,
     checkPoint,
-    showCheckPoint,
     isOwnCheckPoint,
     userProfile,
   });
 
-  const handleDeleteClickPoint = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (window.confirm("この鑑定ポイントを削除してもよろしいですか？")) {
-      const success = await handleDeleteCheckPoint(checkPoint.id);
-      if (success) {
-        setCheckPoints((prev) => prev.filter((cp) => cp.id !== checkPoint.id));
-      }
-    }
-  };
-
   return (
     <div
       className="oldies-card cursor-pointer flex flex-col h-full"
-      onClick={handleCheckPointClick}
+      onClick={() => openCheckPointToast(checkPoint)}
     >
       {isOwnCheckPoint && (
         <button
-          onClick={handleDeleteClickPoint}
+          onClick={(e) => handleDelete(checkPoint.id, e, setCheckPoints)}
           className="absolute top-2 right-2 text-[var(--oldies-accent-primary)] hover:text-[var(--oldies-accent-secondary)] transition-colors z-10"
           aria-label="削除"
         >
@@ -143,6 +130,64 @@ const CheckPoint = ({
       </div>
     </div>
   );
+};
+
+const openCheckPointToast = (checkPoint: CheckPointType) => {
+  const toastId = toast(
+    <div
+      id="debug"
+      className="relative oldies-bg-lighter p-4 rounded-lg oldies-border-thick w-full shadow-lg"
+      style={{ maxWidth: "100%" }}
+    >
+      <button
+        onClick={() => toast.dismiss(toastId)}
+        className="absolute top-2 right-2 p-1 rounded-full hover:oldies-bg-secondary"
+      >
+        <svg
+          xmlns={siteConfig.svg.xmlns}
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--oldies-accent-primary)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      {checkPoint.imageUrl && (
+        <div className="relative h-48 w-full oldies-bg-secondary rounded-lg overflow-hidden mt-6 oldies-border">
+          <Image
+            src={checkPoint.imageUrl}
+            alt={`${checkPoint.point} - ${checkPoint.era.product.name} - ${checkPoint.era.product.brand.name} | ヴィンテージアパレル| 時代の特徴ポイント | ${siteConfig.name}`}
+            fill
+            className="object-cover sepia-[0.15] brightness-[0.98]"
+            unoptimized
+          />
+        </div>
+      )}
+      <h3 className="text-lg font-medium oldies-text-primary my-2 font-serif">
+        {checkPoint.point}
+      </h3>
+      <p className="text-sm oldies-text-secondary">{checkPoint.description}</p>
+    </div>,
+    {
+      duration: Infinity,
+      style: {
+        padding: 0,
+        margin: 0,
+        width: "100%",
+        maxWidth: "450px",
+      },
+      unstyled: true,
+      className: "oldies-toast",
+    },
+  );
+
+  return toastId;
 };
 
 export default CheckPoint;

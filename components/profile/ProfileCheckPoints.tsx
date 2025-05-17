@@ -3,7 +3,6 @@
 import CheckPoint from "@/components/eras/CheckPoint";
 import { UserProfileType, CheckPointType } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
-import { showCheckPoint } from "@/components/eras/CheckPointToast";
 import { useState, useEffect } from "react";
 import { useUserCheckPoints } from "@/hooks/checkPoint/useUserCheckPoints";
 import Spinner from "../ui/Spinner";
@@ -47,13 +46,13 @@ const ProfileCheckPoints = ({
 
   return (
     <>
-      <h2 className="text-xl font-serif text-[#5c4d3c] mb-4 border-b border-[#d3c7a7] pb-2">
+      <div className="mb-2 oldies-section-title">
         {isOwnProfile ? (
           <p>投稿した鑑定ポイント</p>
         ) : (
           <p>{userProfile.name}さんの鑑定ポイント</p>
         )}
-      </h2>
+      </div>
 
       {error ? (
         <div className="text-center py-8">
@@ -74,7 +73,6 @@ const ProfileCheckPoints = ({
               key={checkPoint.id}
               checkPoint={checkPoint}
               setCheckPoints={setCheckPoints}
-              showCheckPoint={showCheckPoint}
               isOwnCheckPoint={isOwnProfile}
               userProfile={userProfile}
             />

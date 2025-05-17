@@ -45,7 +45,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
         </div>
 
         <div className="flex-1 text-center md:text-left">
-          <h1 className="text-2xl font-serif text-[#5c4d3c] mb-2">
+          <h1 className="text-2xl font-serif mb-2 text-[var(--oldies-accent-primary)]">
             {profile.name || "ユーザー"}
           </h1>
           <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">

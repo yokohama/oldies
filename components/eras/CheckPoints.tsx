@@ -1,10 +1,8 @@
 "use client";
-
 import { EraType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPoint from "./CheckPoint";
-import { showCheckPoint } from "./CheckPointToast";
 import { useCheckPoints } from "@/hooks";
 import NotFound from "../ui/NotFound";
 import { siteConfig } from "@/lib/config/siteConfig";
@@ -76,7 +74,6 @@ const CheckPoints = ({ era }: CheckPointsProps) => {
                 key={checkPoint.id}
                 checkPoint={checkPoint}
                 setCheckPoints={setCheckPoints}
-                showCheckPoint={() => showCheckPoint(checkPoint)}
                 isOwnCheckPoint={user?.id === checkPoint.userId}
                 userProfile={
                   checkPoint.userId

@@ -140,7 +140,7 @@
 	}
 
 	.oldies-section-title {
-		@apply text-xl font-serif text-[var(--oldies-text-primary)] mb-4 border-b border-[var(--oldies-border-primary)] pb-2;
+		@apply text-xl font-serif text-[var(--oldies-accent-primary)] mb-4 border-b border-[var(--oldies-border-primary)] pb-2;
 	}
 
 	/* カード関連 */
@@ -241,6 +241,24 @@
 
 	.oldies-border-dashed {
 		@apply border-2 border-dashed border-[var(--oldies-border-primary)];
+	}
+
+	.oldies-border-thick {
+		@apply border-2 border-[var(--oldies-border-primary)];
+	}
+
+	/* トースト用のカスタムスタイル */
+	.oldies-toast [data-sonner-toast] {
+		padding: 0 !important;
+		margin: 0 !important;
+		width: 100% !important;
+		max-width: 450px !important;
+		border: none !important;
+		border-radius: 0 !important;
+	}
+
+	.oldies-bg-lighter {
+		@apply bg-[#fcfaf6];
 	}
 
 	/* アニメーション */

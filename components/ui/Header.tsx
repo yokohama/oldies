@@ -26,20 +26,19 @@ const Header = () => {
 
   return (
     <header className="mb-8 pt-12 pb-10 md:pt-16 md:pb-14 lg:pt-20 lg:pb-16 xl:pt-24 xl:pb-20 2xl:pt-32 2xl:pb-24 border-b border-amber-100 oldies-header-background">
-      <div className="flex items-center justify-between">
+      <div className="relative">
         <Link href="/">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group pl-2 md:pl-4 lg:pl-6">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group pl-2 md:pl-4 lg:pl-6 w-full bg-amber-100/40">
             <span className="italic tracking-wide">{siteConfig.name}</span>
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
           </h1>
         </Link>
 
-        <div className="flex items-center">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
           <DropdownMenu.Root open={open} onOpenChange={setOpen}>
             <DropdownMenu.Trigger asChild>
               <button className="p-2 focus:outline-none relative">
                 {user && user.user_metadata?.avatar_url ? (
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-200 shadow-sm hover:border-amber-300 transition-all duration-200">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-200 shadow-sm hover:border-amber-300 transition-all duration-200 bg-amber-50">
                     <Image
                       src={user.user_metadata.avatar_url}
                       alt="プロフィール写真"

@@ -31,8 +31,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 鑑定ポイント追加のカスタムフックを使用
-  const { handleAddCheckPoint, isSubmitting, uploadProgress } =
-    useCheckPointActions();
+  const { handleAdd, isSubmitting, uploadProgress } = useCheckPointActions();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,7 +70,6 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
     e: React.FormEvent,
     productEraId: number,
     onSuccess: (newCheckPoint: CheckPointType) => void,
-    onClose: () => void,
   ) => {
     e.preventDefault();
 
@@ -86,7 +84,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
     }
 
     // カスタムフックのaddCheckPoint関数を使用
-    const result = await handleAddCheckPoint(
+    const result = await handleAdd(
       productEraId,
       point,
       selectedFile,

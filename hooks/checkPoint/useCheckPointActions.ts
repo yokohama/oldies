@@ -12,20 +12,28 @@ interface UseCheckPointActionsProps {
   brand: BrandType;
   product: ProductType;
   checkPoint?: CheckPointType;
-  showCheckPoint?: (checkPoint: CheckPointType) => void;
+  openCheckPointToast?: (checkPoint: CheckPointType) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfileType;
 }
 
 interface UseCheckPointActionsReturn {
   // 鑑定ポイント追加・削除機能
-  handleAddCheckPoint: (
+  handleAdd: (
     productEraId: number,
     point: string,
     file: File,
     description: string | null,
   ) => Promise<{ success: boolean; checkPoint?: CheckPointType }>;
-  handleDeleteCheckPoint: (checkPointId: number) => Promise<boolean>;
+
+  handleDelete: (
+    checkPointId: number,
+    e?: React.MouseEvent,
+    setCheckPointsState?: React.Dispatch<
+      React.SetStateAction<CheckPointType[]>
+    >,
+  ) => Promise<boolean>;
+
   isSubmitting: boolean;
   uploadProgress: number;
 
@@ -36,7 +44,6 @@ interface UseCheckPointActionsReturn {
   avatarUrl: string;
   handleLike: (e: React.MouseEvent) => void;
   handleShare: (e: React.MouseEvent) => void;
-  handleCheckPointClick: () => void;
   isLikeLoading: boolean;
 }
 
@@ -53,7 +60,6 @@ export function useCheckPointActions(
   const [isLikeLoading, setIsLikeLoading] = useState(false);
 
   const checkPoint = props?.checkPoint;
-  const showCheckPoint = props?.showCheckPoint;
   const userProfile = props?.userProfile;
 
   // 鑑定ポイントのいいね状態を取得
@@ -91,7 +97,7 @@ export function useCheckPointActions(
     fetchLikeCount();
   }, [checkPoint?.id]);
 
-  const handleAddCheckPoint = async (
+  const handleAdd = async (
     productEraId: number,
     point: string,
     file: File,
@@ -139,18 +145,40 @@ export function useCheckPointActions(
     }
   };
 
-  const handleDeleteCheckPoint = async (
+  const handleDelete = async (
     checkPointId: number,
+    e?: React.MouseEvent,
+    setCheckPointsState?: React.Dispatch<
+      React.SetStateAction<CheckPointType[]>
+    >,
   ): Promise<boolean> => {
-    try {
-      await API.deleteCheckPoint(checkPointId);
-      toast.success("鑑定ポイントを削除しました");
-      return true;
-    } catch (error) {
-      console.error("鑑定ポイントの削除に失敗しました:", error);
-      toast.error("鑑定ポイントの削除に失敗しました");
-      return false;
+    // イベントが提供された場合は伝播を停止
+    if (e) {
+      e.stopPropagation();
     }
+
+    // 確認ダイアログを表示（呼び出し元で既に確認済みの場合はスキップ）
+    if (!e || window.confirm("この鑑定ポイントを削除してもよろしいですか？")) {
+      try {
+        await API.deleteCheckPoint(checkPointId);
+        toast.success("鑑定ポイントを削除しました");
+
+        // setCheckPointsが提供された場合は状態を更新
+        if (setCheckPointsState) {
+          setCheckPointsState((prev) =>
+            prev.filter((cp) => cp.id !== checkPointId),
+          );
+        }
+
+        return true;
+      } catch (error) {
+        console.error("鑑定ポイントの削除に失敗しました:", error);
+        toast.error("鑑定ポイントの削除に失敗しました");
+        return false;
+      }
+    }
+
+    return false;
   };
 
   const handleLike = async (e: React.MouseEvent) => {
@@ -187,12 +215,6 @@ export function useCheckPointActions(
     alert("シェア機能は現在開発中です");
   };
 
-  const handleCheckPointClick = () => {
-    if (checkPoint && showCheckPoint) {
-      showCheckPoint(checkPoint);
-    }
-  };
-
   // ユーザープロフィール情報の処理
   const defaultAvatar = getAvatarUrl(checkPoint?.userId || "anonymous");
 
@@ -200,8 +222,8 @@ export function useCheckPointActions(
   const avatarUrl = userProfile?.avatarUrl ?? defaultAvatar;
 
   return {
-    handleAddCheckPoint,
-    handleDeleteCheckPoint,
+    handleAdd,
+    handleDelete,
     isSubmitting,
     uploadProgress,
     liked,
@@ -210,7 +232,6 @@ export function useCheckPointActions(
     avatarUrl,
     handleLike,
     handleShare,
-    handleCheckPointClick,
     isLikeLoading,
   };
 }

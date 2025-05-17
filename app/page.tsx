@@ -51,7 +51,7 @@ export default async function Home() {
                       />
                     </div>
                     <div className="oldies-card-content">
-                      <h2 className="oldies-section-title">{brand.name}</h2>
+                      <div className="oldies-section-title">{brand.name}</div>
                       <div className="oldies-text-secondary font-light italic">
                         {brand.description}
                       </div>
