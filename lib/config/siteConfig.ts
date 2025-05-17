@@ -13,6 +13,7 @@ export const siteConfig = {
   },
 
   // SEO関連
+  // TODO: 実装
   seo: {
     titleTemplate: "%s | hoge",
     defaultTitle: "moge | ビンテージアパレル",

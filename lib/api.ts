@@ -1,17 +1,17 @@
 import { supabase } from "./supabase";
 import {
-  Brand,
-  Product,
-  Era,
-  CheckPoint,
-  UserProfile,
-  LikedCheckPoint,
+  BrandType,
+  ProductType,
+  EraType,
+  CheckPointType,
+  UserProfileType,
+  LikedCheckPointType,
 } from "./types";
 import { User } from "@supabase/supabase-js";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 // データ変換用のヘルパー関数
-const mapBrand = (brand: any): Brand => ({
+const mapBrand = (brand: any): BrandType => ({
   id: brand.id,
   name: brand.name,
   imageUrl: brand.image_url,
@@ -19,7 +19,7 @@ const mapBrand = (brand: any): Brand => ({
   products: [],
 });
 
-const mapProduct = (product: any): Product => ({
+const mapProduct = (product: any): ProductType => ({
   id: product.id,
   brand: product.brand,
   name: product.name,
@@ -28,7 +28,7 @@ const mapProduct = (product: any): Product => ({
   eras: [],
 });
 
-const mapEra = (era: any): Era => ({
+const mapEra = (era: any): EraType => ({
   id: era.id,
   product: era.product,
   manufacturing_start_year: era.manufacturing_start_year,
@@ -37,19 +37,19 @@ const mapEra = (era: any): Era => ({
   description: era.description || "",
   checkPoints: era.product_era_check_points
     ? era.product_era_check_points.map((checkpoint: any) => {
-        // 製品時代のチェックポイントにブランドと製品の情報を追加
-        const checkpointWithRefs = {
-          ...checkpoint,
-          eras: {
-            products: era.products || { brands: {} },
-          },
-        };
-        return mapCheckPoint(checkpointWithRefs);
-      })
+      // 製品時代のチェックポイントにブランドと製品の情報を追加
+      const checkpointWithRefs = {
+        ...checkpoint,
+        eras: {
+          products: era.products || { brands: {} },
+        },
+      };
+      return mapCheckPoint(checkpointWithRefs);
+    })
     : [],
 });
 
-const mapCheckPoint = (checkpoint: any): CheckPoint => {
+const mapCheckPoint = (checkpoint: any): CheckPointType => {
   return {
     id: checkpoint.id,
     era: checkpoint.era,
@@ -61,7 +61,7 @@ const mapCheckPoint = (checkpoint: any): CheckPoint => {
   };
 };
 
-const mapUserProfile = (profile: any): UserProfile => ({
+const mapUserProfile = (profile: any): UserProfileType => ({
   id: profile.id,
   name: profile.full_name || profile.username || "ユーザー",
   email: profile.email,
@@ -109,7 +109,7 @@ export class API {
     return count || 0;
   }
 
-  static async getCheckPoint(id: number): Promise<CheckPoint | null> {
+  static async getCheckPoint(id: number): Promise<CheckPointType | null> {
     const { data, error } = await supabase
       .from("product_era_check_points")
       .select(
@@ -188,7 +188,9 @@ export class API {
     if (error) throw error;
   }
 
-  static async getLikedCheckPoints(userId: string): Promise<LikedCheckPoint[]> {
+  static async getLikedCheckPoints(
+    userId: string,
+  ): Promise<LikedCheckPointType[]> {
     const { data, error } = await supabase
       .from("check_point_likes")
       .select(
@@ -244,7 +246,7 @@ export class API {
   }
 
   // ユーザーが投稿したチェックポイントを取得
-  static async getUserCheckPoints(userId: string): Promise<CheckPoint[]> {
+  static async getUserCheckPoints(userId: string): Promise<CheckPointType[]> {
     const { data, error } = await supabase
       .from("product_era_check_points")
       .select(
@@ -296,7 +298,7 @@ export class API {
   }
 
   // ブランド関連
-  static async getBrands(): Promise<Brand[]> {
+  static async getBrands(): Promise<BrandType[]> {
     const { data, error } = await supabase
       .from("brands")
       .select("*")
@@ -306,7 +308,7 @@ export class API {
     return (data || []).map(mapBrand);
   }
 
-  static async getBrand(id: number): Promise<Brand | null> {
+  static async getBrand(id: number): Promise<BrandType | null> {
     const { data, error } = await supabase
       .from("brands")
       .select(
@@ -355,7 +357,7 @@ export class API {
   }
 
   // 製品関連
-  static async getProducts(): Promise<Product[]> {
+  static async getProducts(): Promise<ProductType[]> {
     const { data, error } = await supabase
       .from("products")
       .select("*")
@@ -368,7 +370,7 @@ export class API {
     });
   }
 
-  static async getProduct(id: number): Promise<Product | null> {
+  static async getProduct(id: number): Promise<ProductType | null> {
     const { data, error } = await supabase
       .from("products")
       .select(
@@ -430,7 +432,7 @@ export class API {
   // static async getEras(): Promise<Era[]> {}
 
   // 製品時代チェックポイント関連
-  static async getCheckPoints(): Promise<CheckPoint[]> {
+  static async getCheckPoints(): Promise<CheckPointType[]> {
     const { data, error } = await supabase
       .from("product_era_check_points")
       .select("*")
@@ -449,7 +451,7 @@ export class API {
     imageUrl: string,
     description: string | null,
     userId: string,
-  ): Promise<CheckPoint> {
+  ): Promise<CheckPointType> {
     const { data, error } = await supabase
       .from("product_era_check_points")
       .insert({
@@ -548,7 +550,7 @@ export class API {
     return user;
   }
 
-  static async getUserProfile(userId: string): Promise<UserProfile | null> {
+  static async getUserProfile(userId: string): Promise<UserProfileType | null> {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")

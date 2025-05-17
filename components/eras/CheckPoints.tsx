@@ -1,6 +1,6 @@
 "use client";
 
-import { Brand, Product, Era } from "@/lib/types";
+import { BrandType, ProductType, EraType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
 import CheckPointCard from "./CheckPointCard";
@@ -10,9 +10,9 @@ import NotFound from "../ui/NotFound";
 import { siteConfig } from "@/lib/config/siteConfig";
 
 interface CheckPointsProps {
-  brand: Brand;
-  product: Product;
-  era: Era;
+  brand: BrandType;
+  product: ProductType;
+  era: EraType;
 }
 
 const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {

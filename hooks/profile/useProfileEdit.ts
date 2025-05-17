@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileContext } from "@/contexts/ProfileContext";
-import { UserProfile } from "@/lib/types";
+import { UserProfileType } from "@/lib/types";
 import { API } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 
 export const useProfileEdit = () => {
   const { user } = useAuth();
   const { updateProfile } = useProfileContext();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<UserProfileType | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);

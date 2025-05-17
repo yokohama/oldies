@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { CheckPoint } from "@/lib/types";
+import { CheckPointType } from "@/lib/types";
 import { API } from "@/lib/api";
 
 export const useUserCheckPoints = (userId: string | undefined) => {
-  const [checkPoints, setCheckPoints] = useState<CheckPoint[]>([]);
+  const [checkPoints, setCheckPoints] = useState<CheckPointType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileContext } from "@/contexts/ProfileContext";
-import { UserProfile } from "@/lib/types";
+import { UserProfileType } from "@/lib/types";
 
 interface useProfileHeaderProps {
-  user: UserProfile;
+  user: UserProfileType;
 }
 
 export const useProfileHeader = ({ user }: useProfileHeaderProps) => {
-  const [profile, setProfile] = useState<UserProfile>(user);
+  const [profile, setProfile] = useState<UserProfileType>(user);
   const { user: currentUser } = useAuth();
   const { updatedProfile } = useProfileContext();
   const isOwnProfile = currentUser && currentUser.id === profile.id;

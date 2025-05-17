@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { useCheckPointActions } from "./useCheckPointActions";
-import { CheckPoint } from "@/lib/types";
+import { CheckPointType } from "@/lib/types";
 
 interface UseCheckPointFormReturn {
   point: string;
@@ -18,7 +18,7 @@ interface UseCheckPointFormReturn {
   handleSubmit: (
     e: React.FormEvent,
     productEraId: number,
-    onSuccess: (newCheckPoint: CheckPoint) => void,
+    onSuccess: (newCheckPoint: CheckPointType) => void,
     onClose: () => void,
   ) => Promise<void>;
 }
@@ -70,7 +70,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
   const handleSubmit = async (
     e: React.FormEvent,
     productEraId: number,
-    onSuccess: (newCheckPoint: CheckPoint) => void,
+    onSuccess: (newCheckPoint: CheckPointType) => void,
     onClose: () => void,
   ) => {
     e.preventDefault();

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Era } from "@/lib/types";
 import {
   Carousel,
   CarouselContent,
@@ -12,14 +11,14 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Toaster } from "sonner";
 import CheckPoints from "./CheckPoints";
 import { useErasCarousel } from "@/hooks";
-import { Brand, Product } from "@/lib/types";
+import { BrandType, ProductType, EraType } from "@/lib/types";
 import { siteConfig } from "@/lib/config/siteConfig";
 
 // 外部から使用するためのプロップス
 interface ErasCarouselProps {
-  brand: Brand;
-  product: Product;
-  eras: Era[];
+  brand: BrandType;
+  product: ProductType;
+  eras: EraType[];
 }
 
 const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
@@ -108,11 +107,10 @@ const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
             {eras.map((_, index) => (
               <div
                 key={index}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  index === currentIndex
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${index === currentIndex
                     ? "bg-[var(--oldies-accent-primary)]"
                     : "bg-[var(--oldies-border-primary)] hover:bg-[var(--oldies-border-secondary)]"
-                }`}
+                  }`}
               />
             ))}
           </div>

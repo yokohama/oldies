@@ -15,7 +15,6 @@ import LoginButton from "@/components/auth/LoginButton";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { siteConfig } from "@/lib/config/siteConfig";
 import Image from "next/image";
-import styles from "@/styles/header.module.css";
 
 const Header = () => {
   const [open, setOpen] = useState(false);

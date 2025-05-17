@@ -1,7 +1,7 @@
 "use client";
 
 import CheckPointCard from "../eras/CheckPointCard";
-import { UserProfile, CheckPoint } from "@/lib/types";
+import { UserProfileType, CheckPointType } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { showCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
 import { useState, useEffect } from "react";
@@ -10,8 +10,8 @@ import Spinner from "../ui/Spinner";
 
 interface ProfileCheckPointsProps {
   userId: string;
-  userProfile: UserProfile;
-  initialCheckPoints: CheckPoint[];
+  userProfile: UserProfileType;
+  initialCheckPoints: CheckPointType[];
   initialError?: string | null;
 }
 
@@ -23,7 +23,7 @@ const ProfileCheckPoints = ({
 }: ProfileCheckPointsProps) => {
   const { user } = useAuth();
   const [checkPoints, setCheckPoints] =
-    useState<CheckPoint[]>(initialCheckPoints);
+    useState<CheckPointType[]>(initialCheckPoints);
   const [error, setError] = useState<string | null>(initialError);
 
   // useUserCheckPointsフックを使用して最新のデータを取得

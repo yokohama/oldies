@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Brand, Product, UserProfile } from "./types";
+import { BrandType, ProductType, UserProfileType } from "./types";
 import { siteConfig, siteUrls } from "./config/siteConfig";
 
 // サイト全体のベースとなるメタデータ
@@ -36,7 +36,7 @@ export const baseMetadata: Metadata = {
   },
 };
 
-export function generateProductsMetadata(brand: Brand): Metadata {
+export function generateProductsMetadata(brand: BrandType): Metadata {
   const title = `${brand.name}の名作一覧 | ${siteConfig.name}`;
   const description = `${brand.name}の今でも多くの人に愛されるアパレルコレクション`;
 
@@ -62,7 +62,7 @@ export function generateProductsMetadata(brand: Brand): Metadata {
 }
 
 // 商品ページのメタデータ生成
-export function generateProductMetadata(product: Product): Metadata {
+export function generateProductMetadata(product: ProductType): Metadata {
   const title = `${product.name} - ${product.brand.name} | ${siteConfig.name}`;
   const description = `${product.brand.name}の${product.name}ヴィンテージアパレル`;
 
@@ -123,7 +123,7 @@ export function generateCheckpointsMetadata() {
 }
 
 // プロフィールページのメタデータ生成
-export function generateProfileMetadata(profile: UserProfile): Metadata {
+export function generateProfileMetadata(profile: UserProfileType): Metadata {
   const title = `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`;
   const description = `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`;
   return {
@@ -134,13 +134,13 @@ export function generateProfileMetadata(profile: UserProfile): Metadata {
       description: description,
       images: profile.avatarUrl
         ? [
-            {
-              url: profile.avatarUrl,
-              width: 500,
-              height: 500,
-              alt: `${profile.name || "ユーザー"}のプロフィール画像`,
-            },
-          ]
+          {
+            url: profile.avatarUrl,
+            width: 500,
+            height: 500,
+            alt: `${profile.name || "ユーザー"}のプロフィール画像`,
+          },
+        ]
         : [],
     },
     alternates: {

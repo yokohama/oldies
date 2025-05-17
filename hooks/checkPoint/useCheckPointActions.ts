@@ -3,22 +3,22 @@
 import { useState, useEffect } from "react";
 import { API } from "@/lib/api";
 import { toast } from "sonner";
-import { CheckPoint, UserProfile } from "@/lib/types";
+import { CheckPointType, UserProfileType } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
-import { Brand, Product } from "@/lib/types";
+import { BrandType, ProductType } from "@/lib/types";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 interface UseCheckPointActionsProps {
-  brand: Brand;
-  product: Product;
-  checkPoint?: CheckPoint;
+  brand: BrandType;
+  product: ProductType;
+  checkPoint?: CheckPointType;
   showCheckPoint?: (
-    brand: Brand,
-    product: Product,
-    checkPoint: CheckPoint,
+    brand: BrandType,
+    product: ProductType,
+    checkPoint: CheckPointType,
   ) => void;
   isOwnCheckPoint?: boolean;
-  userProfile?: UserProfile;
+  userProfile?: UserProfileType;
 }
 
 interface UseCheckPointActionsReturn {
@@ -28,7 +28,7 @@ interface UseCheckPointActionsReturn {
     point: string,
     file: File,
     description: string | null,
-  ) => Promise<{ success: boolean; checkPoint?: CheckPoint }>;
+  ) => Promise<{ success: boolean; checkPoint?: CheckPointType }>;
   handleDeleteCheckPoint: (checkPointId: number) => Promise<boolean>;
   isSubmitting: boolean;
   uploadProgress: number;
@@ -102,7 +102,7 @@ export function useCheckPointActions(
     point: string,
     file: File,
     description: string | null,
-  ): Promise<{ success: boolean; checkPoint?: CheckPoint }> => {
+  ): Promise<{ success: boolean; checkPoint?: CheckPointType }> => {
     setIsSubmitting(true);
     setUploadProgress(0);
 

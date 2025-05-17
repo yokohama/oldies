@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Twitter, Facebook, Heart } from "lucide-react";
+import { Instagram, X, Facebook, Heart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { siteConfig } from "@/lib/config/siteConfig";
 
@@ -36,7 +36,7 @@ const Footer = () => {
               className="text-amber-700 hover:text-amber-900 transition-colors"
               aria-label="Twitter"
             >
-              <Twitter size={20} />
+              <X size={20} />
             </a>
             <a
               href="#"

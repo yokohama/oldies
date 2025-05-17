@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback } from "react";
-import { UserProfile } from "@/lib/types";
+import { UserProfileType } from "@/lib/types";
 
 type ProfileContextType = {
-  updatedProfile: UserProfile | null;
-  updateProfile: (profile: UserProfile) => void;
+  updatedProfile: UserProfileType | null;
+  updateProfile: (profile: UserProfileType) => void;
   resetUpdatedProfile: () => void;
 };
 
@@ -16,11 +16,11 @@ export const ProfileProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [updatedProfile, setUpdatedProfile] = useState<UserProfile | null>(
+  const [updatedProfile, setUpdatedProfile] = useState<UserProfileType | null>(
     null,
   );
 
-  const updateProfile = useCallback((profile: UserProfile) => {
+  const updateProfile = useCallback((profile: UserProfileType) => {
     setUpdatedProfile(profile);
   }, []);
 

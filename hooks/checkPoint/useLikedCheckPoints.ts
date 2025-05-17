@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { API } from "@/lib/api";
-import { LikedCheckPoint } from "@/lib/types";
+import { LikedCheckPointType } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const useLikedCheckPoints = () => {
-  const [likedCheckPoints, setLikedCheckPoints] = useState<LikedCheckPoint[]>(
-    [],
-  );
+  const [likedCheckPoints, setLikedCheckPoints] = useState<
+    LikedCheckPointType[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const { user } = useAuth();

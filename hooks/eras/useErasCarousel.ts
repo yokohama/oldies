@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Era } from "@/lib/types";
+import { EraType } from "@/lib/types";
 import { type CarouselApi } from "@/components/ui/carousel";
 
 interface UseProductEraCarouselProps {
-  eras: Era[];
+  eras: EraType[];
   selectedEraIndex: number;
   onEraIndexChange?: (index: number) => void;
 }
@@ -11,7 +11,7 @@ interface UseProductEraCarouselProps {
 interface UseProductEraCarouselReturn {
   setApi: (api: CarouselApi | undefined) => void;
   currentIndex: number;
-  currentProductEra: Era | null;
+  currentProductEra: EraType | null;
   handlePrevSlide: () => void;
   handleNextSlide: () => void;
 }
@@ -23,7 +23,7 @@ export function useErasCarousel({
 }: UseProductEraCarouselProps): UseProductEraCarouselReturn {
   const [api, setApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentProductEra, setCurrentProductEra] = useState<Era | null>(
+  const [currentProductEra, setCurrentProductEra] = useState<EraType | null>(
     eras.length > 0 ? eras[0] : null,
   );
 

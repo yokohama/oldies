@@ -2,24 +2,28 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { CheckPoint, UserProfile } from "@/lib/types";
+import {
+  BrandType,
+  ProductType,
+  CheckPointType,
+  UserProfileType,
+} from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPointActions } from "@/hooks";
-import { Brand, Product } from "@/lib/types";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
 
 interface CheckPointCardProps {
-  brand: Brand;
-  product: Product;
-  checkPoint: CheckPoint;
-  setCheckPoints: React.Dispatch<React.SetStateAction<CheckPoint[]>>;
+  brand: BrandType;
+  product: ProductType;
+  checkPoint: CheckPointType;
+  setCheckPoints: React.Dispatch<React.SetStateAction<CheckPointType[]>>;
   showCheckPoint: (
-    brand: Brand,
-    product: Product,
-    checkPoint: CheckPoint,
+    brand: BrandType,
+    product: ProductType,
+    checkPoint: CheckPointType,
   ) => void;
   isOwnCheckPoint?: boolean;
-  userProfile?: UserProfile;
+  userProfile?: UserProfileType;
 }
 
 const CheckPointCard = ({
@@ -36,9 +40,9 @@ const CheckPointCard = ({
     likeCount = 0,
     displayName = "ユーザー",
     avatarUrl = getAvatarUrl(),
-    handleLike = () => {},
-    handleShare = () => {},
-    handleCheckPointClick = () => {},
+    handleLike = () => { },
+    handleShare = () => { },
+    handleCheckPointClick = () => { },
     isLikeLoading = false,
     handleDeleteCheckPoint,
   } = useCheckPointActions({

@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { UserProfile } from "@/lib/types";
+import { UserProfileType } from "@/lib/types";
 import { Edit, Globe, X, Instagram, Facebook, Youtube } from "lucide-react";
 import { siteConfig } from "@/lib/config/siteConfig";
 import { useProfileHeader } from "@/hooks/profile/useProfileHeader";
 
 interface ProfileHeaderProps {
-  user: UserProfile;
+  user: UserProfileType;
 }
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {

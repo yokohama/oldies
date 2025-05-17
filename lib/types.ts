@@ -1,33 +1,33 @@
-export interface Brand {
+export interface BrandType {
   id: number;
   name: string;
   imageUrl: string;
   description: string;
-  products: Product[];
+  products: ProductType[];
 }
 
-export interface Product {
+export interface ProductType {
   id: number;
-  brand: Brand;
+  brand: BrandType;
   name: string;
   imageUrl: string;
   description: string;
-  eras: Era[];
+  eras: EraType[];
 }
 
-export interface Era {
+export interface EraType {
   id: number;
-  product: Product;
+  product: ProductType;
   manufacturing_start_year: number;
   manufacturing_end_year: number;
   imageUrl: string;
   description: string;
-  checkPoints?: CheckPoint[];
+  checkPoints?: CheckPointType[];
 }
 
-export interface CheckPoint {
+export interface CheckPointType {
   id: number;
-  era: Era;
+  era: EraType;
   point: string;
   imageUrl: string;
   description: string;
@@ -37,18 +37,18 @@ export interface CheckPoint {
   likeCount?: number;
 }
 
-export interface CheckPointLike {
+export interface CheckPointLikeType {
   id: number;
   userId: string;
   checkPointId: number;
   createdAt: string;
 }
 
-export interface LikedCheckPoint extends CheckPoint {
-  era: Era;
+export interface LikedCheckPointType extends CheckPointType {
+  era: EraType;
 }
 
-export interface UserProfile {
+export interface UserProfileType {
   id: string;
   name: string | null;
   email: string | null;
@@ -60,7 +60,7 @@ export interface UserProfile {
   youtubeUrl?: string | null;
 }
 
-export interface ApiError {
+export interface ApiErrorType {
   message: string;
   code?: string;
   details?: any;

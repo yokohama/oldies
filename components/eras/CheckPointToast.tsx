@@ -1,15 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { CheckPoint } from "@/lib/types";
+import { BrandType, ProductType, CheckPointType } from "@/lib/types";
 import { toast } from "sonner";
 import { siteConfig } from "@/lib/config/siteConfig";
-import { Brand, Product } from "@/lib/types";
 
 export const showCheckPoint = (
-  brand: Brand,
-  product: Product,
-  checkPoint: CheckPoint,
+  brand: BrandType,
+  product: ProductType,
+  checkPoint: CheckPointType,
 ) => {
   const toastId = toast(
     <div className="relative oldies-bg-primary p-4 rounded-lg oldies-border">
