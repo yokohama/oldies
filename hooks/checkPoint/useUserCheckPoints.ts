@@ -17,12 +17,12 @@ export const useUserCheckPoints = (userId: string | undefined) => {
       try {
         setLoading(true);
 
-        // API クラスを使用してチェックポイントを取得
+        // API クラスを使用して鑑定ポイントを取得
         const userCheckPoints = await API.getUserCheckPoints(userId);
         setCheckPoints(userCheckPoints);
       } catch (err) {
-        console.error("チェックポイントの取得に失敗しました:", err);
-        setError("チェックポイントの取得に失敗しました");
+        console.error("鑑定ポイントの取得に失敗しました:", err);
+        setError("鑑定ポイントの取得に失敗しました");
       } finally {
         setLoading(false);
       }

@@ -2,39 +2,26 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  BrandType,
-  ProductType,
-  CheckPointType,
-  UserProfileType,
-} from "@/lib/types";
+import { CheckPointType, UserProfileType } from "@/lib/types";
 import { Trash2, Heart, Share2 } from "lucide-react";
 import { useCheckPointActions } from "@/hooks";
 import { getAvatarUrl } from "@/lib/config/siteConfig";
 
-interface CheckPointCardProps {
-  brand: BrandType;
-  product: ProductType;
+interface CheckPointProps {
   checkPoint: CheckPointType;
   setCheckPoints: React.Dispatch<React.SetStateAction<CheckPointType[]>>;
-  showCheckPoint: (
-    brand: BrandType,
-    product: ProductType,
-    checkPoint: CheckPointType,
-  ) => void;
+  showCheckPoint: (checkPoint: CheckPointType) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfileType;
 }
 
-const CheckPointCard = ({
-  brand,
-  product,
+const CheckPoint = ({
   checkPoint,
   setCheckPoints,
   showCheckPoint,
   isOwnCheckPoint = false,
   userProfile,
-}: CheckPointCardProps) => {
+}: CheckPointProps) => {
   const {
     liked = false,
     likeCount = 0,
@@ -46,8 +33,8 @@ const CheckPointCard = ({
     isLikeLoading = false,
     handleDeleteCheckPoint,
   } = useCheckPointActions({
-    brand,
-    product,
+    brand: checkPoint.era.product.brand,
+    product: checkPoint.era.product,
     checkPoint,
     showCheckPoint,
     isOwnCheckPoint,
@@ -57,7 +44,7 @@ const CheckPointCard = ({
   const handleDeleteClickPoint = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    if (window.confirm("このチェックポイントを削除してもよろしいですか？")) {
+    if (window.confirm("この鑑定ポイントを削除してもよろしいですか？")) {
       const success = await handleDeleteCheckPoint(checkPoint.id);
       if (success) {
         setCheckPoints((prev) => prev.filter((cp) => cp.id !== checkPoint.id));
@@ -158,4 +145,4 @@ const CheckPointCard = ({
   );
 };
 
-export default CheckPointCard;
+export default CheckPoint;

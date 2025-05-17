@@ -1,5 +1,10 @@
 import { Metadata } from "next";
-import { BrandType, ProductType, UserProfileType } from "./types";
+import {
+  BrandType,
+  CheckPointType,
+  ProductType,
+  UserProfileType,
+} from "./types";
 import { siteConfig, siteUrls } from "./config/siteConfig";
 
 // サイト全体のベースとなるメタデータ
@@ -122,6 +127,46 @@ export function generateCheckpointsMetadata() {
   };
 }
 
+export function generateCheckPointMetadata(
+  checkPoint: CheckPointType,
+): Metadata {
+  const title = `${checkPoint.point} | ${checkPoint.era.product}の鑑定ポイント | ${siteConfig.name}`;
+  const description = `${checkPoint.description}`;
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      images: [
+        {
+          url: checkPoint.era.product.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: checkPoint.era.product.name,
+        },
+      ],
+    },
+    twitter: {
+      images: [
+        {
+          url: checkPoint.era.product.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: checkPoint.era.product.name,
+        },
+      ],
+    },
+    alternates: {
+      canonical: siteUrls.product(
+        checkPoint.era.product.brand.id,
+        checkPoint.era.product.id,
+      ),
+    },
+  };
+}
+
 // プロフィールページのメタデータ生成
 export function generateProfileMetadata(profile: UserProfileType): Metadata {
   const title = `${profile.name || "ユーザー"}のプロフィール | ${siteConfig.name}`;
@@ -152,7 +197,7 @@ export function generateProfileMetadata(profile: UserProfileType): Metadata {
 // お気に入りページのメタデータ
 export const favoritesMetadata: Metadata = {
   title: "お気に入り",
-  description: `あなたがお気に入りに登録した${siteConfig.name}のチェックポイント`,
+  description: `あなたがお気に入りに登録した${siteConfig.name}の鑑定ポイント`,
   alternates: {
     canonical: siteUrls.favorites(),
   },

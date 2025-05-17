@@ -7,10 +7,22 @@ export const getCheckpointsData = cache(async () => {
 
     return { checkPoints, error: null };
   } catch (error) {
-    console.error("チェックポイントのデータの取得に失敗しました:", error);
     return {
       checkPoints: null,
-      error: "チェックポイントのデータの取得に失敗しました",
+      error: "鑑定ポイントのデータの取得に失敗しました",
+    };
+  }
+});
+
+export const getCheckpointData = cache(async (checkPointId: number) => {
+  try {
+    const checkPoint = await API.getCheckPoint(checkPointId);
+
+    return { checkPoint, error: null };
+  } catch (error) {
+    return {
+      checkPoints: null,
+      error: "鑑定ポイントのデータの取得に失敗しました",
     };
   }
 });

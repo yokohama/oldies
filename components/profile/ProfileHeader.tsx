@@ -53,7 +53,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
               ヴィンテージ愛好家
             </span>
             <span className="inline-block bg-[#e5dcc3] text-[#5c4d3c] text-xs px-3 py-1 rounded-full">
-              チェックポイント投稿者
+              鑑定ポイント投稿者
             </span>
           </div>
 

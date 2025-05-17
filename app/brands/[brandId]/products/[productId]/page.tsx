@@ -51,11 +51,7 @@ export default async function ProductPage({
             <NotFound text="この製品の時代情報はありません" />
           ) : (
             <div className="max-w-4xl mx-auto">
-              <ErasCarousel
-                brand={product.brand}
-                product={product}
-                eras={product.eras}
-              />
+              <ErasCarousel product={product} />
             </div>
           )}
         </Suspense>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Instagram, X, Facebook, Heart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { siteConfig } from "@/lib/config/siteConfig";
+import { siteConfig, siteUrls } from "@/lib/config/siteConfig";
 
 const Footer = () => {
   const { user } = useAuth();
@@ -16,7 +16,7 @@ const Footer = () => {
         <div className="flex flex-col items-center text-center mb-6">
           <Link href="/brands">
             <h2 className="text-2xl font-bold text-amber-800 font-playfair relative pb-1 cursor-pointer hover:text-amber-900 transition-colors group inline-block">
-              <span className="italic tracking-wide">Oldies</span>
+              <span className="italic tracking-wide">{siteConfig.name}</span>
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-amber-600 transition-all duration-300 group-hover:w-full"></span>
             </h2>
           </Link>
@@ -51,10 +51,22 @@ const Footer = () => {
         {/* ナビゲーションリンク */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-2 max-w-2xl mx-auto mb-8">
           <Link
-            href="/brands"
+            href="/"
             className="text-stone-600 hover:text-amber-800 transition-colors text-sm text-center"
           >
             ブランド一覧
+          </Link>
+          <Link
+            href="/"
+            className="text-stone-600 hover:text-amber-800 transition-colors text-sm text-center"
+          >
+            プロダクト一覧
+          </Link>
+          <Link
+            href={siteUrls.checkpoints}
+            className="text-stone-600 hover:text-amber-800 transition-colors text-sm text-center"
+          >
+            鑑定ポイント一覧
           </Link>
           {user && (
             <Link

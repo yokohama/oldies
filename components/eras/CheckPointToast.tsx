@@ -1,15 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { BrandType, ProductType, CheckPointType } from "@/lib/types";
+import { CheckPointType } from "@/lib/types";
 import { toast } from "sonner";
 import { siteConfig } from "@/lib/config/siteConfig";
 
-export const showCheckPoint = (
-  brand: BrandType,
-  product: ProductType,
-  checkPoint: CheckPointType,
-) => {
+export const showCheckPoint = (checkPoint: CheckPointType) => {
   const toastId = toast(
     <div className="relative oldies-bg-primary p-4 rounded-lg oldies-border">
       <button
@@ -40,7 +36,7 @@ export const showCheckPoint = (
         <div className="relative h-48 w-full oldies-bg-secondary rounded-lg overflow-hidden mb-4 oldies-border">
           <Image
             src={checkPoint.imageUrl}
-            alt={`${checkPoint.point} - ${product.name} - ${brand.name} | ヴィンテージアパレル| 時代の特徴ポイント | ${siteConfig.name}`}
+            alt={`${checkPoint.point} - ${checkPoint.era.product.name} - ${checkPoint.era.product.brand.name} | ヴィンテージアパレル| 時代の特徴ポイント | ${siteConfig.name}`}
             fill
             className="object-cover sepia-[0.15] brightness-[0.98]"
             unoptimized

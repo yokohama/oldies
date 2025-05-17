@@ -1,9 +1,9 @@
 "use client";
 
-import CheckPointCard from "../eras/CheckPointCard";
+import CheckPoint from "@/components/eras/CheckPoint";
 import { UserProfileType, CheckPointType } from "@/lib/types";
 import { useAuth } from "@/contexts/AuthContext";
-import { showCheckPoint as toastShowProductEraCheckPoint } from "../eras/CheckPointToast";
+import { showCheckPoint } from "@/components/eras/CheckPointToast";
 import { useState, useEffect } from "react";
 import { useUserCheckPoints } from "@/hooks/checkPoint/useUserCheckPoints";
 import Spinner from "../ui/Spinner";
@@ -49,9 +49,9 @@ const ProfileCheckPoints = ({
     <>
       <h2 className="text-xl font-serif text-[#5c4d3c] mb-4 border-b border-[#d3c7a7] pb-2">
         {isOwnProfile ? (
-          <p>投稿したチェックポイント</p>
+          <p>投稿した鑑定ポイント</p>
         ) : (
-          <p>{userProfile.name}さんのチェックポイント</p>
+          <p>{userProfile.name}さんの鑑定ポイント</p>
         )}
       </h2>
 
@@ -64,19 +64,17 @@ const ProfileCheckPoints = ({
       ) : checkPoints.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-sm text-[#7a6b59]">
-            投稿したチェックポイントはありません。
+            投稿した鑑定ポイントはありません。
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           {checkPoints.map((checkPoint) => (
-            <CheckPointCard
+            <CheckPoint
               key={checkPoint.id}
-              brand={checkPoint.era.product.brand}
-              product={checkPoint.era.product}
               checkPoint={checkPoint}
               setCheckPoints={setCheckPoints}
-              showCheckPoint={toastShowProductEraCheckPoint}
+              showCheckPoint={showCheckPoint}
               isOwnCheckPoint={isOwnProfile}
               userProfile={userProfile}
             />

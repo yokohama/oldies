@@ -37,15 +37,15 @@ const mapEra = (era: any): EraType => ({
   description: era.description || "",
   checkPoints: era.product_era_check_points
     ? era.product_era_check_points.map((checkpoint: any) => {
-      // 製品時代のチェックポイントにブランドと製品の情報を追加
-      const checkpointWithRefs = {
-        ...checkpoint,
-        eras: {
-          products: era.products || { brands: {} },
-        },
-      };
-      return mapCheckPoint(checkpointWithRefs);
-    })
+        // 製品時代の鑑定ポイントにブランドと製品の情報を追加
+        const checkpointWithRefs = {
+          ...checkpoint,
+          eras: {
+            products: era.products || { brands: {} },
+          },
+        };
+        return mapCheckPoint(checkpointWithRefs);
+      })
     : [],
 });
 
@@ -245,7 +245,7 @@ export class API {
     });
   }
 
-  // ユーザーが投稿したチェックポイントを取得
+  // ユーザーが投稿した鑑定ポイントを取得
   static async getUserCheckPoints(userId: string): Promise<CheckPointType[]> {
     const { data, error } = await supabase
       .from("product_era_check_points")
@@ -407,7 +407,7 @@ export class API {
         const eraObj = mapEra(era);
         eraObj.product = productObj; // 時代に製品参照を設定
 
-        // チェックポイント情報をセット
+        // 鑑定ポイント情報をセット
         if (
           era.product_era_check_points &&
           Array.isArray(era.product_era_check_points)
@@ -415,7 +415,7 @@ export class API {
           eraObj.checkPoints = era.product_era_check_points.map(
             (checkpoint: any) => {
               const checkpointObj = mapCheckPoint(checkpoint);
-              checkpointObj.era = eraObj; // チェックポイントに時代参照を設定
+              checkpointObj.era = eraObj; // 鑑定ポイントに時代参照を設定
               return checkpointObj;
             },
           );
@@ -431,7 +431,7 @@ export class API {
   // 製品時代関連
   // static async getEras(): Promise<Era[]> {}
 
-  // 製品時代チェックポイント関連
+  // 製品時代鑑定ポイント関連
   static async getCheckPoints(): Promise<CheckPointType[]> {
     const { data, error } = await supabase
       .from("product_era_check_points")

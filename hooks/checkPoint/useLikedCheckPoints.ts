@@ -27,11 +27,11 @@ export const useLikedCheckPoints = () => {
         setLikedCheckPoints(data);
         setError(null);
       } catch (err) {
-        console.error("いいねしたチェックポイントの取得に失敗しました", err);
+        console.error("いいねした鑑定ポイントの取得に失敗しました", err);
         setError(
           err instanceof Error
             ? err
-            : new Error("いいねしたチェックポイントの取得に失敗しました"),
+            : new Error("いいねした鑑定ポイントの取得に失敗しました"),
         );
       } finally {
         setIsLoading(false);

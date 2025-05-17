@@ -1,21 +1,19 @@
 "use client";
 
-import { BrandType, ProductType, EraType } from "@/lib/types";
+import { EraType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import AddCheckPointModal from "./AddCheckPointModal";
-import CheckPointCard from "./CheckPointCard";
+import CheckPoint from "./CheckPoint";
 import { showCheckPoint } from "./CheckPointToast";
 import { useCheckPoints } from "@/hooks";
 import NotFound from "../ui/NotFound";
 import { siteConfig } from "@/lib/config/siteConfig";
 
 interface CheckPointsProps {
-  brand: BrandType;
-  product: ProductType;
   era: EraType;
 }
 
-const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
+const CheckPoints = ({ era }: CheckPointsProps) => {
   const {
     userProfiles,
     checkPoints,
@@ -34,7 +32,7 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
         onClose={() => setIsAddModalOpen(false)}
         eraId={era.id}
         onSuccess={(newCheckPoint) => {
-          // 新しいチェックポイントを状態に追加
+          // 新しい鑑定ポイントを状態に追加
           addNewCheckPoint(newCheckPoint);
           setIsAddModalOpen(false);
         }}
@@ -71,18 +69,14 @@ const CheckPoints = ({ brand, product, era }: CheckPointsProps) => {
         </div>
         <div className="space-y-4 px-2">
           {checkPoints && checkPoints.length == 0 ? (
-            <NotFound text="チェックポイントがまだありません。" />
+            <NotFound text="鑑定ポイントがまだありません。" />
           ) : (
             checkPoints.map((checkPoint) => (
-              <CheckPointCard
+              <CheckPoint
                 key={checkPoint.id}
-                brand={brand}
-                product={product}
                 checkPoint={checkPoint}
                 setCheckPoints={setCheckPoints}
-                showCheckPoint={() =>
-                  showCheckPoint(brand, product, checkPoint)
-                }
+                showCheckPoint={() => showCheckPoint(checkPoint)}
                 isOwnCheckPoint={user?.id === checkPoint.userId}
                 userProfile={
                   checkPoint.userId

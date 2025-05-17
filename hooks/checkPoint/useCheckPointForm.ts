@@ -30,7 +30,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // チェックポイント追加のカスタムフックを使用
+  // 鑑定ポイント追加のカスタムフックを使用
   const { handleAddCheckPoint, isSubmitting, uploadProgress } =
     useCheckPointActions();
 
@@ -76,7 +76,7 @@ export function useCheckPointForm(): UseCheckPointFormReturn {
     e.preventDefault();
 
     if (!point.trim()) {
-      toast.error("チェックポイントを入力してください");
+      toast.error("鑑定ポイントを入力してください");
       return;
     }
 

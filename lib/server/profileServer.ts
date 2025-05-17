@@ -23,18 +23,18 @@ export const getProfileData = async (userId: string) => {
   }
 };
 
-// サーバーコンポーネントでユーザーのチェックポイントを取得するための関数（キャッシュなし）
+// サーバーコンポーネントでユーザーの鑑定ポイントを取得するための関数（キャッシュなし）
 export const getProfileCheckPointsDataByUserId = async (userId: string) => {
   try {
-    // ユーザーのチェックポイントを取得
+    // ユーザーの鑑定ポイントを取得
     const checkPoints = await API.getUserCheckPoints(userId);
 
     return { checkPoints, error: null };
   } catch (error) {
-    console.error("チェックポイントの取得に失敗しました:", error);
+    console.error("鑑定ポイントの取得に失敗しました:", error);
     return {
       checkPoints: [],
-      error: "チェックポイントの取得に失敗しました",
+      error: "鑑定ポイントの取得に失敗しました",
     };
   }
 };

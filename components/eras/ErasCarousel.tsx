@@ -11,17 +11,15 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Toaster } from "sonner";
 import CheckPoints from "./CheckPoints";
 import { useErasCarousel } from "@/hooks";
-import { BrandType, ProductType, EraType } from "@/lib/types";
+import { ProductType } from "@/lib/types";
 import { siteConfig } from "@/lib/config/siteConfig";
 
 // 外部から使用するためのプロップス
 interface ErasCarouselProps {
-  brand: BrandType;
   product: ProductType;
-  eras: EraType[];
 }
 
-const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
+const ErasCarousel = ({ product }: ErasCarouselProps) => {
   const [selectedEraIndex, setSelectedEraIndex] = useState(0);
 
   const handleEraIndexChange = (index: number) => {
@@ -35,7 +33,7 @@ const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
     handlePrevSlide,
     handleNextSlide,
   } = useErasCarousel({
-    eras,
+    eras: product.eras,
     selectedEraIndex,
     onEraIndexChange: handleEraIndexChange,
   });
@@ -104,7 +102,7 @@ const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
         {/* カルーセルのナビゲーションインジケーター */}
         <div className="flex justify-center mt-4 gap-2">
           <div className="flex items-center gap-1.5 mx-2">
-            {eras.map((_, index) => (
+            {product.eras.map((_, index) => (
               <div
                 key={index}
                 className={`w-2.5 h-2.5 rounded-full transition-colors ${index === currentIndex
@@ -117,7 +115,7 @@ const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
         </div>
 
         <CarouselContent className="-ml-2 -mr-2">
-          {eras.map((productEra) => (
+          {product.eras.map((productEra) => (
             <CarouselItem
               key={productEra.id}
               className="basis-full pl-1.5 pr-1.5 pt-3 pb-0"
@@ -127,7 +125,7 @@ const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
                   <div className="relative h-52 w-full oldies-bg-secondary">
                     <Image
                       src={productEra.imageUrl}
-                      alt={` ${brand.name} - ${product.name} | ${productEra.manufacturing_start_year}年から${productEra.manufacturing_end_year}年のヴィンテージの特徴 | ${siteConfig.name}`}
+                      alt={` ${product.brand.name} - ${product.name} | ${productEra.manufacturing_start_year}年から${productEra.manufacturing_end_year}年のヴィンテージの特徴 | ${siteConfig.name}`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover sepia-[0.15] brightness-[0.98]"
@@ -142,11 +140,7 @@ const ErasCarousel = ({ brand, product, eras }: ErasCarouselProps) => {
                   <h3 className="text-sm oldies-text-secondary px-2 mt-2">
                     {currentProductEra?.description}
                   </h3>
-                  <CheckPoints
-                    brand={brand}
-                    product={product}
-                    era={productEra}
-                  />
+                  <CheckPoints era={productEra} />
                 </CardContent>
                 <CardFooter className="p-3 flex justify-between items-center"></CardFooter>
               </Card>

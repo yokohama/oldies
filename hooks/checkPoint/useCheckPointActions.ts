@@ -12,17 +12,13 @@ interface UseCheckPointActionsProps {
   brand: BrandType;
   product: ProductType;
   checkPoint?: CheckPointType;
-  showCheckPoint?: (
-    brand: BrandType,
-    product: ProductType,
-    checkPoint: CheckPointType,
-  ) => void;
+  showCheckPoint?: (checkPoint: CheckPointType) => void;
   isOwnCheckPoint?: boolean;
   userProfile?: UserProfileType;
 }
 
 interface UseCheckPointActionsReturn {
-  // チェックポイント追加・削除機能
+  // 鑑定ポイント追加・削除機能
   handleAddCheckPoint: (
     productEraId: number,
     point: string,
@@ -56,13 +52,11 @@ export function useCheckPointActions(
   const [likeCount, setLikeCount] = useState(0);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
 
-  const brand = props?.brand;
-  const product = props?.product;
   const checkPoint = props?.checkPoint;
   const showCheckPoint = props?.showCheckPoint;
   const userProfile = props?.userProfile;
 
-  // チェックポイントのいいね状態を取得
+  // 鑑定ポイントのいいね状態を取得
   useEffect(() => {
     const fetchLikeStatus = async () => {
       if (!user || !checkPoint?.id) return;
@@ -81,7 +75,7 @@ export function useCheckPointActions(
     fetchLikeStatus();
   }, [user, checkPoint?.id]);
 
-  // チェックポイントのいいね数を取得
+  // 鑑定ポイントのいいね数を取得
   useEffect(() => {
     const fetchLikeCount = async () => {
       if (!checkPoint?.id) return;
@@ -124,7 +118,7 @@ export function useCheckPointActions(
       // アップロード完了時に進捗を更新
       setUploadProgress(70);
 
-      // チェックポイントの追加
+      // 鑑定ポイントの追加
       const newCheckPoint = await API.addCheckPoint(
         productEraId,
         point,
@@ -134,11 +128,11 @@ export function useCheckPointActions(
       );
 
       setUploadProgress(100);
-      toast.success("チェックポイントを追加しました");
+      toast.success("鑑定ポイントを追加しました");
       return { success: true, checkPoint: newCheckPoint };
     } catch (error) {
-      console.error("チェックポイントの追加に失敗しました:", error);
-      toast.error("チェックポイントの追加に失敗しました");
+      console.error("鑑定ポイントの追加に失敗しました:", error);
+      toast.error("鑑定ポイントの追加に失敗しました");
       return { success: false };
     } finally {
       setIsSubmitting(false);
@@ -150,11 +144,11 @@ export function useCheckPointActions(
   ): Promise<boolean> => {
     try {
       await API.deleteCheckPoint(checkPointId);
-      toast.success("チェックポイントを削除しました");
+      toast.success("鑑定ポイントを削除しました");
       return true;
     } catch (error) {
-      console.error("チェックポイントの削除に失敗しました:", error);
-      toast.error("チェックポイントの削除に失敗しました");
+      console.error("鑑定ポイントの削除に失敗しました:", error);
+      toast.error("鑑定ポイントの削除に失敗しました");
       return false;
     }
   };
@@ -194,8 +188,8 @@ export function useCheckPointActions(
   };
 
   const handleCheckPointClick = () => {
-    if (brand && product && checkPoint && showCheckPoint) {
-      showCheckPoint(brand, product, checkPoint);
+    if (checkPoint && showCheckPoint) {
+      showCheckPoint(checkPoint);
     }
   };
 

@@ -34,7 +34,7 @@ const Favorites = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <PageTitle title="お気に入りチェックポイント" />
+        <PageTitle title="お気に入り鑑定ポイント" />
         <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
           <Heart className="h-16 w-16 text-[#d3c7a7] mx-auto mb-4" />
           <p className="text-lg text-[#7a6b59] italic mb-6">
@@ -56,7 +56,7 @@ const Favorites = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <PageTitle title="お気に入りチェックポイント" />
+        <PageTitle title="お気に入り鑑定ポイント" />
         <div className="text-center">
           <Spinner size="lg" />
         </div>
@@ -69,7 +69,7 @@ const Favorites = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <PageTitle title="お気に入りチェックポイント" />
+        <PageTitle title="お気に入り鑑定ポイント" />
         <Error />
         <Footer />
       </div>
@@ -80,10 +80,10 @@ const Favorites = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
         <Header />
-        <PageTitle title="お気に入りチェックポイント" />
+        <PageTitle title="お気に入り鑑定ポイント" />
         <div className="text-center py-10 border-2 border-dashed border-[#d3c7a7] rounded-md">
           <Heart className="h-16 w-16 text-[#d3c7a7] mx-auto mb-4" />
-          <NotFound text="お気に入りはありません。チェックポイントにいいねを追加すると、ここに表示されます。" />
+          <NotFound text="お気に入りはありません。鑑定ポイントにいいねを追加すると、ここに表示されます。" />
         </div>
         <Footer />
       </div>
@@ -93,7 +93,7 @@ const Favorites = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6">
       <Header />
-      <PageTitle title="お気に入りチェックポイント" />
+      <PageTitle title="お気に入り鑑定ポイント" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {likedCheckPoints.map((checkPoint) => (
@@ -116,10 +116,11 @@ const Favorites = () => {
                 className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors z-20"
               >
                 <Heart
-                  className={`h-5 w-5 ${removingId === checkPoint.id
+                  className={`h-5 w-5 ${
+                    removingId === checkPoint.id
                       ? "text-[#d3c7a7]"
                       : "text-[#7a6b59] fill-[#7a6b59]"
-                    }`}
+                  }`}
                 />
               </button>
             </div>

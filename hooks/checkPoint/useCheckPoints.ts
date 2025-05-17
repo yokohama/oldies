@@ -40,11 +40,11 @@ export function useCheckPoints(
     }
   };
 
-  // 新しいチェックポイントを追加するメソッド
+  // 新しい鑑定ポイントを追加するメソッド
   const addNewCheckPoint = (newCheckPoint: CheckPointType) => {
     setCheckPoints((prevCheckPoints) => [newCheckPoint, ...prevCheckPoints]);
 
-    // 新しいチェックポイントのユーザープロフィールを取得
+    // 新しい鑑定ポイントのユーザープロフィールを取得
     if (newCheckPoint.userId && !userProfiles[newCheckPoint.userId]) {
       API.getUserProfile(newCheckPoint.userId).then((profile) => {
         if (profile) {
@@ -57,7 +57,7 @@ export function useCheckPoints(
     }
   };
 
-  // チェックポイントの投稿者情報を取得
+  // 鑑定ポイントの投稿者情報を取得
   useEffect(() => {
     /*
      *

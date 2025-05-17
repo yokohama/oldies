@@ -47,7 +47,7 @@ export default async function ProfilePage({
   // サーバーサイドでデータを取得
   const { user, error } = await getProfileData(params.id);
 
-  // チェックポイントデータを取得
+  // 鑑定ポイントデータを取得
   const { checkPoints, error: checkPointsError } =
     await getProfileCheckPointsDataByUserId(params.id);
 
@@ -65,7 +65,7 @@ export default async function ProfilePage({
               {/* プロフィールヘッダー */}
               <ProfileHeader user={user} />
 
-              {/* ユーザーのチェックポイント一覧 */}
+              {/* ユーザーの鑑定ポイント一覧 */}
               <div className="mt-8">
                 <ProfileCheckPoints
                   userId={params.id}
